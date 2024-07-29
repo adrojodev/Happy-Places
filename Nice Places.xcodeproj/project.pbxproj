@@ -8,12 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		E50116F82B76E7BC00E00E5D /* Nice_PlacesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50116F72B76E7BC00E00E5D /* Nice_PlacesApp.swift */; };
-		E50116FA2B76E7BC00E00E5D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50116F92B76E7BC00E00E5D /* ContentView.swift */; };
+		E50116FA2B76E7BC00E00E5D /* NicePlacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50116F92B76E7BC00E00E5D /* NicePlacesView.swift */; };
 		E50116FC2B76E7BC00E00E5D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E50116FB2B76E7BC00E00E5D /* Assets.xcassets */; };
 		E50116FF2B76E7BC00E00E5D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E50116FE2B76E7BC00E00E5D /* Preview Assets.xcassets */; };
 		E50117092B76E7BD00E00E5D /* Nice_PlacesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50117082B76E7BD00E00E5D /* Nice_PlacesTests.swift */; };
 		E50117132B76E7BD00E00E5D /* Nice_PlacesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50117122B76E7BD00E00E5D /* Nice_PlacesUITests.swift */; };
 		E50117152B76E7BD00E00E5D /* Nice_PlacesUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50117142B76E7BD00E00E5D /* Nice_PlacesUITestsLaunchTests.swift */; };
+		E50117262B76E82F00E00E5D /* NewLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50117252B76E82F00E00E5D /* NewLocationView.swift */; };
+		E501172A2B7730C400E00E5D /* EditNewLocationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50117292B7730C400E00E5D /* EditNewLocationSheet.swift */; };
+		E564668A2B77BCBD004E055F /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56466892B77BCBD004E055F /* DataController.swift */; };
+		E564668D2B77D1A4004E055F /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = E564668C2B77D1A4004E055F /* Icons.swift */; };
+		E56466912B77F00F004E055F /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56466902B77F00F004E055F /* Place.swift */; };
+		E56466932B77F3F7004E055F /* PlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56466922B77F3F7004E055F /* PlaceView.swift */; };
+		E56466952B77F7E8004E055F /* PlaceItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56466942B77F7E8004E055F /* PlaceItemView.swift */; };
+		E56466972B7852C6004E055F /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56466962B7852C6004E055F /* MapView.swift */; };
+		E56528D72B890F4800292C26 /* IconSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56528D62B890F4800292C26 /* IconSelector.swift */; };
+		E56528D92B8910C400292C26 /* SelectIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56528D82B8910C400292C26 /* SelectIconButton.swift */; };
+		E5A5E3E02B841FDB00DA4249 /* MarkersMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A5E3DF2B841FDB00DA4249 /* MarkersMapView.swift */; };
+		E5A5E3E22B8421B100DA4249 /* LocationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A5E3E12B8421B100DA4249 /* LocationsListView.swift */; };
+		E5FF6EAC2B83F6E400555080 /* PlacesDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FF6EAB2B83F6E400555080 /* PlacesDataModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +49,7 @@
 /* Begin PBXFileReference section */
 		E50116F42B76E7BC00E00E5D /* Nice Places.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nice Places.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E50116F72B76E7BC00E00E5D /* Nice_PlacesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nice_PlacesApp.swift; sourceTree = "<group>"; };
-		E50116F92B76E7BC00E00E5D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		E50116F92B76E7BC00E00E5D /* NicePlacesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicePlacesView.swift; sourceTree = "<group>"; };
 		E50116FB2B76E7BC00E00E5D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E50116FE2B76E7BC00E00E5D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		E50117042B76E7BD00E00E5D /* Nice PlacesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Nice PlacesTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,6 +57,21 @@
 		E501170E2B76E7BD00E00E5D /* Nice PlacesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Nice PlacesUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E50117122B76E7BD00E00E5D /* Nice_PlacesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nice_PlacesUITests.swift; sourceTree = "<group>"; };
 		E50117142B76E7BD00E00E5D /* Nice_PlacesUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nice_PlacesUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		E50117252B76E82F00E00E5D /* NewLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLocationView.swift; sourceTree = "<group>"; };
+		E50117292B7730C400E00E5D /* EditNewLocationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNewLocationSheet.swift; sourceTree = "<group>"; };
+		E56466892B77BCBD004E055F /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		E564668C2B77D1A4004E055F /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
+		E56466902B77F00F004E055F /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
+		E56466922B77F3F7004E055F /* PlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceView.swift; sourceTree = "<group>"; };
+		E56466942B77F7E8004E055F /* PlaceItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceItemView.swift; sourceTree = "<group>"; };
+		E56466962B7852C6004E055F /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		E56528D62B890F4800292C26 /* IconSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSelector.swift; sourceTree = "<group>"; };
+		E56528D82B8910C400292C26 /* SelectIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectIconButton.swift; sourceTree = "<group>"; };
+		E56528DC2B8918F800292C26 /* Nice-Places-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Nice-Places-Info.plist"; sourceTree = "<group>"; };
+		E5875FD92C5841F9005CF4D1 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		E5A5E3DF2B841FDB00DA4249 /* MarkersMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkersMapView.swift; sourceTree = "<group>"; };
+		E5A5E3E12B8421B100DA4249 /* LocationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListView.swift; sourceTree = "<group>"; };
+		E5FF6EAB2B83F6E400555080 /* PlacesDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesDataModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +102,8 @@
 		E50116EB2B76E7BC00E00E5D = {
 			isa = PBXGroup;
 			children = (
+				E5875FD92C5841F9005CF4D1 /* .gitignore */,
+				E56528DC2B8918F800292C26 /* Nice-Places-Info.plist */,
 				E50116F62B76E7BC00E00E5D /* Nice Places */,
 				E50117072B76E7BD00E00E5D /* Nice PlacesTests */,
 				E50117112B76E7BD00E00E5D /* Nice PlacesUITests */,
@@ -94,8 +124,13 @@
 		E50116F62B76E7BC00E00E5D /* Nice Places */ = {
 			isa = PBXGroup;
 			children = (
+				E564668B2B77D197004E055F /* Data */,
+				E56466882B77BCAB004E055F /* Controller */,
+				E56466822B77B7DF004E055F /* Models */,
+				E50117282B7730AF00E00E5D /* Components */,
+				E50117242B76E81C00E00E5D /* Views */,
 				E50116F72B76E7BC00E00E5D /* Nice_PlacesApp.swift */,
-				E50116F92B76E7BC00E00E5D /* ContentView.swift */,
+				E50116F92B76E7BC00E00E5D /* NicePlacesView.swift */,
 				E50116FB2B76E7BC00E00E5D /* Assets.xcassets */,
 				E50116FD2B76E7BC00E00E5D /* Preview Content */,
 			);
@@ -125,6 +160,54 @@
 				E50117142B76E7BD00E00E5D /* Nice_PlacesUITestsLaunchTests.swift */,
 			);
 			path = "Nice PlacesUITests";
+			sourceTree = "<group>";
+		};
+		E50117242B76E81C00E00E5D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E50117252B76E82F00E00E5D /* NewLocationView.swift */,
+				E56466922B77F3F7004E055F /* PlaceView.swift */,
+				E56466962B7852C6004E055F /* MapView.swift */,
+				E5A5E3DF2B841FDB00DA4249 /* MarkersMapView.swift */,
+				E5A5E3E12B8421B100DA4249 /* LocationsListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E50117282B7730AF00E00E5D /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				E50117292B7730C400E00E5D /* EditNewLocationSheet.swift */,
+				E56466942B77F7E8004E055F /* PlaceItemView.swift */,
+				E56528D62B890F4800292C26 /* IconSelector.swift */,
+				E56528D82B8910C400292C26 /* SelectIconButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		E56466822B77B7DF004E055F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E56466902B77F00F004E055F /* Place.swift */,
+				E5FF6EAB2B83F6E400555080 /* PlacesDataModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E56466882B77BCAB004E055F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E56466892B77BCBD004E055F /* DataController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		E564668B2B77D197004E055F /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				E564668C2B77D1A4004E055F /* Icons.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,8 +340,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E50116FA2B76E7BC00E00E5D /* ContentView.swift in Sources */,
+				E564668D2B77D1A4004E055F /* Icons.swift in Sources */,
+				E5A5E3E22B8421B100DA4249 /* LocationsListView.swift in Sources */,
+				E564668A2B77BCBD004E055F /* DataController.swift in Sources */,
+				E56466972B7852C6004E055F /* MapView.swift in Sources */,
+				E56466952B77F7E8004E055F /* PlaceItemView.swift in Sources */,
+				E56466932B77F3F7004E055F /* PlaceView.swift in Sources */,
+				E50116FA2B76E7BC00E00E5D /* NicePlacesView.swift in Sources */,
+				E5FF6EAC2B83F6E400555080 /* PlacesDataModel.swift in Sources */,
+				E50117262B76E82F00E00E5D /* NewLocationView.swift in Sources */,
+				E56528D92B8910C400292C26 /* SelectIconButton.swift in Sources */,
+				E56466912B77F00F004E055F /* Place.swift in Sources */,
+				E5A5E3E02B841FDB00DA4249 /* MarkersMapView.swift in Sources */,
 				E50116F82B76E7BC00E00E5D /* Nice_PlacesApp.swift in Sources */,
+				E501172A2B7730C400E00E5D /* EditNewLocationSheet.swift in Sources */,
+				E56528D72B890F4800292C26 /* IconSelector.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,7 +443,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -404,7 +500,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -422,24 +518,33 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Nice Places/Preview Content\"";
-				DEVELOPMENT_TEAM = F3V28L3PJH;
+				DEVELOPMENT_TEAM = TSP733L3T9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Nice-Places-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSCameraUsageDescription = "The app let the user register photos of the place it wanna store";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "The app let the user register places it has been";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "rojo.Nice-Places";
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "rojo.happy-places-moments";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -451,24 +556,33 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Nice Places/Preview Content\"";
-				DEVELOPMENT_TEAM = F3V28L3PJH;
+				DEVELOPMENT_TEAM = TSP733L3T9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Nice-Places-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSCameraUsageDescription = "The app let the user register photos of the place it wanna store";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "The app let the user register places it has been";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "rojo.Nice-Places";
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "rojo.happy-places-moments";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

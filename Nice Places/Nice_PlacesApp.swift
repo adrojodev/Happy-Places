@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct Nice_PlacesApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NicePlacesView()
         }
+        .modelContainer(for: [Place.self])
     }
 }
