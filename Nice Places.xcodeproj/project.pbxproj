@@ -47,7 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		E50116F42B76E7BC00E00E5D /* Nice Places.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nice Places.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E50116F42B76E7BC00E00E5D /* Happy Places.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Happy Places.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E50116F72B76E7BC00E00E5D /* Nice_PlacesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nice_PlacesApp.swift; sourceTree = "<group>"; };
 		E50116F92B76E7BC00E00E5D /* NicePlacesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicePlacesView.swift; sourceTree = "<group>"; };
 		E50116FB2B76E7BC00E00E5D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -114,7 +114,7 @@
 		E50116F52B76E7BC00E00E5D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E50116F42B76E7BC00E00E5D /* Nice Places.app */,
+				E50116F42B76E7BC00E00E5D /* Happy Places.app */,
 				E50117042B76E7BD00E00E5D /* Nice PlacesTests.xctest */,
 				E501170E2B76E7BD00E00E5D /* Nice PlacesUITests.xctest */,
 			);
@@ -213,9 +213,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E50116F32B76E7BC00E00E5D /* Nice Places */ = {
+		E50116F32B76E7BC00E00E5D /* Happy Places */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E50117182B76E7BD00E00E5D /* Build configuration list for PBXNativeTarget "Nice Places" */;
+			buildConfigurationList = E50117182B76E7BD00E00E5D /* Build configuration list for PBXNativeTarget "Happy Places" */;
 			buildPhases = (
 				E50116F02B76E7BC00E00E5D /* Sources */,
 				E50116F12B76E7BC00E00E5D /* Frameworks */,
@@ -225,9 +225,9 @@
 			);
 			dependencies = (
 			);
-			name = "Nice Places";
+			name = "Happy Places";
 			productName = "Nice Places";
-			productReference = E50116F42B76E7BC00E00E5D /* Nice Places.app */;
+			productReference = E50116F42B76E7BC00E00E5D /* Happy Places.app */;
 			productType = "com.apple.product-type.application";
 		};
 		E50117032B76E7BD00E00E5D /* Nice PlacesTests */ = {
@@ -302,7 +302,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E50116F32B76E7BC00E00E5D /* Nice Places */,
+				E50116F32B76E7BC00E00E5D /* Happy Places */,
 				E50117032B76E7BD00E00E5D /* Nice PlacesTests */,
 				E501170D2B76E7BD00E00E5D /* Nice PlacesUITests */,
 			);
@@ -380,12 +380,12 @@
 /* Begin PBXTargetDependency section */
 		E50117062B76E7BD00E00E5D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E50116F32B76E7BC00E00E5D /* Nice Places */;
+			target = E50116F32B76E7BC00E00E5D /* Happy Places */;
 			targetProxy = E50117052B76E7BD00E00E5D /* PBXContainerItemProxy */;
 		};
 		E50117102B76E7BD00E00E5D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E50116F32B76E7BC00E00E5D /* Nice Places */;
+			target = E50116F32B76E7BC00E00E5D /* Happy Places */;
 			targetProxy = E501170F2B76E7BD00E00E5D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -522,6 +522,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Nice-Places-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Happy Places";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSCameraUsageDescription = "The app let the user register photos of the place it wanna store";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "The app let the user register places it has been";
@@ -560,6 +561,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Nice-Places-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Happy Places";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSCameraUsageDescription = "The app let the user register photos of the place it wanna store";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "The app let the user register places it has been";
@@ -674,7 +676,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E50117182B76E7BD00E00E5D /* Build configuration list for PBXNativeTarget "Nice Places" */ = {
+		E50117182B76E7BD00E00E5D /* Build configuration list for PBXNativeTarget "Happy Places" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E50117192B76E7BD00E00E5D /* Debug */,
