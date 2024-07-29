@@ -69,6 +69,7 @@
 		E56528D82B8910C400292C26 /* SelectIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectIconButton.swift; sourceTree = "<group>"; };
 		E56528DC2B8918F800292C26 /* Nice-Places-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Nice-Places-Info.plist"; sourceTree = "<group>"; };
 		E5875FD92C5841F9005CF4D1 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		E5875FDA2C5843EE005CF4D1 /* Happy Places.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Happy Places.entitlements"; sourceTree = "<group>"; };
 		E5A5E3DF2B841FDB00DA4249 /* MarkersMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkersMapView.swift; sourceTree = "<group>"; };
 		E5A5E3E12B8421B100DA4249 /* LocationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListView.swift; sourceTree = "<group>"; };
 		E5FF6EAB2B83F6E400555080 /* PlacesDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesDataModel.swift; sourceTree = "<group>"; };
@@ -102,6 +103,7 @@
 		E50116EB2B76E7BC00E00E5D = {
 			isa = PBXGroup;
 			children = (
+				E5875FDA2C5843EE005CF4D1 /* Happy Places.entitlements */,
 				E5875FD92C5841F9005CF4D1 /* .gitignore */,
 				E56528DC2B8918F800292C26 /* Nice-Places-Info.plist */,
 				E50116F62B76E7BC00E00E5D /* Nice Places */,
@@ -515,6 +517,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Happy Places.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Nice Places/Preview Content\"";
@@ -554,6 +557,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Happy Places.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Nice Places/Preview Content\"";
