@@ -11,13 +11,13 @@ import SwiftUI
 
 @Model
 class Place {
-    var color: String
-    var createdDate: Date
-    var icon: String
-    var latitude: Double
-    var longitude: Double
-    var name: String
-    var text: String
+    var color: String = "green"
+    var createdDate: Date = Date()
+    var icon: String = "pin"
+    var latitude: Double = 12.64654
+    var longitude: Double = -122.86453
+    var name: String = "Happy Place"
+    var text: String = ""
     
     init(color: String, createdDate: Date, icon: String, latitude: Double, longitude: Double, name: String, text: String) {
         self.color = color
