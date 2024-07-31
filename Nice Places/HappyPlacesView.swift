@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct NicePlacesView: View {
+struct HappyPlacesView: View {
     
     var body: some View {
         TabView(selection: .constant(1)) {
@@ -28,5 +28,5 @@ struct NicePlacesView: View {
 }
 
 #Preview {
-    NicePlacesView()
+    HappyPlacesView()
 }

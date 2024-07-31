@@ -9,10 +9,10 @@ import SwiftUI
 import SwiftData
 
 @main
-struct Nice_PlacesApp: App {
+struct HappyPlacesApp: App {
     var body: some Scene {
         WindowGroup {
-            NicePlacesView()
+            HappyPlacesView()
         }
         .modelContainer(for: [Place.self])
     }
