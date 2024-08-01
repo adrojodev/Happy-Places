@@ -9,6 +9,8 @@ import SwiftUI
 import MapKit
 
 struct MapView: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     let latitude: Double
     let longitude: Double
     let name: String
@@ -49,7 +51,7 @@ struct MapView: View {
                     .padding([.horizontal], 32)
                     .padding([.vertical],16)
                     .background(color)
-                    .foregroundColor(color == .yellow ? .black : .white)
+                    .foregroundStyle(.background)
                     .cornerRadius(.infinity)
                 }
                 .padding([.bottom], 32)

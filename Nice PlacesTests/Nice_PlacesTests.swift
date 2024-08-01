@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import Nice_Places
+@testable import Happy_Places
 
 final class Nice_PlacesTests: XCTestCase {
 

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SelectIconButton: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     @Binding var selectedIcon: String
     @Binding var selectedColor: PlaceColor
     
@@ -16,7 +18,7 @@ struct SelectIconButton: View {
     var body: some View {
         Image(systemName: selectedIcon)
             .frame(width: 40, height: 40)
-            .foregroundColor(selectedColor == PlaceColor.yellow ? .black : .white)
+            .foregroundColor(colorScheme == .dark ? .black : .white)
             .background(selectedColor.wrappedValue.gradient)
             .cornerRadius(.infinity)
             .onTapGesture(perform: {

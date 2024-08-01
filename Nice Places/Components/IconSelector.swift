@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct IconSelector: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     @Binding var selectedColor: PlaceColor
     @Binding var selectedIcon: String
     @Binding var isIconSheetOpen: Bool
@@ -32,7 +34,7 @@ struct IconSelector: View {
                 Spacer()
                 Image(systemName: selectedIcon)
                     .font(.largeTitle)
-                    .foregroundColor(selectedColor == .yellow ? .black : .white)
+                    .foregroundColor(colorScheme == .dark ? .black : .white)
                     .frame(width: 80, height: 80)
                     .background(selectedColor.wrappedValue.gradient)
                     .cornerRadius(.infinity)

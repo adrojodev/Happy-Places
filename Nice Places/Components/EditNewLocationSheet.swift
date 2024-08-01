@@ -8,6 +8,7 @@
 import SwiftUI
 import PhotosUI
 import CoreLocation
+import SwiftData
 
 struct EditNewLocationSheet: View {
     let latitude: CLLocationDegrees
@@ -26,6 +27,7 @@ struct EditNewLocationSheet: View {
     
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         ZStack (alignment: .bottom) {
@@ -75,7 +77,7 @@ struct EditNewLocationSheet: View {
                                     .frame(maxWidth: .infinity)
                                     .padding([.vertical], 12)
                                     .background(selectedColor.wrappedValue)
-                                    .foregroundColor(selectedColor == .yellow ? .black : .white)
+                                    .foregroundColor(colorScheme == .dark ? .black : .white)
                                     .cornerRadius(16.0)
                                 
                             }
@@ -109,5 +111,9 @@ struct EditNewLocationSheet: View {
 
 
 #Preview {
-    EditNewLocationSheet(latitude: 12.64654, longitude: -122.86453, isShowing: .constant(true), isTabbarShowing: .constant(false), selectedColor: .constant(PlaceColor.green))
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Place.self, configurations: config)
+    
+    return EditNewLocationSheet(latitude: 12.64654, longitude: -122.86453, isShowing: .constant(true), isTabbarShowing: .constant(false), selectedColor: .constant(PlaceColor.green))
+        .modelContainer(container)
 }

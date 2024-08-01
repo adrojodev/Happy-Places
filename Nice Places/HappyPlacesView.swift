@@ -11,7 +11,7 @@ import SwiftData
 struct HappyPlacesView: View {
     
     var body: some View {
-        TabView(selection: .constant(1)) {
+        TabView {
             LocationsListView()
                 .tabItem {
                     Label("List", systemImage: "list.bullet")
@@ -28,5 +28,9 @@ struct HappyPlacesView: View {
 }
 
 #Preview {
-    HappyPlacesView()
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Place.self, configurations: config)
+    
+    return HappyPlacesView()
+        .modelContainer(container)
 }

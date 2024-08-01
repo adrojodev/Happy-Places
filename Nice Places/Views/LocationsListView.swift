@@ -80,7 +80,7 @@ struct LocationsListView: View {
             return places
         }
         
-        return places.filter({$0.name.contains(searchPrompt)})
+        return places.filter({$0.name.lowercased().contains(searchPrompt.lowercased())})
     }
 }
 

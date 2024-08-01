@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct PlaceItemView: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     let icon: String
     let name: String
     let latitude: Double
@@ -22,7 +24,7 @@ struct PlaceItemView: View {
             Image(systemName: icon)
                 .frame(width: 52, height: 52)
                 .font(.title2)
-                .foregroundColor(color == .yellow ? .black : .white)
+                .foregroundColor(colorScheme == .dark ? .black : .white)
                 .background(color)
                 .cornerRadius(.infinity)
             VStack (alignment: .leading) {
