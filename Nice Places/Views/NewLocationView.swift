@@ -16,33 +16,30 @@ struct NewLocationView: View {
     @State private var isSheetOpen: Bool = false
     @State private var placeName: String = ""
     @State private var placeDescription: String = ""
-    @State private var latitude: Double = 19.432608
-    @State private var longitude: Double = -99.133209
+    @State private var latitude: Double?
+    @State private var longitude: Double?
     
     @State var selectedColor: PlaceColor = PlaceColor.green
     
     var body: some View {
         NavigationStack {
             ZStack {
-                Map(position: $cameraPosition) {
-                    Marker(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)) {
-                        Image(systemName: "mappin")
-                    }
-                    .tint(selectedColor.wrappedValue)
+                Map(position: $cameraPosition)
+                .mapStyle(.standard)
+                .ignoresSafeArea(.all)
+                .allowsHitTesting(/*@START_MENU_TOKEN@*/false/*@END_MENU_TOKEN@*/)
+                .onMapCameraChange { camera in
+                    latitude = camera.region.center.latitude
+                    longitude = camera.region.center.longitude
                 }
-                    .mapStyle(.standard)
-                    .ignoresSafeArea(.all)
-                    .allowsHitTesting(/*@START_MENU_TOKEN@*/false/*@END_MENU_TOKEN@*/)
-                    .onMapCameraChange { mapCameraUpdateContext in
-                        latitude = mapCameraUpdateContext.camera.centerCoordinate.latitude
-                        longitude = mapCameraUpdateContext.camera.centerCoordinate.longitude
-                    }
                 
-                EditNewLocationSheet(latitude: latitude,
-                                     longitude: longitude,
-                                     isShowing: $isSheetOpen, 
-                                     isTabbarShowing: $isTabbarShowing,
-                                     selectedColor: $selectedColor)
+                if let lat = latitude, let lon = longitude {
+                    EditNewLocationSheet(latitude: lat,
+                                         longitude: lon,
+                                         isShowing: $isSheetOpen,
+                                         isTabbarShowing: $isTabbarShowing,
+                                         selectedColor: $selectedColor)
+                }
             }
             .navigationBarTitle("", displayMode: .inline)
             .onAppear {
