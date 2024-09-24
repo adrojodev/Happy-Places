@@ -10,6 +10,8 @@ import MapKit
 import SwiftData
 
 struct PlaceView: View {
+    @Environment(\.modelContext) var context
+    @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) var colorScheme
     
     @Bindable var place: Place
@@ -18,6 +20,7 @@ struct PlaceView: View {
     @State private var region: MapCameraPosition = .automatic
     @State private var isEditing: Bool = false
     @State private var selectedColor: PlaceColor = PlaceColor.green
+    @State private var isGonnaDelete: Bool = false
     
     @FocusState private var focusName: Bool
     @FocusState private var focusDescription: Bool
@@ -123,6 +126,18 @@ struct PlaceView: View {
                             }
                             .zIndex(10)
                     }
+                    if (isEditing) {
+                        Button(role: .destructive) {
+                            isGonnaDelete = true
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .alert("Sure you wanna delete this one?", isPresented: $isGonnaDelete) {
+                            Button("Delete", role: .destructive, action: deletePlace)
+                        }
+                    }
                 }
                 Spacer()
             }
@@ -139,6 +154,11 @@ struct PlaceView: View {
             .toolbarBackground(.hidden, for: .navigationBar)
             .navigationBarTitle("", displayMode: .inline)
         }
+    }
+    
+    func deletePlace() {
+        context.delete(place)
+        dismiss()
     }
 }
 
