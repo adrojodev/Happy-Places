@@ -15,7 +15,6 @@ struct EditNewLocationSheet: View {
     let longitude: CLLocationDegrees
     
     @Binding var isShowing: Bool
-    @Binding var isTabbarShowing: Bool
     @Binding var selectedColor: PlaceColor
     
     @FocusState private var isNameFocused: Bool
@@ -115,6 +114,6 @@ struct EditNewLocationSheet: View {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Place.self, configurations: config)
     
-    return EditNewLocationSheet(latitude: 12.64654, longitude: -122.86453, isShowing: .constant(true), isTabbarShowing: .constant(false), selectedColor: .constant(PlaceColor.green))
+    return EditNewLocationSheet(latitude: 12.64654, longitude: -122.86453, isShowing: .constant(true), selectedColor: .constant(PlaceColor.green))
         .modelContainer(container)
 }

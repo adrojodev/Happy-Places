@@ -43,18 +43,26 @@ struct LocationsListView: View {
                 .listStyle(.plain)
                 .overlay {
                     if places.isEmpty {
-                        ContentUnavailableView(label: {
-                            Label("No Happy Places!", systemImage: "globe.americas.fill")
-                        }, description: {
-                            Text("Go and find new places!")
-                        }, actions: {
-                            Button(action: {}, label: {
-                                NavigationLink(destination: NewLocationView(isTabbarShowing: $isTabbarShowing)) {
-                                    Text("Add a new place!")
+                        VStack {
+                            Image("SadFace")
+                                .resizable()
+                                .frame(width: 100, height: 50)
+                            VStack(spacing: 24.0) {
+                                VStack {
+                                    Text("No happy places")
+                                        .font(.title)
+                                        .fontWeight(.bold)
+                                    Text("Go and visit some places!")
+                                        .font(.headline)
+                                        .foregroundColor(.gray)
                                 }
-                            })
-                        })
-                        .ignoresSafeArea(.all)
+                                Button(action: {}) {
+                                    NavigationLink(destination: NewLocationView(), label: {
+                                        Label("Save this place!", systemImage: "mappin")
+                                    })
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -63,7 +71,7 @@ struct LocationsListView: View {
             })
             .navigationTitle("Happy places")
             .navigationBarItems(trailing: Button(action: {}, label: {
-                NavigationLink(destination: NewLocationView(isTabbarShowing: $isTabbarShowing)) {
+                NavigationLink(destination: NewLocationView()) {
                     Image(systemName: "plus")
                         .font(.title2)
                 }

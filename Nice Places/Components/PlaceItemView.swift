@@ -21,12 +21,22 @@ struct PlaceItemView: View {
         let formattedDate: String = date.formatted(.dateTime.day().month().year())
         
         HStack {
-            Image(systemName: icon)
-                .frame(width: 52, height: 52)
-                .font(.title2)
-                .foregroundColor(colorScheme == .dark ? .black : .white)
-                .background(color)
-                .cornerRadius(.infinity)
+            if #available(iOS 26.0, *) {
+                Image(systemName: icon)
+                    .frame(width: 52, height: 52)
+                    .font(.title2)
+                    .foregroundColor(colorScheme == .dark ? .black : .white)
+                    .background(color)
+                    .cornerRadius(.infinity)
+                    .glassEffect()
+            } else {
+                Image(systemName: icon)
+                    .frame(width: 52, height: 52)
+                    .font(.title2)
+                    .foregroundColor(colorScheme == .dark ? .black : .white)
+                    .background(color.gradient)
+                    .cornerRadius(.infinity)
+            }
             VStack (alignment: .leading) {
                 Text(name)
                     .font(.title3)

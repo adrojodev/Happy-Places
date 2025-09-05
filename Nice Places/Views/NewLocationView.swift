@@ -10,8 +10,6 @@ import MapKit
 
 
 struct NewLocationView: View {
-    @Binding var isTabbarShowing: Bool
-    
     @State private var cameraPosition: MapCameraPosition = .userLocation(fallback: .automatic)
     @State private var isSheetOpen: Bool = false
     @State private var placeName: String = ""
@@ -37,7 +35,6 @@ struct NewLocationView: View {
                     EditNewLocationSheet(latitude: lat,
                                          longitude: lon,
                                          isShowing: $isSheetOpen,
-                                         isTabbarShowing: $isTabbarShowing,
                                          selectedColor: $selectedColor)
                 }
             }
@@ -49,14 +46,11 @@ struct NewLocationView: View {
                 }
             }
         }
-        .onAppear(perform: {
-            isTabbarShowing = false
-        })
         .toolbarBackground(.hidden, for: .navigationBar)
     }
 }
 
 
 #Preview {
-    NewLocationView(isTabbarShowing:  .constant(false))
+    NewLocationView()
 }
