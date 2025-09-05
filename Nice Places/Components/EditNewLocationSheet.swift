@@ -76,12 +76,12 @@ struct EditNewLocationSheet: View {
                                     .fontWeight(.semibold)
                                     .frame(maxWidth: .infinity)
                                     .padding([.vertical], 12)
-                                    .background(selectedColor.wrappedValue)
                                     .foregroundColor(colorScheme == .dark ? .black : .white)
-                                    .cornerRadius(16.0)
+                                    .cornerRadius(16)
                                 
                             }
-                            .buttonStyle(.plain)
+                            .buttonStyle(.borderedProminent)
+                            .tint(selectedColor.wrappedValue)
         
                         }
                     }
@@ -91,8 +91,8 @@ struct EditNewLocationSheet: View {
                 .padding(.top, 20)
                 .padding(.bottom, isNameFocused || isStoryFocused ? 16 : 48)
                 .frame(maxWidth: .infinity)
-                .background(.thickMaterial)
-                .clipShape(.rect(topLeadingRadius: 16.0, bottomLeadingRadius: 0.0, bottomTrailingRadius: 0.0, topTrailingRadius: 16.0))
+                .background(.thinMaterial)
+                .clipShape(.rect(topLeadingRadius: 32.0, bottomLeadingRadius: 0.0, bottomTrailingRadius: 0.0, topTrailingRadius: 20.0))
                 .transition(.move(edge: .bottom))
                 .animation(.easeInOut, value: isNameFocused)
                 .animation(.easeInOut, value: isStoryFocused)
@@ -101,6 +101,7 @@ struct EditNewLocationSheet: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
         .background(isNameFocused || isStoryFocused ? .black.opacity(0.4) : .clear)
         .ignoresSafeArea(.container)
+        .padding(.horizontal, 8)
         .animation(.bouncy, value: isShowing)
         .animation(.easeInOut, value: isNameFocused)
         .animation(.easeInOut, value: isStoryFocused)

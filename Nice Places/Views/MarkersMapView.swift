@@ -34,11 +34,12 @@ struct MarkersMapView: View {
                         .foregroundStyle(.background)
                 })
                 .buttonBorderShape(.circle)
-                .buttonStyle(.borderedProminent)
                 .controlSize(.extraLarge)
-                .padding(.all, 24.0)
-                .shadow(radius: 10, x: 0, y: 8)
+                .padding(.horizontal, -6)
+                .shadow(radius: 8, x: 0, y: 4)
+                .buttonStyle(.borderedProminent)
             }
+            .padding(.all, 24.0)
             
         }
         .mapStyle(.standard(elevation: .realistic))

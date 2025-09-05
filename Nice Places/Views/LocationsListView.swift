@@ -44,7 +44,7 @@ struct LocationsListView: View {
                 .overlay {
                     if places.isEmpty {
                         ContentUnavailableView(label: {
-                            Label("No Nice Places!", systemImage: "globe.americas.fill")
+                            Label("No Happy Places!", systemImage: "globe.americas.fill")
                         }, description: {
                             Text("Go and find new places!")
                         }, actions: {
@@ -64,9 +64,12 @@ struct LocationsListView: View {
             .navigationTitle("Happy places")
             .navigationBarItems(trailing: Button(action: {}, label: {
                 NavigationLink(destination: NewLocationView(isTabbarShowing: $isTabbarShowing)) {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.title)
+                    Image(systemName: "plus")
+                        .font(.title2)
                 }
+                .buttonBorderShape(.circle)
+                .buttonStyle(.borderedProminent)
+                .padding(.horizontal, -10)
                 
             }))
         }

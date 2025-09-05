@@ -32,7 +32,7 @@ struct MapView: View {
                 .controlSize(.regular)
                 
                 VStack {
-                    Button("Take me here", systemImage: "location.fill") {
+                    Button("Back to me", systemImage: "location.fill") {
                         let regionDistance:CLLocationDistance = 10000
                         let coordinates = CLLocationCoordinate2DMake(latitude, longitude)
                         let regionSpan = MKCoordinateRegion(center: coordinates, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
@@ -45,7 +45,7 @@ struct MapView: View {
                         mapItem.name = name
                         mapItem.openInMaps(launchOptions: options)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.borderedProminent)
                     .font(.body)
                     .fontWeight(.semibold)
                     .padding([.horizontal], 32)
