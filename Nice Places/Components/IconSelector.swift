@@ -6,19 +6,25 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct IconSelector: View {
+    @Environment(\.modelContext) var context
     @Environment(\.colorScheme) var colorScheme
     
-    @Binding var selectedColor: PlaceColor
-    @Binding var selectedIcon: String
     @Binding var isIconSheetOpen: Bool
+    @Binding var latitude: CLLocationDegrees
+    @Binding var longitude: CLLocationDegrees
+    
+    @State var selectedColor: PlaceColor = .green
+    @State var selectedIcon: String = "mappin"
+    @State var newPlaceName: String = ""
+    @State var newPlaceDescription: String = ""
     
     var body: some View {
         VStack(alignment: .trailing, spacing: 32.0) {
+        VStack(alignment: .center, spacing: 20.0) {
             ZStack {
-                Spacer()
-                Button("Save", systemImage: "checkmark") {
                     isIconSheetOpen = false
                 }
                 .buttonStyle(.borderedProminent)
@@ -31,88 +37,44 @@ struct IconSelector: View {
                         .foregroundColor(colorScheme == .dark ? .black : .white)
                         .frame(width: 80, height: 80)
                         .background(selectedColor.wrappedValue.gradient)
-                        .cornerRadius(.infinity)
-                    Spacer()
-                }
-                HStack {
-                    Button(action: {
-                        selectedColor = PlaceColor.pink
-                    }, label: {
-                        Circle()
-                            .fill(.pink)
-                            .frame(width: 40, height: 40)
-                    })
-                    Button(action: {
-                        selectedColor = PlaceColor.red
-                    }, label: {
-                        Circle()
-                            .fill(.red)
-                            .frame(width: 40, height: 40)
-                    })
-                    Button(action: {
-                        selectedColor = PlaceColor.orange
-                    }, label: {
-                        Circle()
-                            .fill(.orange)
-                            .frame(width: 40, height: 40)
-                    })
-                    Button(action: {
-                        selectedColor = PlaceColor.yellow
-                    }, label: {
-                        Circle()
-                            .fill(.yellow)
-                            .frame(width: 40, height: 40)
-                    })
-                    Button(action: {
-                        selectedColor = PlaceColor.green
-                    }, label: {
-                        Circle()
-                            .fill(.green)
-                            .frame(width: 40, height: 40)
-                    })
-                    Button(action: {
-                        selectedColor = PlaceColor.blue
-                    }, label: {
-                        Circle()
-                            .fill(.blue)
-                            .frame(width: 40, height: 40)
-                    })
-                    Button(action: {
-                        selectedColor = PlaceColor.purple
-                    }, label: {
-                        Circle()
-                            .fill(.purple)
-                            .frame(width: 40, height: 40)
-                    })
-                }
-                .padding(.horizontal, 16.0)
-                .padding(.vertical, 8.0)
-                .background(.ultraThinMaterial)
-                .cornerRadius(16.0)
+                RoundedRectangle(cornerRadius: .infinity)
+                    .stroke(
+                        Gradient(colors: [.materialBright, .materialDarker]),
+                        lineWidth: 12.0
+                    )
+                    .frame(width: 80, height: 80)
+                RoundedRectangle(cornerRadius: .infinity)
+                    .stroke(
+                        RadialGradient(
+                            colors: [.white, .materialBright],
+                            center: UnitPoint(x: 20.0, y: 20.0),
+                            startRadius: 10.0,
+                            endRadius: 20.0),
+                        lineWidth: 1.0
+                    )
+                    .frame(width: 80, height: 80)
+                Image(systemName: selectedIcon)
+                    .font(.largeTitle)
+                    .foregroundColor(colorScheme == .dark ? .black : .white)
+                    .frame(width: 80, height: 80)
+                    .background(selectedColor.wrappedValue.gradient)
+                    .cornerRadius(.infinity)
+                    .padding(6.0)
+                    .shadow(color: selectedColor.wrappedValue, radius: 20)
             }
-            ScrollView {
-                LazyVGrid(columns: [GridItem(), GridItem(), GridItem(), GridItem(), GridItem()], content: {
-                    ForEach(icons) { icon in
-                        Image(systemName: icon.icon)
-                            .font(.title3)
-                            .frame(width: 48, height: 48)
-                            .onTapGesture(perform: {
-                                selectedIcon = icon.icon
-                            })
-                    }
-                })
-                .padding([.top], 16)
-                .padding([.bottom], 32)
-                .cornerRadius(16.0)
-                .background(.ultraThinMaterial)
-            }
-            .cornerRadius(16.0)
+            HappyKeyboard(
+                newPlaceName: $newPlaceName,
+                newPlaceDescription: $newPlaceDescription,
+                selectedIcon: $selectedIcon,
+                selectedColor: $selectedColor,
+                latitude: $latitude,
+                longitude: $longitude)
         }
-        .padding([.horizontal], 20)
-        .padding([.top], 12)
+        .padding(.top, 24.0)
+        .background(Color.materialBackground)
     }
 }
 
 #Preview {
-    IconSelector(selectedColor: .constant(PlaceColor.green), selectedIcon: .constant("mappin"), isIconSheetOpen: .constant(true))
+    IconSelector(isIconSheetOpen: .constant(true), latitude: .constant(-33.8688), longitude: .constant(151.2093))
 }

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -28,6 +28,7 @@
 		E5A5E3E22B8421B100DA4249 /* LocationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A5E3E12B8421B100DA4249 /* LocationsListView.swift */; };
 		E5EA9E722C5AA1C900247D55 /* PlaceMapPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EA9E712C5AA1C900247D55 /* PlaceMapPreview.swift */; };
 		E5FF6EAC2B83F6E400555080 /* PlacesDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FF6EAB2B83F6E400555080 /* PlacesDataModel.swift */; };
+		F3D307E12E71BDF600B7E73E /* MainPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D307E02E71BDF600B7E73E /* MainPanelView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,7 +76,12 @@
 		E5A5E3E12B8421B100DA4249 /* LocationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListView.swift; sourceTree = "<group>"; };
 		E5EA9E712C5AA1C900247D55 /* PlaceMapPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceMapPreview.swift; sourceTree = "<group>"; };
 		E5FF6EAB2B83F6E400555080 /* PlacesDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesDataModel.swift; sourceTree = "<group>"; };
+		F3D307E02E71BDF600B7E73E /* MainPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPanelView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		F309BB462E6AA24200E50DA4 /* HappyComponents */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = HappyComponents; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		E50116F12B76E7BC00E00E5D /* Frameworks */ = {
@@ -175,6 +181,7 @@
 				E5A5E3DF2B841FDB00DA4249 /* MarkersMapView.swift */,
 				E5A5E3E12B8421B100DA4249 /* LocationsListView.swift */,
 				E5EA9E712C5AA1C900247D55 /* PlaceMapPreview.swift */,
+				F3D307E02E71BDF600B7E73E /* MainPanelView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -182,6 +189,7 @@
 		E50117282B7730AF00E00E5D /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F309BB462E6AA24200E50DA4 /* HappyComponents */,
 				E50117292B7730C400E00E5D /* EditNewLocationSheet.swift */,
 				E56466942B77F7E8004E055F /* PlaceItemView.swift */,
 				E56528D62B890F4800292C26 /* IconSelector.swift */,
@@ -229,6 +237,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				F309BB462E6AA24200E50DA4 /* HappyComponents */,
 			);
 			name = "Happy Places";
 			productName = "Nice Places";
@@ -348,6 +359,7 @@
 				E564668D2B77D1A4004E055F /* Icons.swift in Sources */,
 				E5A5E3E22B8421B100DA4249 /* LocationsListView.swift in Sources */,
 				E564668A2B77BCBD004E055F /* DataController.swift in Sources */,
+				F3D307E12E71BDF600B7E73E /* MainPanelView.swift in Sources */,
 				E56466972B7852C6004E055F /* MapView.swift in Sources */,
 				E56466952B77F7E8004E055F /* PlaceItemView.swift in Sources */,
 				E5EA9E722C5AA1C900247D55 /* PlaceMapPreview.swift in Sources */,

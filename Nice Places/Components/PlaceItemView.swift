@@ -28,7 +28,6 @@ struct PlaceItemView: View {
                     .foregroundColor(colorScheme == .dark ? .black : .white)
                     .background(color)
                     .cornerRadius(.infinity)
-                    .glassEffect()
             } else {
                 Image(systemName: icon)
                     .frame(width: 52, height: 52)

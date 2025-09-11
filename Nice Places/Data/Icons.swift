@@ -13,6 +13,81 @@ struct Icon: Identifiable {
     let id = UUID()
 }
 
+let newIcons = (
+    nature: [
+        Icon(icon: "rainbow"),
+        Icon(icon: "sun.max.fill"),
+        Icon(icon: "sun.horizon.fill"),
+        Icon(icon: "moon.fill"),
+        Icon(icon: "cloud.fill"),
+        Icon(icon: "cloud.bolt.fill"),
+        Icon(icon: "snowflake"),
+        Icon(icon: "tornado"),
+        Icon(icon: "globe.americas.fill"),
+        Icon(icon: "sparkles"),
+        Icon(icon: "drop.fill"),
+        Icon(icon: "flame.fill"),
+        Icon(icon: "bolt.fill"),
+        Icon(icon: "mountain.2.fill"),
+        Icon(icon: "cat.fill"),
+        Icon(icon: "dog.fill"),
+    ],
+    technology: [
+        Icon(icon: "display"),
+        Icon(icon: "ipod"),
+        Icon(icon: "flipphone"),
+        Icon(icon: "computermouse.fill"),
+        Icon(icon: "earbuds"),
+        Icon(icon: "hifispeaker.fill"),
+        Icon(icon: "tv"),
+        Icon(icon: "car.fill"),
+        Icon(icon:  "gamecontroller.fill"),
+        Icon(icon: "camera.fill"),
+        Icon(icon: "fan.fill"),
+        Icon(icon: "fuelpump.fill"),
+        Icon(icon: "parkingsign.square.fill"),
+        Icon(icon: "convertible.side.fill"),
+        Icon(icon: "music.microphone"),
+        Icon(icon: "flashlight.off.fill")
+    ],
+    objects: [
+        Icon(icon: "bed.double.fill"),
+        Icon(icon: "house.fill"),
+        Icon(icon: "bag.fill"),
+        Icon(icon: "cart.fill"),
+        Icon(icon: "location.fill"),
+        Icon(icon: "mappin"),
+        Icon(icon: "bus.fill"),
+        Icon(icon: "bicycle"),
+        Icon(icon: "books.vertical.fill"),
+        Icon(icon: "backpack.fill"),
+        Icon(icon: "dumbbell.fill"),
+        Icon(icon: "sportscourt.fill"),
+        Icon(icon: "surfboard.fill"),
+        Icon(icon: "skateboard.fill"),
+        Icon(icon: "medal.fill"),
+        Icon(icon: "flag.pattern.checkered.2.crossed"),
+    ],
+    activities: [
+        Icon(icon: "figure.walk"),
+        Icon(icon: "figure.run.treadmill"),
+        Icon(icon: "figure.roll"),
+        Icon(icon: "figure.american.football"),
+        Icon(icon: "figure.baseball"),
+        Icon(icon: "figure.basketball"),
+        Icon(icon: "figure.boxing"),
+        Icon(icon: "figure.core.training"),
+        Icon(icon: "figure.strengthtraining.functional"),
+        Icon(icon: "figure.hiking"),
+        Icon(icon: "figure.jumprope"),
+        Icon(icon: "figure.outdoor.cycle"),
+        Icon(icon: "figure.indoor.soccer"),
+        Icon(icon: "figure.skateboarding"),
+        Icon(icon: "figure.socialdance"),
+        Icon(icon: "figure.pool.swim")
+    ]
+)
+
 let icons = [
     Icon(icon: "sun.max.fill"),
     Icon(icon: "moon.stars.fill"),
@@ -68,17 +143,22 @@ let icons = [
 
 @propertyWrapper
 enum PlaceColor: String, CaseIterable {
-    case pink, red, orange, yellow, green, blue, purple
+    case pink, red, orange, yellow, green, blue, purple, teal, cyan, brown, indigo, mint
     
     var wrappedValue: Color {
         switch self {
-            case .pink: return Color.pink
-            case .red: return Color.red
-            case .orange: return Color.orange
-            case .yellow: return Color.yellow
-            case .green: return Color.green
-            case .blue: return Color.blue
-            case .purple: return Color.purple
+        case .pink: return Color.pink
+        case .red: return Color.red
+        case .orange: return Color.orange
+        case .yellow: return Color.yellow
+        case .green: return Color.green
+        case .blue: return Color.blue
+        case .purple: return Color.purple
+        case .teal: return Color.teal
+        case .cyan: return Color.cyan
+        case .brown: return Color.brown
+        case .indigo: return Color.indigo
+        case .mint: return Color.mint
         }
     }
 }

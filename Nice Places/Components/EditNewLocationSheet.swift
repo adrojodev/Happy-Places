@@ -37,7 +37,6 @@ struct EditNewLocationSheet: View {
                             .font(.title2)
                             .fontWeight(.bold)
                         Spacer()
-                        SelectIconButton(selectedIcon: $selectedIcon, selectedColor: $selectedColor)
                     }
                     Form {
                         VStack (spacing: 16) {

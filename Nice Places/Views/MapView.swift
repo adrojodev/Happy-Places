@@ -33,36 +33,37 @@ struct MapView: View {
                 
                 VStack {
                     Button("Back to me", systemImage: "location.fill") {
-                        let regionDistance:CLLocationDistance = 10000
-                        let coordinates = CLLocationCoordinate2DMake(latitude, longitude)
-                        let regionSpan = MKCoordinateRegion(center: coordinates, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
-                        let options = [
-                            MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
-                            MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
-                        ]
-                        let placemark = MKPlacemark(coordinate: coordinates, addressDictionary: nil)
-                        let mapItem = MKMapItem(placemark: placemark)
-                        mapItem.name = name
-                        mapItem.openInMaps(launchOptions: options)
+                        openMap(longitude: longitude, latitude: latitude)
                     }
+                    .controlSize(.large)
                     .buttonStyle(.borderedProminent)
-                    .font(.body)
-                    .fontWeight(.semibold)
-                    .padding([.horizontal], 32)
-                    .padding([.vertical],16)
-                    .background(color)
+                    .buttonBorderShape(.capsule)
+                    .font(.title3)
+                    .tint(color)
                     .foregroundStyle(.background)
-                    .cornerRadius(.infinity)
                 }
-                .padding([.bottom], 32)
+                .padding([.bottom], 48)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-                .shadow(radius: 10, x: 0, y: 8)
             }
         }
         .onAppear(perform: {
             region = .region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)))
         })
         .toolbarBackground(.hidden, for: .navigationBar)
+    }
+    
+    func openMap(longitude: Double, latitude: Double) {
+        let regionDistance:CLLocationDistance = 10000
+        let coordinates = CLLocationCoordinate2DMake(latitude, longitude)
+        let regionSpan = MKCoordinateRegion(center: coordinates, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
+        let options = [
+            MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
+            MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
+        ]
+        let placemark = MKPlacemark(coordinate: coordinates, addressDictionary: nil)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = name
+        mapItem.openInMaps(launchOptions: options)
     }
 }
 

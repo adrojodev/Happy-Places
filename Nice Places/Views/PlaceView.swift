@@ -67,9 +67,6 @@ struct PlaceView: View {
                             }
                         Spacer()
                         HStack (alignment: .center , spacing: 0.2) {
-                            SelectIconButton(selectedIcon: $place.icon, selectedColor: $selectedColor)
-                                .opacity(isEditing ? 1.0 : 0.0)
-                                .scaleEffect(isEditing ? CGSize(width: 0.8, height: 0.8) : CGSize(width: 0.0, height: 0.0))
                             Button(action: {
                                 withAnimation(.spring(duration: 0.1)) {
                                     isTabbarShowing = false

@@ -6,35 +6,32 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct SelectIconButton: View {
     @Environment(\.colorScheme) var colorScheme
     
-    @Binding var selectedIcon: String
-    @Binding var selectedColor: PlaceColor
+    @Binding var latitude: CLLocationDegrees
+    @Binding var longitude: CLLocationDegrees
     
     @State var isIconSheetOpen = false
     
     var body: some View {
-        Image(systemName: selectedIcon)
-            .frame(width: 40, height: 40)
-            .foregroundColor(colorScheme == .dark ? .black : .white)
-            .background(selectedColor.wrappedValue.gradient)
-            .cornerRadius(.infinity)
-            .onTapGesture(perform: {
-                isIconSheetOpen = true
-            })
-            .sheet(isPresented: $isIconSheetOpen) {
-                IconSelector(selectedColor: $selectedColor,
-                             selectedIcon: $selectedIcon,
-                             isIconSheetOpen: $isIconSheetOpen)
-                    .presentationCornerRadius(16.0)
-                    .presentationDragIndicator(.visible)
-                    .presentationDetents([.fraction(0.8)])
-            }
+        HappyButton(icon: "mappin", cornerRadius: .infinity, paddingVertical: 12.0, paddingHorizontal: 13.0) {
+            isIconSheetOpen = true
+        }
+        .sheet(isPresented: $isIconSheetOpen) {
+            IconSelector(
+                isIconSheetOpen: $isIconSheetOpen,
+                latitude: $latitude,
+                longitude: $longitude)
+                .presentationCornerRadius(16.0)
+                .presentationDragIndicator(.visible)
+                .presentationDetents([.large])
+        }
     }
 }
 
 #Preview {
-    SelectIconButton(selectedIcon: .constant("mappin"), selectedColor: .constant(PlaceColor.green))
+    SelectIconButton(latitude: .constant(-11.274638), longitude: .constant(-77.380464))
 }

@@ -12,7 +12,7 @@ import SwiftData
 struct HappyPlacesApp: App {
     var body: some Scene {
         WindowGroup {
-            HappyPlacesView()
+            MainPanelView()
         }
         .modelContainer(for: [Place.self])
     }
