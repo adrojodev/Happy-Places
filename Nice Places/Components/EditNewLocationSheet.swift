@@ -62,9 +62,6 @@ struct EditNewLocationSheet: View {
                             .font(.title2)
                             .fontWeight(.bold)
                         Spacer()
-                        PhotoPickerButton(selectedPhotos: $selectedPhotos,
-                                        placeLatitude: currentLatitude,
-                                        placeLongitude: currentLongitude)
                         SelectIconButton(selectedIcon: $selectedIcon, selectedColor: $selectedColor)
                     }
                     Form {
@@ -86,43 +83,58 @@ struct EditNewLocationSheet: View {
                                     .background(.foreground.opacity(0.15))
                                     .cornerRadius(16.0)
                                     .focused($isStoryFocused)
-                            }
-
-                            if !selectedPhotos.isEmpty {
                                 VStack(alignment: .leading, spacing: 8) {
-                                    Text("Photos")
-                                        .font(.subheadline)
-                                        .fontWeight(.semibold)
-                                        .foregroundStyle(.secondary)
+                                    if selectedPhotos.isEmpty {
+                                        // Full-width rectangle when no photos
+                                        PhotoPickerButton(selectedPhotos: $selectedPhotos,
+                                                        placeLatitude: currentLatitude,
+                                                        placeLongitude: currentLongitude,
+                                                        isEmpty: true,
+                                                        selectedColor: selectedColor)
+                                    } else {
+                                        // Show "Photos" label and horizontal scroll with photos + add button
+                                        ScrollView(.horizontal, showsIndicators: false) {
+                                            HStack(spacing: 8) {
+                                                ForEach(Array(selectedPhotos.enumerated()), id: \.offset) { index, photo in
+                                                    if let imageData = photo.imageData,
+                                                       let uiImage = UIImage(data: imageData) {
+                                                        ZStack(alignment: .topTrailing) {
+                                                            Image(uiImage: uiImage)
+                                                                .resizable()
+                                                                .scaledToFill()
+                                                                .frame(width: 80, height: 80)
+                                                                .cornerRadius(8)
+                                                                .clipped()
 
-                                    ScrollView(.horizontal, showsIndicators: false) {
-                                        HStack(spacing: 8) {
-                                            ForEach(Array(selectedPhotos.enumerated()), id: \.offset) { index, photo in
-                                                if let imageData = photo.imageData,
-                                                   let uiImage = UIImage(data: imageData) {
-                                                    ZStack(alignment: .topTrailing) {
-                                                        Image(uiImage: uiImage)
-                                                            .resizable()
-                                                            .scaledToFill()
-                                                            .frame(width: 80, height: 80)
-                                                            .cornerRadius(8)
-                                                            .clipped()
-
-                                                        Button(action: {
-                                                            selectedPhotos.remove(at: index)
-                                                        }) {
-                                                            Image(systemName: "xmark.circle.fill")
-                                                                .foregroundStyle(.white, .red)
-                                                                .font(.title3)
+                                                            Button(action: {
+                                                                selectedPhotos.remove(at: index)
+                                                            }) {
+                                                                Image(systemName: "xmark")
+                                                                    .foregroundColor(.red)
+                                                                    .font(.caption)
+                                                                    .fontWeight(.semibold)
+                                                            }
+                                                            .frame(width: 20, height: 20)
+                                                            .background(.red.opacity(0.3), in: Circle())
+                                                            .background(.ultraThinMaterial, in: Circle())
+                                                            .padding(4)
                                                         }
-                                                        .padding(4)
                                                     }
                                                 }
+
+                                                // Add photo button (square)
+                                                PhotoPickerButton(selectedPhotos: $selectedPhotos,
+                                                                placeLatitude: currentLatitude,
+                                                                placeLongitude: currentLongitude,
+                                                                isEmpty: false,
+                                                                selectedColor: selectedColor)
                                             }
                                         }
                                     }
                                 }
                             }
+
+                            
 
                             Button {
                                 let place = Place(color: selectedColor.rawValue,
@@ -178,6 +190,8 @@ struct PhotoPickerButton: View {
     @Binding var selectedPhotos: [PlacePhoto]
     let placeLatitude: Double
     let placeLongitude: Double
+    let isEmpty: Bool // true = full-width rectangle, false = square
+    let selectedColor: PlaceColor
     let locationTolerance: Double = 500.0 // meters
 
     @State private var showingActionSheet = false
@@ -188,50 +202,75 @@ struct PhotoPickerButton: View {
     @State private var locationAlertMessage = ""
 
     var body: some View {
-        Image(systemName: "photo")
-            .frame(width: 40, height: 40)
-            .foregroundColor(.secondary)
-            .background(.foreground.opacity(0.15))
-            .cornerRadius(.infinity)
-            .onTapGesture {
-                showingActionSheet = true
-            }
-            .confirmationDialog("Add Photo", isPresented: $showingActionSheet, titleVisibility: .visible) {
-                Button("Take Photo") {
-                    showingCamera = true
-                }
-                Button("Choose from Library") {
-                    showingPhotoPicker = true
-                }
-                Button("Cancel", role: .cancel) { }
-            }
-            .photosPicker(isPresented: $showingPhotoPicker,
-                         selection: $selectedItems,
-                         maxSelectionCount: 10,
-                         matching: .images)
-            .onChange(of: selectedItems) {
-                Task {
-                    await loadPhotos()
-                }
-            }
-            .fullScreenCover(isPresented: $showingCamera) {
-                CameraView(placeLatitude: placeLatitude,
-                          placeLongitude: placeLongitude,
-                          locationTolerance: locationTolerance) { photo in
-                    if let photo = photo {
-                        selectedPhotos.append(photo)
-                    } else {
-                        locationAlertMessage = "Photo rejected. Make sure you're at this location and location services are enabled."
-                        showingLocationAlert = true
+        Group {
+            if isEmpty {
+                // Full-width rectangle when no photos
+                Button(action: {
+                    showingActionSheet = true
+                }) {
+                    VStack(spacing: 2) {
+                        Image(systemName: "photo.badge.plus")
+                            .font(.title3)
+                        Text("Add Photos")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
                     }
-                    showingCamera = false
+                    .foregroundColor(selectedColor.wrappedValue)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 80)
+                    .background(selectedColor.wrappedValue.opacity(0.15))
+                    .cornerRadius(12)
+                }
+            } else {
+                // Square button when photos exist
+                Button(action: {
+                    showingActionSheet = true
+                }) {
+                    Image(systemName: "plus")
+                        .font(.title2)
+                        .foregroundColor(selectedColor.wrappedValue)
+                        .frame(width: 80, height: 80)
+                        .background(selectedColor.wrappedValue.opacity(0.3))
+                        .cornerRadius(8)
                 }
             }
-            .alert("Location Mismatch", isPresented: $showingLocationAlert) {
-                Button("OK", role: .cancel) { }
-            } message: {
-                Text(locationAlertMessage)
+        }
+        .confirmationDialog("", isPresented: $showingActionSheet, titleVisibility: .hidden) {
+            Button("Take Photo") {
+                showingCamera = true
             }
+            Button("Choose from Library") {
+                showingPhotoPicker = true
+            }
+            Button("Cancel", role: .cancel) { }
+        }
+        .photosPicker(isPresented: $showingPhotoPicker,
+                     selection: $selectedItems,
+                     maxSelectionCount: 10,
+                     matching: .images)
+        .onChange(of: selectedItems) {
+            Task {
+                await loadPhotos()
+            }
+        }
+        .fullScreenCover(isPresented: $showingCamera) {
+            CameraView(placeLatitude: placeLatitude,
+                      placeLongitude: placeLongitude,
+                      locationTolerance: locationTolerance) { photo in
+                if let photo = photo {
+                    selectedPhotos.append(photo)
+                } else {
+                    locationAlertMessage = "Photo rejected. Make sure you're at this location and location services are enabled."
+                    showingLocationAlert = true
+                }
+                showingCamera = false
+            }
+        }
+        .alert("Location Mismatch", isPresented: $showingLocationAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(locationAlertMessage)
+        }
     }
 
     private func loadPhotos() async {

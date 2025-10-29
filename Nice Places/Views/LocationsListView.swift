@@ -21,7 +21,7 @@ struct LocationsListView: View {
 
     @Environment(\.modelContext) var context
     @Environment(CloudKitSyncMonitor.self) private var syncMonitor
-    @Query(sort: \Place.createdDate) var places: [Place]
+    @Query(sort: \Place.createdDate, order: .reverse) var places: [Place]
     
     var body: some View {
         NavigationStack {
@@ -80,19 +80,19 @@ struct LocationsListView: View {
                         showingPhotoImport = true
                     }) {
                         Image(systemName: "photo.badge.plus")
-                            .font(.title3)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
                     }
-                    .buttonBorderShape(.circle)
-                    .buttonStyle(.bordered)
+                    .buttonStyle(.plain)
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: NewLocationView(isTabbarShowing: $isTabbarShowing)) {
                         Image(systemName: "plus")
-                            .font(.title2)
+                            .font(.title3)
                     }
-                    .buttonBorderShape(.circle)
                     .buttonStyle(.borderedProminent)
+                    .buttonBorderShape(.circle)
                 }
             }
             .sheet(isPresented: $showingPhotoImport) {
@@ -145,7 +145,7 @@ struct PhotoImportSheet: View {
             VStack(spacing: 20) {
                 Image(systemName: "photo.on.rectangle.angled")
                     .font(.system(size: 60))
-                    .foregroundStyle(.purple)
+                    .foregroundStyle(.primary)
 
                 Text("Add Place from Photo")
                     .font(.title2)
@@ -158,13 +158,8 @@ struct PhotoImportSheet: View {
 
                 PhotosPicker(selection: $selectedItem, matching: .images) {
                     Label("Choose Photo", systemImage: "photo.on.rectangle")
-                        .font(.headline)
-                        .padding(.horizontal, 24)
-                        .padding(.vertical, 12)
-                        .background(.purple)
-                        .foregroundStyle(.white)
-                        .cornerRadius(12)
                 }
+                .buttonStyle(.borderedProminent)
             }
             .padding()
             .navigationBarItems(trailing: Button("Cancel") {

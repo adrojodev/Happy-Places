@@ -30,9 +30,10 @@ struct PlaceView: View {
         let formattedDate: String = place.createdDate.formatted(.dateTime.day().month().year())
         
         NavigationStack {
-            VStack (alignment: .leading, 
-                    spacing: 16.0) {
-                NavigationLink(destination: MapView(latitude: place.latitude,
+            ScrollView {
+                VStack (alignment: .leading,
+                        spacing: 16.0) {
+                    NavigationLink(destination: MapView(latitude: place.latitude,
                                                     longitude: place.longitude,
                                                     name: place.name,
                                                     icon: place.icon,
@@ -44,30 +45,14 @@ struct PlaceView: View {
                                                                   longitude: place.longitude))
                         .tint(selectedColor.wrappedValue)
                     }
-                    .frame(maxWidth: .infinity, maxHeight: 300)
+                    .aspectRatio(4/3, contentMode: .fit)
                     .cornerRadius(16.0)
                 }
 
                 // Photos section
-                if let photos = place.photos, (!photos.isEmpty || isEditing) {
+                if isEditing || (place.photos != nil && !place.photos!.isEmpty) {
                     VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Text("Photos")
-                                .font(.headline)
-                                .fontWeight(.semibold)
-
-                            if isEditing {
-                                Spacer()
-                                PhotoPickerButton(selectedPhotos: .init(
-                                    get: { place.photos ?? [] },
-                                    set: { place.photos = $0 }
-                                ),
-                                placeLatitude: place.latitude,
-                                placeLongitude: place.longitude)
-                            }
-                        }
-
-                        if !photos.isEmpty {
+                        if let photos = place.photos, !photos.isEmpty {
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 12) {
                                     ForEach(Array(photos.enumerated()), id: \.offset) { index, photo in
@@ -94,8 +79,30 @@ struct PlaceView: View {
                                             }
                                         }
                                     }
+
+                                    // Add button (square) when editing
+                                    if isEditing {
+                                        PhotoPickerButton(selectedPhotos: .init(
+                                            get: { place.photos ?? [] },
+                                            set: { place.photos = $0 }
+                                        ),
+                                        placeLatitude: place.latitude,
+                                        placeLongitude: place.longitude,
+                                        isEmpty: false,
+                                        selectedColor: selectedColor)
+                                    }
                                 }
                             }
+                        } else if isEditing {
+                            // Show full-width rectangle when no photos and editing
+                            PhotoPickerButton(selectedPhotos: .init(
+                                get: { place.photos ?? [] },
+                                set: { place.photos = $0 }
+                            ),
+                            placeLatitude: place.latitude,
+                            placeLongitude: place.longitude,
+                            isEmpty: true,
+                            selectedColor: selectedColor)
                         }
                     }
                 }
@@ -191,7 +198,7 @@ struct PlaceView: View {
                         }
                     }
                 }
-                Spacer()
+            }
             }
             .onAppear() {
                 selectedColor = PlaceColor(rawValue: place.color) ?? PlaceColor.green
