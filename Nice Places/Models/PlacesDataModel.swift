@@ -18,7 +18,7 @@ class Place {
     var longitude: Double = -122.86453
     var name: String = "Happy Place"
     var text: String = ""
-    
+
     init(color: String, createdDate: Date, icon: String, latitude: Double, longitude: Double, name: String, text: String) {
         self.color = color
         self.createdDate = createdDate

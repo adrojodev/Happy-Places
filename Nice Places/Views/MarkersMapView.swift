@@ -11,7 +11,8 @@ import SwiftData
 
 struct MarkersMapView: View {
     @Query(sort: \Place.createdDate) var places: [Place]
-    
+    @Environment(CloudKitSyncMonitor.self) private var syncMonitor
+
     @State private var cameraPosition: MapCameraPosition = .userLocation(fallback: .automatic)
     @State private var selectedItem: Place?
     @State private var showSheet: Bool = false
@@ -26,7 +27,10 @@ struct MarkersMapView: View {
                         
                 }
             }
-            VStack(alignment: .trailing) {
+            VStack(alignment: .trailing, spacing: 12) {
+                SyncStatusView(syncMonitor: syncMonitor)
+                    .shadow(radius: 4, x: 0, y: 2)
+
                 Button(action: getBackToUserLocation, label: {
                     Label("", systemImage: "location.fill")
                         .labelStyle(.iconOnly)

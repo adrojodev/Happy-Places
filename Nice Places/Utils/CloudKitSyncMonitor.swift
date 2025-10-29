@@ -1,16 +1,14 @@
 //
-//  Nice_PlacesApp.swift
+//  CloudKitSyncMonitor.swift
 //  Nice Places
 //
-//  Created by Alan David Hernández Trujillo on 09/02/24.
+//  Monitor iCloud sync status
 //
 
 import SwiftUI
 import SwiftData
-import CoreData
 import Combine
 
-// MARK: - CloudKit Sync Monitor
 @Observable
 class CloudKitSyncMonitor {
     var isSyncing: Bool = false
@@ -40,8 +38,10 @@ class CloudKitSyncMonitor {
         DispatchQueue.main.async { [weak self] in
             switch event.type {
             case .setup:
+                // Initial setup
                 self?.isSyncing = false
             case .import:
+                // Importing from cloud
                 self?.isSyncing = event.endDate == nil
                 if event.endDate != nil {
                     self?.lastSyncDate = event.endDate
@@ -52,6 +52,7 @@ class CloudKitSyncMonitor {
                     self?.syncError = nil
                 }
             case .export:
+                // Exporting to cloud
                 self?.isSyncing = event.endDate == nil
                 if event.endDate != nil {
                     self?.lastSyncDate = event.endDate
@@ -65,28 +66,5 @@ class CloudKitSyncMonitor {
                 break
             }
         }
-    }
-}
-
-@main
-struct HappyPlacesApp: App {
-    let container: ModelContainer
-    @State private var syncMonitor = CloudKitSyncMonitor()
-
-    init() {
-        do {
-            // Back to original schema - just Place, no photos yet
-            container = try ModelContainer(for: Place.self)
-        } catch {
-            fatalError("Could not initialize ModelContainer: \(error)")
-        }
-    }
-
-    var body: some Scene {
-        WindowGroup {
-            HappyPlacesView()
-                .environment(syncMonitor)
-        }
-        .modelContainer(container)
     }
 }

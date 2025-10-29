@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import Photos
 import CoreLocation
 import SwiftData
 
@@ -24,7 +25,7 @@ struct EditNewLocationSheet: View {
     @State private var placeName: String = ""
     @State private var placeStory: String = ""
     @State private var selectedIcon: String = "mappin"
-    
+
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) var colorScheme
@@ -50,7 +51,7 @@ struct EditNewLocationSheet: View {
                                     .background(.foreground.opacity(0.15))
                                     .cornerRadius(16.0)
                                     .focused($isNameFocused)
-                                
+
                                 TextField("Tell your story here", text: $placeStory, axis: .vertical)
                                     .lineLimit(3...5)
                                     .textFieldStyle(.plain)
@@ -68,7 +69,7 @@ struct EditNewLocationSheet: View {
                                                   longitude: longitude,
                                                   name: placeName,
                                                   text: placeStory)
-                                
+
                                 context.insert(place)
                                 dismiss()
                             } label: {
@@ -114,7 +115,7 @@ struct EditNewLocationSheet: View {
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Place.self, configurations: config)
-    
+
     return EditNewLocationSheet(latitude: 12.64654, longitude: -122.86453, isShowing: .constant(true), isTabbarShowing: .constant(false), selectedColor: .constant(PlaceColor.green))
         .modelContainer(container)
 }

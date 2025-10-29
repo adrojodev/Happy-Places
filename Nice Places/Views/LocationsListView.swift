@@ -11,8 +11,9 @@ import SwiftData
 struct LocationsListView: View {
     @State var isTabbarShowing: Bool = true
     @State private var searchPrompt: String = ""
-    
+
     @Environment(\.modelContext) var context
+    @Environment(CloudKitSyncMonitor.self) private var syncMonitor
     @Query(sort: \Place.createdDate) var places: [Place]
     
     var body: some View {
@@ -62,16 +63,18 @@ struct LocationsListView: View {
                 isTabbarShowing = true
             })
             .navigationTitle("Happy places")
-            .navigationBarItems(trailing: Button(action: {}, label: {
-                NavigationLink(destination: NewLocationView(isTabbarShowing: $isTabbarShowing)) {
-                    Image(systemName: "plus")
-                        .font(.title2)
-                }
-                .buttonBorderShape(.circle)
-                .buttonStyle(.borderedProminent)
-                .padding(.horizontal, -10)
-                
-            }))
+            .navigationBarItems(
+                leading: CompactSyncStatusView(syncMonitor: syncMonitor),
+                trailing: Button(action: {}, label: {
+                    NavigationLink(destination: NewLocationView(isTabbarShowing: $isTabbarShowing)) {
+                        Image(systemName: "plus")
+                            .font(.title2)
+                    }
+                    .buttonBorderShape(.circle)
+                    .buttonStyle(.borderedProminent)
+                    .padding(.horizontal, -10)
+                })
+            )
         }
         .toolbar(isTabbarShowing ? .visible : .hidden, for: .tabBar)
         .animation(.bouncy, value: isTabbarShowing)

@@ -60,6 +60,15 @@ class Place {
     var longitude: Double    // Location coordinate
     var name: String         // Place name
     var text: String         // User's story/description
+    var photos: [PlacePhoto] // Array of photos for this place
+}
+
+@Model
+class PlacePhoto {
+    var imageData: Data       // JPEG image data
+    var addedDate: Date       // When photo was added
+    var photoLatitude: Double?  // Photo's GPS latitude (if available)
+    var photoLongitude: Double? // Photo's GPS longitude (if available)
 }
 ```
 
@@ -70,10 +79,11 @@ Nice Places/
 ├── HappyPlacesApp.swift              # App entry point with SwiftData container
 ├── HappyPlacesView.swift             # Main TabView container (List & Map tabs)
 ├── Components/                        # Reusable UI components
-│   ├── EditNewLocationSheet.swift    # Bottom sheet for creating places
+│   ├── EditNewLocationSheet.swift    # Bottom sheet for creating places + PhotoPickerView + CameraView
 │   ├── IconSelector.swift            # Icon and color picker modal
 │   ├── PlaceItemView.swift           # List row item
-│   └── SelectIconButton.swift        # Button to open icon selector
+│   ├── SelectIconButton.swift        # Button to open icon selector
+│   └── PhotoPickerView.swift         # (Created but not in Xcode project - code merged into EditNewLocationSheet)
 ├── Data/                             # Static data
 │   └── Icons.swift                   # Icon definitions & PlaceColor enum
 ├── Location/                         # Location services
@@ -113,9 +123,16 @@ Recent git commits show:
 - Improved UI/UX with better animations
 - Currently working on UI improvements (branch: `rojo/new-ui`)
 
-## Planned Features
+## Recent Additions
 
-- **Photo Support**: Next phase will add ability to attach pictures to places (PhotosUI is already imported but not yet implemented)
+- **Photo Support**: IMPLEMENTED! Places now support multiple photos with the following features:
+  - Camera integration for taking photos on-site
+  - Photo library picker for adding existing photos
+  - Location validation: Photos must be taken within 100 meters of the place location
+  - Photo metadata extraction to verify location from EXIF data
+  - Multiple photos per place support
+  - Photo preview in horizontal scroll view
+  - Edit mode to add/remove photos
 
 ## Development Notes
 
@@ -123,6 +140,10 @@ Recent git commits show:
 - **Code Style**: Standard Swift/SwiftUI conventions, nothing special or unconventional
 - **Legacy Code**: `DataController.swift` and `Place.swift` (in Models/) appear to be legacy CoreData code that's no longer used but hasn't been removed
 - The app uses standard iOS patterns throughout - straightforward SwiftUI implementation without custom frameworks or unusual architectural decisions
+- **iCloud Sync**: Simple ModelContainer setup with automatic CloudKit sync. Auto-recovery if database is corrupted.
+- **Photo Components**: PhotoPickerView and CameraView are defined in EditNewLocationSheet.swift (PhotoPickerView.swift exists but isn't in Xcode project)
+- **Sync Status**: CloudKitSyncMonitor in HappyPlacesApp.swift, SyncStatusView components in IconSelector.swift
+- **Schema Migration**: Using simple lightweight migration - SwiftData handles the `photos` array addition automatically for existing users
 
 ## Common Tasks
 
@@ -132,3 +153,6 @@ When working on this codebase:
 - UI follows iOS design guidelines with Material backgrounds and standard components
 - Location permissions are handled via LocationDataManager
 - Icon/color customization uses the existing PlaceColor enum system
+- **Adding photos**: Photos are validated to be within 100m of place location (configurable in PhotoPickerView.locationTolerance)
+- **Photo storage**: Photos are stored as Data (JPEG, 0.8 quality) directly in SwiftData, automatically synced via iCloud
+- **Permissions**: Camera and Photo Library permissions are configured in Nice-Places-Info.plist
