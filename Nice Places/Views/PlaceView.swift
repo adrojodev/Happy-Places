@@ -51,17 +51,20 @@ struct PlaceView: View {
                 // Photos section
                 if let photos = place.photos, (!photos.isEmpty || isEditing) {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Photos")
-                            .font(.headline)
-                            .fontWeight(.semibold)
+                        HStack {
+                            Text("Photos")
+                                .font(.headline)
+                                .fontWeight(.semibold)
 
-                        if isEditing {
-                            PhotoPickerView(selectedPhotos: .init(
-                                get: { place.photos ?? [] },
-                                set: { place.photos = $0 }
-                            ),
-                            placeLatitude: place.latitude,
-                            placeLongitude: place.longitude)
+                            if isEditing {
+                                Spacer()
+                                PhotoPickerButton(selectedPhotos: .init(
+                                    get: { place.photos ?? [] },
+                                    set: { place.photos = $0 }
+                                ),
+                                placeLatitude: place.latitude,
+                                placeLongitude: place.longitude)
+                            }
                         }
 
                         if !photos.isEmpty {

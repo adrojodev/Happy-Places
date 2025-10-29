@@ -13,16 +13,15 @@ import SwiftData
 import UIKit
 
 struct EditNewLocationSheet: View {
-    let latitude: CLLocationDegrees
-    let longitude: CLLocationDegrees
-    
+    @Binding var latitude: CLLocationDegrees?
+    @Binding var longitude: CLLocationDegrees?
     @Binding var isShowing: Bool
     @Binding var isTabbarShowing: Bool
     @Binding var selectedColor: PlaceColor
-    
+
     @FocusState private var isNameFocused: Bool
     @FocusState private var isStoryFocused: Bool
-    
+
     @State private var placeName: String = ""
     @State private var placeStory: String = ""
     @State private var selectedIcon: String = "mappin"
@@ -31,6 +30,28 @@ struct EditNewLocationSheet: View {
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) var colorScheme
+
+    init(latitude: Binding<CLLocationDegrees?>, longitude: Binding<CLLocationDegrees?>, isShowing: Binding<Bool>, isTabbarShowing: Binding<Bool>, selectedColor: Binding<PlaceColor>, preloadedPhoto: PlacePhoto? = nil) {
+        self._latitude = latitude
+        self._longitude = longitude
+        self._isShowing = isShowing
+        self._isTabbarShowing = isTabbarShowing
+        self._selectedColor = selectedColor
+
+        // Initialize with preloaded photo if provided
+        if let photo = preloadedPhoto {
+            self._selectedPhotos = State(initialValue: [photo])
+        }
+    }
+
+    // Computed property to get current coordinates
+    private var currentLatitude: CLLocationDegrees {
+        latitude ?? 0
+    }
+
+    private var currentLongitude: CLLocationDegrees {
+        longitude ?? 0
+    }
     
     var body: some View {
         ZStack (alignment: .bottom) {
@@ -41,6 +62,9 @@ struct EditNewLocationSheet: View {
                             .font(.title2)
                             .fontWeight(.bold)
                         Spacer()
+                        PhotoPickerButton(selectedPhotos: $selectedPhotos,
+                                        placeLatitude: currentLatitude,
+                                        placeLongitude: currentLongitude)
                         SelectIconButton(selectedIcon: $selectedIcon, selectedColor: $selectedColor)
                     }
                     Form {
@@ -64,17 +88,13 @@ struct EditNewLocationSheet: View {
                                     .focused($isStoryFocused)
                             }
 
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("Photos")
-                                    .font(.subheadline)
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(.secondary)
+                            if !selectedPhotos.isEmpty {
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("Photos")
+                                        .font(.subheadline)
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(.secondary)
 
-                                PhotoPickerView(selectedPhotos: $selectedPhotos,
-                                              placeLatitude: latitude,
-                                              placeLongitude: longitude)
-
-                                if !selectedPhotos.isEmpty {
                                     ScrollView(.horizontal, showsIndicators: false) {
                                         HStack(spacing: 8) {
                                             ForEach(Array(selectedPhotos.enumerated()), id: \.offset) { index, photo in
@@ -108,8 +128,8 @@ struct EditNewLocationSheet: View {
                                 let place = Place(color: selectedColor.rawValue,
                                                   createdDate: Date(),
                                                   icon: selectedIcon,
-                                                  latitude: latitude,
-                                                  longitude: longitude,
+                                                  latitude: currentLatitude,
+                                                  longitude: currentLongitude,
                                                   name: placeName,
                                                   text: placeStory,
                                                   photos: selectedPhotos)
@@ -146,78 +166,72 @@ struct EditNewLocationSheet: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
         .background(isNameFocused || isStoryFocused ? .black.opacity(0.4) : .clear)
         .ignoresSafeArea(.container)
-        .padding(.horizontal, 8)
         .animation(.bouncy, value: isShowing)
         .animation(.easeInOut, value: isNameFocused)
         .animation(.easeInOut, value: isStoryFocused)
     }
 }
 
-
-
-
-//MARK: - PhotoPickerView
-struct PhotoPickerView: View {
+//MARK: - PhotoPickerButton
+struct PhotoPickerButton: View {
+    @Environment(\.colorScheme) var colorScheme
     @Binding var selectedPhotos: [PlacePhoto]
     let placeLatitude: Double
     let placeLongitude: Double
     let locationTolerance: Double = 500.0 // meters
 
+    @State private var showingActionSheet = false
     @State private var selectedItems: [PhotosPickerItem] = []
     @State private var showingCamera = false
+    @State private var showingPhotoPicker = false
     @State private var showingLocationAlert = false
     @State private var locationAlertMessage = ""
 
     var body: some View {
-        HStack(spacing: 12) {
-            Button(action: {
-                showingCamera = true
-            }) {
-                Label("Camera", systemImage: "camera.fill")
-                    .font(.subheadline)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
-                    .background(.blue.opacity(0.15))
-                    .foregroundStyle(.blue)
-                    .cornerRadius(12)
+        Image(systemName: "photo")
+            .frame(width: 40, height: 40)
+            .foregroundColor(.secondary)
+            .background(.foreground.opacity(0.15))
+            .cornerRadius(.infinity)
+            .onTapGesture {
+                showingActionSheet = true
             }
-
-            PhotosPicker(selection: $selectedItems,
-                        maxSelectionCount: 10,
-                        matching: .images) {
-                Label("Library", systemImage: "photo.on.rectangle")
-                    .font(.subheadline)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
-                    .background(.green.opacity(0.15))
-                    .foregroundStyle(.green)
-                    .cornerRadius(12)
-            }
-        }
-        .onChange(of: selectedItems) {
-            Task {
-                await loadPhotos()
-            }
-        }
-        .fullScreenCover(isPresented: $showingCamera) {
-            CameraView(placeLatitude: placeLatitude,
-                      placeLongitude: placeLongitude,
-                      locationTolerance: locationTolerance) { photo in
-                if let photo = photo {
-                    selectedPhotos.append(photo)
-                } else {
-                    // Camera photo was rejected - show alert
-                    locationAlertMessage = "Photo rejected. Make sure you're at this location and location services are enabled."
-                    showingLocationAlert = true
+            .confirmationDialog("Add Photo", isPresented: $showingActionSheet, titleVisibility: .visible) {
+                Button("Take Photo") {
+                    showingCamera = true
                 }
-                showingCamera = false
+                Button("Choose from Library") {
+                    showingPhotoPicker = true
+                }
+                Button("Cancel", role: .cancel) { }
             }
-        }
-        .alert("Location Mismatch", isPresented: $showingLocationAlert) {
-            Button("OK", role: .cancel) { }
-        } message: {
-            Text(locationAlertMessage)
-        }
+            .photosPicker(isPresented: $showingPhotoPicker,
+                         selection: $selectedItems,
+                         maxSelectionCount: 10,
+                         matching: .images)
+            .onChange(of: selectedItems) {
+                Task {
+                    await loadPhotos()
+                }
+            }
+            .fullScreenCover(isPresented: $showingCamera) {
+                CameraView(placeLatitude: placeLatitude,
+                          placeLongitude: placeLongitude,
+                          locationTolerance: locationTolerance) { photo in
+                    if let photo = photo {
+                        selectedPhotos.append(photo)
+                    } else {
+                        locationAlertMessage = "Photo rejected. Make sure you're at this location and location services are enabled."
+                        showingLocationAlert = true
+                    }
+                    showingCamera = false
+                }
+            }
+            .alert("Location Mismatch", isPresented: $showingLocationAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(locationAlertMessage)
+            }
     }
 
     private func loadPhotos() async {
@@ -311,11 +325,23 @@ struct CameraView: UIViewControllerRepresentable {
         Coordinator(self)
     }
 
-    class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate {
         let parent: CameraView
+        let locationManager: CLLocationManager
+        var currentLocation: CLLocation?
 
         init(_ parent: CameraView) {
             self.parent = parent
+            self.locationManager = CLLocationManager()
+            super.init()
+            self.locationManager.delegate = self
+            self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            self.locationManager.requestWhenInUseAuthorization()
+            self.locationManager.startUpdatingLocation()
+        }
+
+        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+            currentLocation = locations.last
         }
 
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -325,9 +351,8 @@ struct CameraView: UIViewControllerRepresentable {
                 return
             }
 
-            let locationManager = CLLocationManager()
-            if let currentLocation = locationManager.location {
-                let distance = currentLocation.distance(
+            if let userLocation = currentLocation {
+                let distance = userLocation.distance(
                     from: CLLocation(latitude: parent.placeLatitude, longitude: parent.placeLongitude)
                 )
 
@@ -335,8 +360,8 @@ struct CameraView: UIViewControllerRepresentable {
                     let photo = PlacePhoto(
                         imageData: imageData,
                         addedDate: Date(),
-                        photoLatitude: currentLocation.coordinate.latitude,
-                        photoLongitude: currentLocation.coordinate.longitude
+                        photoLatitude: userLocation.coordinate.latitude,
+                        photoLongitude: userLocation.coordinate.longitude
                     )
                     parent.completion(photo)
                 } else {
@@ -359,6 +384,6 @@ struct CameraView: UIViewControllerRepresentable {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Place.self, configurations: config)
 
-    return EditNewLocationSheet(latitude: 12.64654, longitude: -122.86453, isShowing: .constant(true), isTabbarShowing: .constant(false), selectedColor: .constant(PlaceColor.green))
+    EditNewLocationSheet(latitude: .constant(12.64654), longitude: .constant(-122.86453), isShowing: .constant(true), isTabbarShowing: .constant(false), selectedColor: .constant(PlaceColor.green))
         .modelContainer(container)
 }
