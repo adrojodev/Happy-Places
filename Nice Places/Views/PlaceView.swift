@@ -48,6 +48,55 @@ struct PlaceView: View {
                     .cornerRadius(16.0)
                 }
 
+                // Photos section
+                if let photos = place.photos, (!photos.isEmpty || isEditing) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Photos")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+
+                        if isEditing {
+                            PhotoPickerView(selectedPhotos: .init(
+                                get: { place.photos ?? [] },
+                                set: { place.photos = $0 }
+                            ),
+                            placeLatitude: place.latitude,
+                            placeLongitude: place.longitude)
+                        }
+
+                        if !photos.isEmpty {
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 12) {
+                                    ForEach(Array(photos.enumerated()), id: \.offset) { index, photo in
+                                        if let imageData = photo.imageData,
+                                           let uiImage = UIImage(data: imageData) {
+                                            ZStack(alignment: .topTrailing) {
+                                                Image(uiImage: uiImage)
+                                                    .resizable()
+                                                    .scaledToFill()
+                                                    .frame(width: 120, height: 120)
+                                                    .cornerRadius(12)
+                                                    .clipped()
+
+                                                if isEditing {
+                                                    Button(action: {
+                                                        place.photos?.remove(at: index)
+                                                    }) {
+                                                        Image(systemName: "xmark.circle.fill")
+                                                            .foregroundStyle(.white, .red)
+                                                            .font(.title2)
+                                                    }
+                                                    .padding(6)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
                 VStack (alignment: .leading, spacing: 8.0) {
                     HStack (alignment: .top) {
                         TextField("Happy place", text: $place.name, axis: .vertical)

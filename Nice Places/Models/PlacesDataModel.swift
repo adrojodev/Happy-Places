@@ -19,7 +19,10 @@ class Place {
     var name: String = "Happy Place"
     var text: String = ""
 
-    init(color: String, createdDate: Date, icon: String, latitude: Double, longitude: Double, name: String, text: String) {
+    @Relationship(deleteRule: .cascade, inverse: \PlacePhoto.place)
+    var photos: [PlacePhoto]? = []
+
+    init(color: String, createdDate: Date, icon: String, latitude: Double, longitude: Double, name: String, text: String, photos: [PlacePhoto]? = []) {
         self.color = color
         self.createdDate = createdDate
         self.icon = icon
@@ -27,5 +30,24 @@ class Place {
         self.longitude = longitude
         self.name = name
         self.text = text
+        self.photos = photos
+    }
+}
+
+@Model
+class PlacePhoto {
+    @Attribute(.externalStorage) var imageData: Data?
+    var addedDate: Date?
+    var photoLatitude: Double?
+    var photoLongitude: Double?
+
+    var place: Place?
+
+    init(imageData: Data, addedDate: Date = Date(), photoLatitude: Double? = nil, photoLongitude: Double? = nil, place: Place? = nil) {
+        self.imageData = imageData
+        self.addedDate = addedDate
+        self.photoLatitude = photoLatitude
+        self.photoLongitude = photoLongitude
+        self.place = place
     }
 }

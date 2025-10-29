@@ -75,8 +75,8 @@ struct HappyPlacesApp: App {
 
     init() {
         do {
-            // Back to original schema - just Place, no photos yet
-            container = try ModelContainer(for: Place.self)
+            // Now with photos support - SwiftData handles lightweight migration
+            container = try ModelContainer(for: Place.self, PlacePhoto.self)
         } catch {
             fatalError("Could not initialize ModelContainer: \(error)")
         }
