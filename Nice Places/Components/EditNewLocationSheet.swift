@@ -16,7 +16,6 @@ struct EditNewLocationSheet: View {
     @Binding var latitude: CLLocationDegrees?
     @Binding var longitude: CLLocationDegrees?
     @Binding var isShowing: Bool
-    @Binding var isTabbarShowing: Bool
     @Binding var selectedColor: PlaceColor
 
     @FocusState private var isNameFocused: Bool
@@ -29,13 +28,11 @@ struct EditNewLocationSheet: View {
 
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.colorScheme) var colorScheme
 
-    init(latitude: Binding<CLLocationDegrees?>, longitude: Binding<CLLocationDegrees?>, isShowing: Binding<Bool>, isTabbarShowing: Binding<Bool>, selectedColor: Binding<PlaceColor>, preloadedPhoto: PlacePhoto? = nil) {
+    init(latitude: Binding<CLLocationDegrees?>, longitude: Binding<CLLocationDegrees?>, isShowing: Binding<Bool>, selectedColor: Binding<PlaceColor>, preloadedPhoto: PlacePhoto? = nil) {
         self._latitude = latitude
         self._longitude = longitude
         self._isShowing = isShowing
-        self._isTabbarShowing = isTabbarShowing
         self._selectedColor = selectedColor
 
         // Initialize with preloaded photo if provided
@@ -153,12 +150,12 @@ struct EditNewLocationSheet: View {
                                     .fontWeight(.semibold)
                                     .frame(maxWidth: .infinity)
                                     .padding([.vertical], 12)
-                                    .foregroundColor(colorScheme == .dark ? .black : .white)
+                                    .foregroundStyle(.background)
                                     .cornerRadius(16)
                                 
                             }
                             .buttonStyle(.borderedProminent)
-                            .tint(selectedColor.wrappedValue)
+                            .tint(selectedColor.color)
         
                         }
                     }
@@ -186,7 +183,6 @@ struct EditNewLocationSheet: View {
 
 //MARK: - PhotoPickerButton
 struct PhotoPickerButton: View {
-    @Environment(\.colorScheme) var colorScheme
     @Binding var selectedPhotos: [PlacePhoto]
     let placeLatitude: Double
     let placeLongitude: Double
@@ -215,10 +211,10 @@ struct PhotoPickerButton: View {
                             .font(.subheadline)
                             .fontWeight(.medium)
                     }
-                    .foregroundColor(selectedColor.wrappedValue)
+                    .foregroundColor(selectedColor.color)
                     .frame(maxWidth: .infinity)
                     .frame(height: 80)
-                    .background(selectedColor.wrappedValue.opacity(0.15))
+                    .background(selectedColor.color.opacity(0.15))
                     .cornerRadius(12)
                 }
             } else {
@@ -228,9 +224,9 @@ struct PhotoPickerButton: View {
                 }) {
                     Image(systemName: "plus")
                         .font(.title2)
-                        .foregroundColor(selectedColor.wrappedValue)
+                        .foregroundColor(selectedColor.color)
                         .frame(width: 80, height: 80)
-                        .background(selectedColor.wrappedValue.opacity(0.3))
+                        .background(selectedColor.color.opacity(0.3))
                         .cornerRadius(8)
                 }
             }
@@ -401,6 +397,6 @@ struct CameraView: UIViewControllerRepresentable {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Place.self, configurations: config)
 
-    EditNewLocationSheet(latitude: .constant(12.64654), longitude: .constant(-122.86453), isShowing: .constant(true), isTabbarShowing: .constant(false), selectedColor: .constant(PlaceColor.green))
+    EditNewLocationSheet(latitude: .constant(12.64654), longitude: .constant(-122.86453), isShowing: .constant(true), selectedColor: .constant(PlaceColor.green))
         .modelContainer(container)
 }

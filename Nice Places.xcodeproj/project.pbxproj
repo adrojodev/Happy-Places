@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E5AA000000000000000000B4 /* PlaceIconBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A4 /* PlaceIconBadge.swift */; };
+		E5AA000000000000000000B5 /* Place+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A5 /* Place+UI.swift */; };
+		E5AA000000000000000000B6 /* AppleMaps.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A6 /* AppleMaps.swift */; };
 		E5AA000000000000000000B1 /* SyncStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A1 /* SyncStatusView.swift */; };
 		E5AA000000000000000000B2 /* CloudKitSyncMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A2 /* CloudKitSyncMonitor.swift */; };
 		E5AA000000000000000000B3 /* PhotoProcessing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A3 /* PhotoProcessing.swift */; };
@@ -19,9 +22,7 @@
 		E50117152B76E7BD00E00E5D /* Nice_PlacesUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50117142B76E7BD00E00E5D /* Nice_PlacesUITestsLaunchTests.swift */; };
 		E50117262B76E82F00E00E5D /* NewLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50117252B76E82F00E00E5D /* NewLocationView.swift */; };
 		E501172A2B7730C400E00E5D /* EditNewLocationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50117292B7730C400E00E5D /* EditNewLocationSheet.swift */; };
-		E564668A2B77BCBD004E055F /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56466892B77BCBD004E055F /* DataController.swift */; };
 		E564668D2B77D1A4004E055F /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = E564668C2B77D1A4004E055F /* Icons.swift */; };
-		E56466912B77F00F004E055F /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56466902B77F00F004E055F /* Place.swift */; };
 		E56466932B77F3F7004E055F /* PlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56466922B77F3F7004E055F /* PlaceView.swift */; };
 		E56466952B77F7E8004E055F /* PlaceItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56466942B77F7E8004E055F /* PlaceItemView.swift */; };
 		E56466972B7852C6004E055F /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56466962B7852C6004E055F /* MapView.swift */; };
@@ -51,6 +52,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E5AA000000000000000000A4 /* PlaceIconBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceIconBadge.swift"; sourceTree = "<group>"; };
+		E5AA000000000000000000A5 /* Place+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Place+UI.swift"; sourceTree = "<group>"; };
+		E5AA000000000000000000A6 /* AppleMaps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppleMaps.swift"; sourceTree = "<group>"; };
 		E5AA000000000000000000A1 /* SyncStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatusView.swift; sourceTree = "<group>"; };
 		E5AA000000000000000000A2 /* CloudKitSyncMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitSyncMonitor.swift; sourceTree = "<group>"; };
 		E5AA000000000000000000A3 /* PhotoProcessing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoProcessing.swift; sourceTree = "<group>"; };
@@ -66,9 +70,7 @@
 		E50117142B76E7BD00E00E5D /* Nice_PlacesUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nice_PlacesUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		E50117252B76E82F00E00E5D /* NewLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLocationView.swift; sourceTree = "<group>"; };
 		E50117292B7730C400E00E5D /* EditNewLocationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNewLocationSheet.swift; sourceTree = "<group>"; };
-		E56466892B77BCBD004E055F /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		E564668C2B77D1A4004E055F /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
-		E56466902B77F00F004E055F /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		E56466922B77F3F7004E055F /* PlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceView.swift; sourceTree = "<group>"; };
 		E56466942B77F7E8004E055F /* PlaceItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceItemView.swift; sourceTree = "<group>"; };
 		E56466962B7852C6004E055F /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
@@ -136,7 +138,7 @@
 			children = (
 				E564668B2B77D197004E055F /* Data */,
 				E5AA000000000000000000C1 /* Utils */,
-				E56466882B77BCAB004E055F /* Controller */,
+				E5AA000000000000000000C2 /* Extensions */,
 				E56466822B77B7DF004E055F /* Models */,
 				E50117282B7730AF00E00E5D /* Components */,
 				E50117242B76E81C00E00E5D /* Views */,
@@ -194,6 +196,7 @@
 				E56528D62B890F4800292C26 /* IconSelector.swift */,
 				E56528D82B8910C400292C26 /* SelectIconButton.swift */,
 				E5AA000000000000000000A1 /* SyncStatusView.swift */,
+				E5AA000000000000000000A4 /* PlaceIconBadge.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -201,18 +204,9 @@
 		E56466822B77B7DF004E055F /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E56466902B77F00F004E055F /* Place.swift */,
 				E5FF6EAB2B83F6E400555080 /* PlacesDataModel.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		E56466882B77BCAB004E055F /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				E56466892B77BCBD004E055F /* DataController.swift */,
-			);
-			path = Controller;
 			sourceTree = "<group>";
 		};
 		E564668B2B77D197004E055F /* Data */ = {
@@ -228,8 +222,17 @@
 			children = (
 				E5AA000000000000000000A2 /* CloudKitSyncMonitor.swift */,
 				E5AA000000000000000000A3 /* PhotoProcessing.swift */,
+				E5AA000000000000000000A6 /* AppleMaps.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		E5AA000000000000000000C2 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E5AA000000000000000000A5 /* Place+UI.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -364,7 +367,6 @@
 			files = (
 				E564668D2B77D1A4004E055F /* Icons.swift in Sources */,
 				E5A5E3E22B8421B100DA4249 /* LocationsListView.swift in Sources */,
-				E564668A2B77BCBD004E055F /* DataController.swift in Sources */,
 				E56466972B7852C6004E055F /* MapView.swift in Sources */,
 				E56466952B77F7E8004E055F /* PlaceItemView.swift in Sources */,
 				E5EA9E722C5AA1C900247D55 /* PlaceMapPreview.swift in Sources */,
@@ -373,7 +375,6 @@
 				E5FF6EAC2B83F6E400555080 /* PlacesDataModel.swift in Sources */,
 				E50117262B76E82F00E00E5D /* NewLocationView.swift in Sources */,
 				E56528D92B8910C400292C26 /* SelectIconButton.swift in Sources */,
-				E56466912B77F00F004E055F /* Place.swift in Sources */,
 				E5A5E3E02B841FDB00DA4249 /* MarkersMapView.swift in Sources */,
 				E50116F82B76E7BC00E00E5D /* HappyPlacesApp.swift in Sources */,
 				E501172A2B7730C400E00E5D /* EditNewLocationSheet.swift in Sources */,
@@ -381,6 +382,9 @@
 				E5AA000000000000000000B1 /* SyncStatusView.swift in Sources */,
 				E5AA000000000000000000B2 /* CloudKitSyncMonitor.swift in Sources */,
 				E5AA000000000000000000B3 /* PhotoProcessing.swift in Sources */,
+				E5AA000000000000000000B4 /* PlaceIconBadge.swift in Sources */,
+				E5AA000000000000000000B5 /* Place+UI.swift in Sources */,
+				E5AA000000000000000000B6 /* AppleMaps.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

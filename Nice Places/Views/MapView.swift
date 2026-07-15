@@ -7,65 +7,57 @@
 
 import SwiftUI
 import MapKit
+import SwiftData
 
 struct MapView: View {
-    @Environment(\.colorScheme) var colorScheme
-    
-    let latitude: Double
-    let longitude: Double
-    let name: String
-    let icon: String
-    let color: Color
-    
+    let place: Place
+
     @State private var region: MapCameraPosition = .automatic
-    
+
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Map(position: $region) {
-                    Marker(name, systemImage: icon, coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
-                        .tint(color)
-                }
-                .mapControls {
-                    MapCompass()
-                }
-                .controlSize(.regular)
-                
-                VStack {
-                    Button("Back to me", systemImage: "location.fill") {
-                        let regionDistance:CLLocationDistance = 10000
-                        let coordinates = CLLocationCoordinate2DMake(latitude, longitude)
-                        let regionSpan = MKCoordinateRegion(center: coordinates, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
-                        let options = [
-                            MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
-                            MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
-                        ]
-                        let placemark = MKPlacemark(coordinate: coordinates, addressDictionary: nil)
-                        let mapItem = MKMapItem(placemark: placemark)
-                        mapItem.name = name
-                        mapItem.openInMaps(launchOptions: options)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .font(.body)
-                    .fontWeight(.semibold)
-                    .padding([.horizontal], 32)
-                    .padding([.vertical],16)
-                    .background(color)
-                    .foregroundStyle(.background)
-                    .cornerRadius(.infinity)
-                }
-                .padding([.bottom], 32)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-                .shadow(radius: 10, x: 0, y: 8)
+        ZStack {
+            Map(position: $region) {
+                place.mapMarker
             }
+            .mapControls {
+                MapCompass()
+            }
+            .controlSize(.regular)
+
+            VStack {
+                Button("Open in Maps", systemImage: "map.fill") {
+                    AppleMaps.open(name: place.name, coordinate: place.coordinate)
+                }
+                .buttonStyle(.borderedProminent)
+                .font(.body)
+                .fontWeight(.semibold)
+                .padding([.horizontal], 32)
+                .padding([.vertical],16)
+                .background(place.uiColor)
+                .foregroundStyle(.background)
+                .cornerRadius(.infinity)
+            }
+            .padding([.bottom], 32)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+            .shadow(radius: 10, x: 0, y: 8)
         }
         .onAppear(perform: {
-            region = .region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)))
+            region = .region(MKCoordinateRegion(center: place.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)))
         })
         .toolbarBackground(.hidden, for: .navigationBar)
     }
 }
 
 #Preview {
-    MapView(latitude: 25.761681, longitude: -80.191788, name: "Name", icon: "mappin", color: .accentColor)
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Place.self, configurations: config)
+
+    MapView(place: Place(color: "blue",
+                         createdDate: Date(),
+                         icon: "mappin",
+                         latitude: 25.761681,
+                         longitude: -80.191788,
+                         name: "Name",
+                         text: ""))
+        .modelContainer(container)
 }

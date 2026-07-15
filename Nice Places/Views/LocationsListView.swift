@@ -30,13 +30,7 @@ struct LocationsListView: View {
                     NavigationLink {
                         PlaceView(place: place, isTabbarShowing: $isTabbarShowing)
                     } label: {
-                        PlaceItemView(icon: place.icon,
-                                      name: place.name,
-                                      latitude: place.latitude,
-                                      longitude: place.longitude,
-                                      date: place.createdDate,
-                                      color: PlaceColor(rawValue: place.color)?.wrappedValue ?? .accentColor)
-                        .toolbar(.hidden, for: .tabBar)
+                        PlaceItemView(place: place)
                     }
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         Button("Delete", systemImage: "trash", role: .destructive) {

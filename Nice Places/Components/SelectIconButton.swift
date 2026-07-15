@@ -8,19 +8,13 @@
 import SwiftUI
 
 struct SelectIconButton: View {
-    @Environment(\.colorScheme) var colorScheme
-    
     @Binding var selectedIcon: String
     @Binding var selectedColor: PlaceColor
-    
+
     @State var isIconSheetOpen = false
-    
+
     var body: some View {
-        Image(systemName: selectedIcon)
-            .frame(width: 40, height: 40)
-            .foregroundColor(colorScheme == .dark ? .black : .white)
-            .background(selectedColor.wrappedValue.gradient)
-            .cornerRadius(.infinity)
+        PlaceIconBadge(icon: selectedIcon, color: selectedColor.color, size: 40)
             .onTapGesture(perform: {
                 isIconSheetOpen = true
             })

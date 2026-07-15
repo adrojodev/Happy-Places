@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct IconSelector: View {
-    @Environment(\.colorScheme) var colorScheme
-    
     @Binding var selectedColor: PlaceColor
     @Binding var selectedIcon: String
     @Binding var isIconSheetOpen: Bool
@@ -32,64 +30,19 @@ struct IconSelector: View {
             }
             HStack {
                 Spacer()
-                Image(systemName: selectedIcon)
-                    .font(.largeTitle)
-                    .foregroundColor(colorScheme == .dark ? .black : .white)
-                    .frame(width: 80, height: 80)
-                    .background(selectedColor.wrappedValue.gradient)
-                    .cornerRadius(.infinity)
+                PlaceIconBadge(icon: selectedIcon, color: selectedColor.color, size: 80)
                 Spacer()
             }
             HStack {
-                Button(action: {
-                    selectedColor = PlaceColor.pink
-                }, label: {
-                    Circle()
-                        .fill(.pink)
-                        .frame(width: 40, height: 40)
-                })
-                Button(action: {
-                    selectedColor = PlaceColor.red
-                }, label: {
-                    Circle()
-                        .fill(.red)
-                        .frame(width: 40, height: 40)
-                })
-                Button(action: {
-                    selectedColor = PlaceColor.orange
-                }, label: {
-                    Circle()
-                        .fill(.orange)
-                        .frame(width: 40, height: 40)
-                })
-                Button(action: {
-                    selectedColor = PlaceColor.yellow
-                }, label: {
-                    Circle()
-                        .fill(.yellow)
-                        .frame(width: 40, height: 40)
-                })
-                Button(action: {
-                    selectedColor = PlaceColor.green
-                }, label: {
-                    Circle()
-                        .fill(.green)
-                        .frame(width: 40, height: 40)
-                })
-                Button(action: {
-                    selectedColor = PlaceColor.blue
-                }, label: {
-                    Circle()
-                        .fill(.blue)
-                        .frame(width: 40, height: 40)
-                })
-                Button(action: {
-                    selectedColor = PlaceColor.purple
-                }, label: {
-                    Circle()
-                        .fill(.purple)
-                        .frame(width: 40, height: 40)
-                })
+                ForEach(PlaceColor.allCases, id: \.self) { placeColor in
+                    Button(action: {
+                        selectedColor = placeColor
+                    }, label: {
+                        Circle()
+                            .fill(placeColor.color)
+                            .frame(width: 40, height: 40)
+                    })
+                }
             }
             .padding(.horizontal, 16.0)
             .padding(.vertical, 8.0)

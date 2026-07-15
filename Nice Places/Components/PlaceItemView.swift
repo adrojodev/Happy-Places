@@ -6,32 +6,19 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct PlaceItemView: View {
-    @Environment(\.colorScheme) var colorScheme
-    
-    let icon: String
-    let name: String
-    let latitude: Double
-    let longitude: Double
-    let date: Date
-    let color: Color
-    
+    let place: Place
+
     var body: some View {
-        let formattedDate: String = date.formatted(.dateTime.day().month().year())
-        
         HStack {
-            Image(systemName: icon)
-                .frame(width: 52, height: 52)
-                .font(.title2)
-                .foregroundColor(colorScheme == .dark ? .black : .white)
-                .background(color)
-                .cornerRadius(.infinity)
+            PlaceIconBadge(icon: place.icon, color: place.uiColor, size: 52)
             VStack (alignment: .leading) {
-                Text(name)
+                Text(place.name)
                     .font(.title3)
                     .fontWeight(.bold)
-                Text(formattedDate)
+                Text(place.formattedDate)
                     .font(.body)
                     .foregroundStyle(.secondary)
             }
@@ -40,10 +27,15 @@ struct PlaceItemView: View {
 }
 
 #Preview {
-    PlaceItemView(icon: "mappin", 
-                  name: "Name",
-                  latitude: 25.761681,
-                  longitude: -80.191788, 
-                  date: Date(),
-                  color: .red)
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Place.self, configurations: config)
+
+    PlaceItemView(place: Place(color: "red",
+                               createdDate: Date(),
+                               icon: "mappin",
+                               latitude: 25.761681,
+                               longitude: -80.191788,
+                               name: "Name",
+                               text: ""))
+        .modelContainer(container)
 }

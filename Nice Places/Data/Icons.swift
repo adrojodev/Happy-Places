@@ -66,11 +66,10 @@ let icons = [
     Icon(icon: "paperplane.fill")
 ]
 
-@propertyWrapper
 enum PlaceColor: String, CaseIterable {
     case pink, red, orange, yellow, green, blue, purple
-    
-    var wrappedValue: Color {
+
+    var color: Color {
         switch self {
             case .pink: return Color.pink
             case .red: return Color.red

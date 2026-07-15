@@ -18,8 +18,6 @@ struct NewLocationView: View {
 
     @State private var cameraPosition: MapCameraPosition = .userLocation(fallback: .automatic)
     @State private var isSheetOpen: Bool = false
-    @State private var placeName: String = ""
-    @State private var placeDescription: String = ""
     @State private var latitude: Double?
     @State private var longitude: Double?
     @State private var hasValidLocation: Bool = false
@@ -73,7 +71,6 @@ struct NewLocationView: View {
                     EditNewLocationSheet(latitude: $latitude,
                                          longitude: $longitude,
                                          isShowing: $isSheetOpen,
-                                         isTabbarShowing: $isTabbarShowing,
                                          selectedColor: $selectedColor,
                                          preloadedPhoto: preloadedPhoto)
                 }

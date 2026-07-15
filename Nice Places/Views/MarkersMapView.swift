@@ -21,10 +21,8 @@ struct MarkersMapView: View {
         ZStack (alignment: .bottomTrailing) {
             Map(position: $cameraPosition, selection: $selectedItem) {
                 ForEach(places, id: \.self) { place in
-                    Marker(place.name, systemImage: place.icon, coordinate: CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude))
-                        .tint(PlaceColor(rawValue: place.color)?.wrappedValue ?? .accentColor)
+                    place.mapMarker
                         .tag(place)
-                        
                 }
             }
             VStack(alignment: .trailing, spacing: 12) {

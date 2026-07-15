@@ -12,8 +12,7 @@ import SwiftData
 struct PlaceView: View {
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.colorScheme) var colorScheme
-    
+
     @Bindable var place: Place
     @Binding var isTabbarShowing: Bool
     
@@ -33,17 +32,12 @@ struct PlaceView: View {
             ScrollView {
                 VStack (alignment: .leading,
                         spacing: 16.0) {
-                    NavigationLink(destination: MapView(latitude: place.latitude,
-                                                    longitude: place.longitude,
-                                                    name: place.name,
-                                                    icon: place.icon,
-                                                    color: PlaceColor(rawValue: place.color)?.wrappedValue ?? .accentColor)) {
+                    NavigationLink(destination: MapView(place: place)) {
                     Map(position: $region) {
                         Marker(place.name,
                                systemImage: place.icon,
-                               coordinate: CLLocationCoordinate2D(latitude: place.latitude,
-                                                                  longitude: place.longitude))
-                        .tint(selectedColor.wrappedValue)
+                               coordinate: place.coordinate)
+                        .tint(selectedColor.color)
                     }
                     .aspectRatio(4/3, contentMode: .fit)
                     .cornerRadius(16.0)
@@ -155,10 +149,12 @@ struct PlaceView: View {
                                     .padding(.vertical, 8.0)
                                 })
                             .background()
-                            .backgroundStyle(selectedColor.wrappedValue.opacity(isEditing ? 0.2 : 1.0))
-                            .foregroundColor(isEditing ? selectedColor.rawValue == "yellow" ? .orange : selectedColor.wrappedValue : colorScheme == .dark ? .black : .white)
+                            .backgroundStyle(selectedColor.color.opacity(isEditing ? 0.2 : 1.0))
+                            .foregroundStyle(isEditing
+                                             ? AnyShapeStyle(selectedColor == .yellow ? Color.orange : selectedColor.color)
+                                             : AnyShapeStyle(.background))
                             .cornerRadius(.infinity)
-                            .tint(selectedColor.wrappedValue)
+                            .tint(selectedColor.color)
                         }
                         
                     }
