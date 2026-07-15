@@ -16,6 +16,7 @@ struct LocationsListView: View {
     @State var isTabbarShowing: Bool = true
     @State private var searchPrompt: String = ""
     @State private var showingPhotoImport = false
+    @State private var showingPhotoScan = false
     @State private var navigateToPhotoBasedLocation = false
     @State private var photoImportData: PhotoImportData?
 
@@ -68,9 +69,14 @@ struct LocationsListView: View {
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showingPhotoImport = true
-                    }) {
+                    Menu {
+                        Button("Add from a photo", systemImage: "photo") {
+                            showingPhotoImport = true
+                        }
+                        Button("Scan library for places", systemImage: "sparkles") {
+                            showingPhotoScan = true
+                        }
+                    } label: {
                         Image(systemName: "photo.badge.plus")
                             .font(.caption)
                             .foregroundStyle(.secondary)
@@ -92,6 +98,9 @@ struct LocationsListView: View {
                     photoImportData = PhotoImportData(photo: photo, latitude: latitude, longitude: longitude)
                     navigateToPhotoBasedLocation = true
                 })
+            }
+            .sheet(isPresented: $showingPhotoScan) {
+                PhotoScanReviewView()
             }
             .navigationDestination(isPresented: $navigateToPhotoBasedLocation) {
                 if let data = photoImportData {
