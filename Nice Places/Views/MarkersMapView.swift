@@ -83,5 +83,10 @@ struct MarkersMapView: View {
 }
 
 #Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Place.self, configurations: config)
+
     MarkersMapView()
+        .modelContainer(container)
+        .environment(CloudKitSyncMonitor())
 }

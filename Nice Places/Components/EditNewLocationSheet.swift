@@ -95,7 +95,7 @@ struct EditNewLocationSheet: View {
                                         // Show "Photos" label and horizontal scroll with photos + add button
                                         ScrollView(.horizontal, showsIndicators: false) {
                                             HStack(spacing: 8) {
-                                                ForEach(Array(selectedPhotos.enumerated()), id: \.offset) { index, photo in
+                                                ForEach(selectedPhotos) { photo in
                                                     if let imageData = photo.imageData,
                                                        let uiImage = UIImage(data: imageData) {
                                                         ZStack(alignment: .topTrailing) {
@@ -107,7 +107,7 @@ struct EditNewLocationSheet: View {
                                                                 .clipped()
 
                                                             Button(action: {
-                                                                selectedPhotos.remove(at: index)
+                                                                selectedPhotos.removeAll { $0 === photo }
                                                             }) {
                                                                 Image(systemName: "xmark")
                                                                     .foregroundColor(.red)
@@ -247,7 +247,8 @@ struct PhotoPickerButton: View {
         .photosPicker(isPresented: $showingPhotoPicker,
                      selection: $selectedItems,
                      maxSelectionCount: 10,
-                     matching: .images)
+                     matching: .images,
+                     photoLibrary: .shared())
         .onChange(of: selectedItems) {
             Task {
                 await loadPhotos()
@@ -256,12 +257,15 @@ struct PhotoPickerButton: View {
         .fullScreenCover(isPresented: $showingCamera) {
             CameraView(placeLatitude: placeLatitude,
                       placeLongitude: placeLongitude,
-                      locationTolerance: locationTolerance) { photo in
-                if let photo = photo {
+                      locationTolerance: locationTolerance) { result in
+                switch result {
+                case .captured(let photo):
                     selectedPhotos.append(photo)
-                } else {
-                    locationAlertMessage = "Photo rejected. Make sure you're at this location and location services are enabled."
+                case .rejected(let distance):
+                    locationAlertMessage = "That photo was taken \(Int(distance))m away from this place. Only photos taken within \(Int(locationTolerance))m can be added."
                     showingLocationAlert = true
+                case .cancelled:
+                    break
                 }
                 showingCamera = false
             }
@@ -274,82 +278,55 @@ struct PhotoPickerButton: View {
     }
 
     private func loadPhotos() async {
+        var rejectionMessages: [String] = []
+
         for item in selectedItems {
             guard let data = try? await item.loadTransferable(type: Data.self),
-                  let _ = UIImage(data: data) else { continue }
+                  let storableData = PhotoProcessing.storableImageData(from: data) else { continue }
 
-            // Try multiple approaches to get location
-            if let photoLocation = await extractLocation(from: item, imageData: data) {
-                let distance = calculateDistance(
-                    lat1: placeLatitude,
-                    lon1: placeLongitude,
-                    lat2: photoLocation.latitude,
-                    lon2: photoLocation.longitude
+            if let photoLocation = PhotoProcessing.location(from: item, imageData: data) {
+                let distance = PhotoProcessing.distanceMeters(
+                    from: CLLocationCoordinate2D(latitude: placeLatitude, longitude: placeLongitude),
+                    to: photoLocation
                 )
 
                 if distance <= locationTolerance {
                     let photo = PlacePhoto(
-                        imageData: data,
+                        imageData: storableData,
                         addedDate: Date(),
                         photoLatitude: photoLocation.latitude,
                         photoLongitude: photoLocation.longitude
                     )
                     selectedPhotos.append(photo)
                 } else {
-                    locationAlertMessage = "This photo was taken \(Int(distance))m away from this place. Only photos taken within \(Int(locationTolerance))m can be added."
-                    showingLocationAlert = true
+                    rejectionMessages.append("A photo was taken \(Int(distance))m away from this place. Only photos taken within \(Int(locationTolerance))m can be added.")
                 }
             } else {
-                // Photo has no GPS data - reject it
-                locationAlertMessage = "This photo has no location data. Please select photos taken at this place."
-                showingLocationAlert = true
+                rejectionMessages.append("A photo has no location data. Please select photos taken at this place.")
             }
         }
 
         selectedItems.removeAll()
-    }
 
-    private func extractLocation(from item: PhotosPickerItem, imageData: Data) async -> CLLocationCoordinate2D? {
-        // Method 1: Try to get PHAsset via identifier
-        if let identifier = item.itemIdentifier {
-            let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [identifier], options: nil)
-            if let asset = fetchResult.firstObject, let location = asset.location {
-                return location.coordinate
-            }
+        if !rejectionMessages.isEmpty {
+            locationAlertMessage = rejectionMessages.joined(separator: "\n\n")
+            showingLocationAlert = true
         }
-
-        // Method 2: Try to extract from EXIF data directly
-        if let imageSource = CGImageSourceCreateWithData(imageData as CFData, nil),
-           let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) as? [String: Any],
-           let gpsData = imageProperties[kCGImagePropertyGPSDictionary as String] as? [String: Any],
-           let latitude = gpsData[kCGImagePropertyGPSLatitude as String] as? Double,
-           let longitude = gpsData[kCGImagePropertyGPSLongitude as String] as? Double,
-           let latitudeRef = gpsData[kCGImagePropertyGPSLatitudeRef as String] as? String,
-           let longitudeRef = gpsData[kCGImagePropertyGPSLongitudeRef as String] as? String {
-
-            // Adjust for hemisphere
-            let finalLatitude = latitudeRef == "S" ? -latitude : latitude
-            let finalLongitude = longitudeRef == "W" ? -longitude : longitude
-
-            return CLLocationCoordinate2D(latitude: finalLatitude, longitude: finalLongitude)
-        }
-
-        return nil
-    }
-
-    private func calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double) -> Double {
-        let coordinate1 = CLLocation(latitude: lat1, longitude: lon1)
-        let coordinate2 = CLLocation(latitude: lat2, longitude: lon2)
-        return coordinate1.distance(from: coordinate2)
     }
 }
 
 //MARK: - CameraView
+enum CameraCaptureResult {
+    case captured(PlacePhoto)
+    case rejected(distanceMeters: Double)
+    case cancelled
+}
+
 struct CameraView: UIViewControllerRepresentable {
     let placeLatitude: Double
     let placeLongitude: Double
     let locationTolerance: Double
-    let completion: (PlacePhoto?) -> Void
+    let completion: (CameraCaptureResult) -> Void
 
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
@@ -385,8 +362,8 @@ struct CameraView: UIViewControllerRepresentable {
 
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             guard let image = info[.originalImage] as? UIImage,
-                  let imageData = image.jpegData(compressionQuality: 0.8) else {
-                parent.completion(nil)
+                  let imageData = PhotoProcessing.storableImageData(from: image) else {
+                parent.completion(.cancelled)
                 return
             }
 
@@ -402,19 +379,20 @@ struct CameraView: UIViewControllerRepresentable {
                         photoLatitude: userLocation.coordinate.latitude,
                         photoLongitude: userLocation.coordinate.longitude
                     )
-                    parent.completion(photo)
+                    parent.completion(.captured(photo))
                 } else {
-                    // Photo is too far - reject it
-                    parent.completion(nil)
+                    parent.completion(.rejected(distanceMeters: distance))
                 }
             } else {
-                // No location available - reject the photo
-                parent.completion(nil)
+                // No GPS fix yet (common right after opening the camera):
+                // keep the photo, just without coordinates.
+                let photo = PlacePhoto(imageData: imageData, addedDate: Date())
+                parent.completion(.captured(photo))
             }
         }
 
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-            parent.completion(nil)
+            parent.completion(.cancelled)
         }
     }
 }

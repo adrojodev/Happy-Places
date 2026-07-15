@@ -156,15 +156,19 @@ struct PhotoImportSheet: View {
                     .foregroundStyle(.secondary)
                     .padding(.horizontal)
 
-                PhotosPicker(selection: $selectedItem, matching: .images) {
+                PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
                     Label("Choose Photo", systemImage: "photo.on.rectangle")
                 }
                 .buttonStyle(.borderedProminent)
             }
             .padding()
-            .navigationBarItems(trailing: Button("Cancel") {
-                dismiss()
-            })
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+            }
             .onChange(of: selectedItem) {
                 Task {
                     await loadPhotoLocation()
@@ -182,16 +186,15 @@ struct PhotoImportSheet: View {
         guard let item = selectedItem else { return }
 
         guard let data = try? await item.loadTransferable(type: Data.self),
-              let _ = UIImage(data: data) else {
+              let storableData = PhotoProcessing.storableImageData(from: data) else {
             alertMessage = "Failed to load photo"
             showingAlert = true
             return
         }
 
-        // Try to extract location using both methods
-        if let photoLocation = await extractLocation(from: item, imageData: data) {
+        if let photoLocation = PhotoProcessing.location(from: item, imageData: data) {
             let photo = PlacePhoto(
-                imageData: data,
+                imageData: storableData,
                 addedDate: Date(),
                 photoLatitude: photoLocation.latitude,
                 photoLongitude: photoLocation.longitude
@@ -203,36 +206,13 @@ struct PhotoImportSheet: View {
             showingAlert = true
         }
     }
-
-    private func extractLocation(from item: PhotosPickerItem, imageData: Data) async -> CLLocationCoordinate2D? {
-        // Method 1: Try to get PHAsset via identifier
-        if let identifier = item.itemIdentifier {
-            let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [identifier], options: nil)
-            if let asset = fetchResult.firstObject, let location = asset.location {
-                return location.coordinate
-            }
-        }
-
-        // Method 2: Try to extract from EXIF data directly
-        if let imageSource = CGImageSourceCreateWithData(imageData as CFData, nil),
-           let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) as? [String: Any],
-           let gpsData = imageProperties[kCGImagePropertyGPSDictionary as String] as? [String: Any],
-           let latitude = gpsData[kCGImagePropertyGPSLatitude as String] as? Double,
-           let longitude = gpsData[kCGImagePropertyGPSLongitude as String] as? Double,
-           let latitudeRef = gpsData[kCGImagePropertyGPSLatitudeRef as String] as? String,
-           let longitudeRef = gpsData[kCGImagePropertyGPSLongitudeRef as String] as? String {
-
-            // Adjust for hemisphere
-            let finalLatitude = latitudeRef == "S" ? -latitude : latitude
-            let finalLongitude = longitudeRef == "W" ? -longitude : longitude
-
-            return CLLocationCoordinate2D(latitude: finalLatitude, longitude: finalLongitude)
-        }
-
-        return nil
-    }
 }
 
 #Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Place.self, configurations: config)
+
     LocationsListView()
+        .modelContainer(container)
+        .environment(CloudKitSyncMonitor())
 }

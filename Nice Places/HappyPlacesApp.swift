@@ -7,66 +7,6 @@
 
 import SwiftUI
 import SwiftData
-import CoreData
-import Combine
-
-// MARK: - CloudKit Sync Monitor
-@Observable
-class CloudKitSyncMonitor {
-    var isSyncing: Bool = false
-    var lastSyncDate: Date?
-    var syncError: String?
-
-    private var cancellables = Set<AnyCancellable>()
-
-    init() {
-        setupNotificationObservers()
-    }
-
-    private func setupNotificationObservers() {
-        // Listen for CloudKit notifications
-        NotificationCenter.default.publisher(for: NSPersistentCloudKitContainer.eventChangedNotification)
-            .sink { [weak self] notification in
-                self?.handleCloudKitEvent(notification)
-            }
-            .store(in: &cancellables)
-    }
-
-    private func handleCloudKitEvent(_ notification: Notification) {
-        guard let event = notification.userInfo?[NSPersistentCloudKitContainer.eventNotificationUserInfoKey] as? NSPersistentCloudKitContainer.Event else {
-            return
-        }
-
-        DispatchQueue.main.async { [weak self] in
-            switch event.type {
-            case .setup:
-                self?.isSyncing = false
-            case .import:
-                self?.isSyncing = event.endDate == nil
-                if event.endDate != nil {
-                    self?.lastSyncDate = event.endDate
-                }
-                if let error = event.error {
-                    self?.syncError = error.localizedDescription
-                } else {
-                    self?.syncError = nil
-                }
-            case .export:
-                self?.isSyncing = event.endDate == nil
-                if event.endDate != nil {
-                    self?.lastSyncDate = event.endDate
-                }
-                if let error = event.error {
-                    self?.syncError = error.localizedDescription
-                } else {
-                    self?.syncError = nil
-                }
-            @unknown default:
-                break
-            }
-        }
-    }
-}
 
 @main
 struct HappyPlacesApp: App {
@@ -74,11 +14,21 @@ struct HappyPlacesApp: App {
     @State private var syncMonitor = CloudKitSyncMonitor()
 
     init() {
+        let schema = Schema([Place.self, PlacePhoto.self])
         do {
-            // Now with photos support - SwiftData handles lightweight migration
-            container = try ModelContainer(for: Place.self, PlacePhoto.self)
+            // Default configuration syncs through CloudKit (iCloud.rojo.happy-places).
+            // The Place -> PlacePhoto change is additive, so SwiftData's lightweight
+            // migration handles existing stores.
+            container = try ModelContainer(for: schema)
         } catch {
-            fatalError("Could not initialize ModelContainer: \(error)")
+            // Never crash-loop a live app on container init: retry with the same
+            // store but without CloudKit so users keep access to their local data.
+            do {
+                let localOnly = ModelConfiguration(schema: schema, cloudKitDatabase: .none)
+                container = try ModelContainer(for: schema, configurations: [localOnly])
+            } catch {
+                fatalError("Could not initialize ModelContainer: \(error)")
+            }
         }
     }
 

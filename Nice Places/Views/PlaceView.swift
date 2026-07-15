@@ -55,7 +55,7 @@ struct PlaceView: View {
                         if let photos = place.photos, !photos.isEmpty {
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 12) {
-                                    ForEach(Array(photos.enumerated()), id: \.offset) { index, photo in
+                                    ForEach(photos) { photo in
                                         if let imageData = photo.imageData,
                                            let uiImage = UIImage(data: imageData) {
                                             ZStack(alignment: .topTrailing) {
@@ -68,7 +68,7 @@ struct PlaceView: View {
 
                                                 if isEditing {
                                                     Button(action: {
-                                                        place.photos?.remove(at: index)
+                                                        deletePhoto(photo)
                                                     }) {
                                                         Image(systemName: "xmark.circle.fill")
                                                             .foregroundStyle(.white, .red)
@@ -218,6 +218,13 @@ struct PlaceView: View {
     func deletePlace() {
         context.delete(place)
         dismiss()
+    }
+
+    func deletePhoto(_ photo: PlacePhoto) {
+        withAnimation {
+            place.photos?.removeAll { $0 === photo }
+            context.delete(photo)
+        }
     }
 }
 

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E5AA000000000000000000B1 /* SyncStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A1 /* SyncStatusView.swift */; };
+		E5AA000000000000000000B2 /* CloudKitSyncMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A2 /* CloudKitSyncMonitor.swift */; };
+		E5AA000000000000000000B3 /* PhotoProcessing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A3 /* PhotoProcessing.swift */; };
 		E50116F82B76E7BC00E00E5D /* HappyPlacesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50116F72B76E7BC00E00E5D /* HappyPlacesApp.swift */; };
 		E50116FA2B76E7BC00E00E5D /* HappyPlacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50116F92B76E7BC00E00E5D /* HappyPlacesView.swift */; };
 		E50116FC2B76E7BC00E00E5D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E50116FB2B76E7BC00E00E5D /* Assets.xcassets */; };
@@ -48,6 +51,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E5AA000000000000000000A1 /* SyncStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatusView.swift; sourceTree = "<group>"; };
+		E5AA000000000000000000A2 /* CloudKitSyncMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitSyncMonitor.swift; sourceTree = "<group>"; };
+		E5AA000000000000000000A3 /* PhotoProcessing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoProcessing.swift; sourceTree = "<group>"; };
 		E50116F42B76E7BC00E00E5D /* Happy Places.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Happy Places.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E50116F72B76E7BC00E00E5D /* HappyPlacesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HappyPlacesApp.swift; sourceTree = "<group>"; };
 		E50116F92B76E7BC00E00E5D /* HappyPlacesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HappyPlacesView.swift; sourceTree = "<group>"; };
@@ -129,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				E564668B2B77D197004E055F /* Data */,
+				E5AA000000000000000000C1 /* Utils */,
 				E56466882B77BCAB004E055F /* Controller */,
 				E56466822B77B7DF004E055F /* Models */,
 				E50117282B7730AF00E00E5D /* Components */,
@@ -186,6 +193,7 @@
 				E56466942B77F7E8004E055F /* PlaceItemView.swift */,
 				E56528D62B890F4800292C26 /* IconSelector.swift */,
 				E56528D82B8910C400292C26 /* SelectIconButton.swift */,
+				E5AA000000000000000000A1 /* SyncStatusView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -213,6 +221,15 @@
 				E564668C2B77D1A4004E055F /* Icons.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		E5AA000000000000000000C1 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				E5AA000000000000000000A2 /* CloudKitSyncMonitor.swift */,
+				E5AA000000000000000000A3 /* PhotoProcessing.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -361,6 +378,9 @@
 				E50116F82B76E7BC00E00E5D /* HappyPlacesApp.swift in Sources */,
 				E501172A2B7730C400E00E5D /* EditNewLocationSheet.swift in Sources */,
 				E56528D72B890F4800292C26 /* IconSelector.swift in Sources */,
+				E5AA000000000000000000B1 /* SyncStatusView.swift in Sources */,
+				E5AA000000000000000000B2 /* CloudKitSyncMonitor.swift in Sources */,
+				E5AA000000000000000000B3 /* PhotoProcessing.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

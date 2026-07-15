@@ -18,7 +18,7 @@ struct SyncStatusView: View {
                 Text("Syncing...")
                     .font(.caption2)
                     .foregroundStyle(.secondary)
-            } else if let error = syncMonitor.syncError {
+            } else if syncMonitor.syncError != nil {
                 Image(systemName: "exclamationmark.icloud")
                     .font(.caption)
                     .foregroundStyle(.orange)
