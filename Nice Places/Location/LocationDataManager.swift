@@ -7,54 +7,32 @@
 
 import Foundation
 import CoreLocation
+import Observation
 
-class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegate {
-    var locationManager = CLLocationManager()
-    
+/// Retained location manager. The CLLocationManager must outlive the
+/// permission prompt — a throwaway instance is deallocated before the
+/// prompt can appear, so always go through this shared object.
+@Observable
+class LocationDataManager: NSObject, CLLocationManagerDelegate {
+    static let shared = LocationDataManager()
+
+    var authorizationStatus: CLAuthorizationStatus = .notDetermined
+
+    private let locationManager = CLLocationManager()
+
     override init() {
         super.init()
         locationManager.delegate = self
+        authorizationStatus = locationManager.authorizationStatus
     }
-    
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        switch manager.authorizationStatus {
-        case .authorizedWhenInUse:  // Location services are available.
-            // Insert code here of what should happen when Location services are authorized
-            authorizationStatus = .authorizedWhenInUse
-            locationManager.requestLocation()
-            break
-            
-        case .restricted:  // Location services currently unavailable.
-            // Insert code here of what should happen when Location services are NOT authorized
-            authorizationStatus = .restricted
-            break
-            
-        case .denied:  // Location services currently unavailable.
-            // Insert code here of what should happen when Location services are NOT authorized
-            authorizationStatus = .denied
-            break
-            
-        case .notDetermined:        // Authorization not determined yet.
-            authorizationStatus = .notDetermined
-            manager.requestWhenInUseAuthorization()
-            break
-            
-        default:
-            break
+
+    func requestAuthorizationIfNeeded() {
+        if locationManager.authorizationStatus == .notDetermined {
+            locationManager.requestWhenInUseAuthorization()
         }
     }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        // Insert code to handle location updates
+
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        authorizationStatus = manager.authorizationStatus
     }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("error: \(error.localizedDescription)")
-    }
-    
-    @Published var authorizationStatus: CLAuthorizationStatus?
 }
-
-    
-    
-

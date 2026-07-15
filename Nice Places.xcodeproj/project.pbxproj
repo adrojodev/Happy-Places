@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E5AA000000000000000000B7 /* LocationDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A7 /* LocationDataManager.swift */; };
 		E5AA000000000000000000B4 /* PlaceIconBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A4 /* PlaceIconBadge.swift */; };
 		E5AA000000000000000000B5 /* Place+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A5 /* Place+UI.swift */; };
 		E5AA000000000000000000B6 /* AppleMaps.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A6 /* AppleMaps.swift */; };
@@ -52,6 +53,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E5AA000000000000000000A7 /* LocationDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataManager.swift; sourceTree = "<group>"; };
 		E5AA000000000000000000A4 /* PlaceIconBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceIconBadge.swift"; sourceTree = "<group>"; };
 		E5AA000000000000000000A5 /* Place+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Place+UI.swift"; sourceTree = "<group>"; };
 		E5AA000000000000000000A6 /* AppleMaps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppleMaps.swift"; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				E564668B2B77D197004E055F /* Data */,
 				E5AA000000000000000000C1 /* Utils */,
 				E5AA000000000000000000C2 /* Extensions */,
+				E5AA000000000000000000C3 /* Location */,
 				E56466822B77B7DF004E055F /* Models */,
 				E50117282B7730AF00E00E5D /* Components */,
 				E50117242B76E81C00E00E5D /* Views */,
@@ -233,6 +236,14 @@
 				E5AA000000000000000000A5 /* Place+UI.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		E5AA000000000000000000C3 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				E5AA000000000000000000A7 /* LocationDataManager.swift */,
+			);
+			path = Location;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -385,6 +396,7 @@
 				E5AA000000000000000000B4 /* PlaceIconBadge.swift in Sources */,
 				E5AA000000000000000000B5 /* Place+UI.swift in Sources */,
 				E5AA000000000000000000B6 /* AppleMaps.swift in Sources */,
+				E5AA000000000000000000B7 /* LocationDataManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -50,11 +50,9 @@ struct LocationsListView: View {
                         }, description: {
                             Text("Go and find new places!")
                         }, actions: {
-                            Button(action: {}, label: {
-                                NavigationLink(destination: NewLocationView(isTabbarShowing: $isTabbarShowing)) {
-                                    Text("Add a new place!")
-                                }
-                            })
+                            NavigationLink(destination: NewLocationView(isTabbarShowing: $isTabbarShowing)) {
+                                Text("Add a new place!")
+                            }
                         })
                         .ignoresSafeArea(.all)
                     }

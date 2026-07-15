@@ -28,8 +28,7 @@ struct PlaceView: View {
     var body: some View {
         let formattedDate: String = place.createdDate.formatted(.dateTime.day().month().year())
         
-        NavigationStack {
-            ScrollView {
+        ScrollView {
                 VStack (alignment: .leading,
                         spacing: 16.0) {
                     NavigationLink(destination: MapView(place: place)) {
@@ -126,7 +125,6 @@ struct PlaceView: View {
                             Button(action: {
                                 withAnimation(.spring(duration: 0.1)) {
                                     isTabbarShowing = false
-                                    place.color = selectedColor.rawValue
                                     isEditing.toggle()
                                 }}, label: {
                                     VStack {
@@ -195,20 +193,26 @@ struct PlaceView: View {
                     }
                 }
             }
-            }
-            .onAppear() {
-                selectedColor = PlaceColor(rawValue: place.color) ?? PlaceColor.green
-                isTabbarShowing = false
-                region = .region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: place.latitude,
-                                                                                   longitude: place.longitude),
-                                                    span: MKCoordinateSpan(latitudeDelta: 0.005,
-                                                                           longitudeDelta: 0.005)))
-            }
-            .animation(.spring, value: isEditing)
-            .padding([.horizontal], 16)
-            .toolbarBackground(.hidden, for: .navigationBar)
-            .navigationBarTitle("", displayMode: .inline)
         }
+        .onAppear() {
+            selectedColor = PlaceColor(rawValue: place.color) ?? PlaceColor.green
+            isTabbarShowing = false
+            region = .region(MKCoordinateRegion(center: place.coordinate,
+                                                span: MKCoordinateSpan(latitudeDelta: 0.005,
+                                                                       longitudeDelta: 0.005)))
+        }
+        .onChange(of: selectedColor) {
+            // Persist immediately, like the icon: leaving the screen mid-edit
+            // used to keep the new icon but silently drop the new color.
+            if isEditing {
+                place.color = selectedColor.rawValue
+            }
+        }
+        .animation(.spring, value: isEditing)
+        .padding([.horizontal], 16)
+        .toolbarBackground(.hidden, for: .navigationBar)
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     func deletePlace() {

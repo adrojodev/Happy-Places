@@ -47,15 +47,14 @@ struct MarkersMapView: View {
         .mapStyle(.standard(elevation: .realistic))
         .onChange(of: selectedItem) {
             showSheet = selectedItem != nil
+            // Runs on every selection change, so switching between markers
+            // while the sheet is open re-centers the camera too.
+            animateMapToPin()
         }
         .sheet(isPresented: $showSheet, onDismiss: dismissSheet) {
             PlaceMapPreview(place: selectedItem)
                 .presentationDetents([.fraction(0.3), .medium, .large])
-            .presentationDragIndicator(.visible)
-            .onAppear() {
-                animateMapToPin()
-            }
-            Spacer()
+                .presentationDragIndicator(.visible)
         }
     }
     

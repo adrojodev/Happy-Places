@@ -14,6 +14,7 @@ struct Icon: Identifiable {
 }
 
 let icons = [
+    Icon(icon: "mappin"),
     Icon(icon: "sun.max.fill"),
     Icon(icon: "moon.stars.fill"),
     Icon(icon: "cloud.fill"),

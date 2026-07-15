@@ -13,7 +13,7 @@ import SwiftUI
 class Place {
     var color: String = "green"
     var createdDate: Date = Date()
-    var icon: String = "pin"
+    var icon: String = "mappin"
     var latitude: Double = 12.64654
     var longitude: Double = -122.86453
     var name: String = "Happy Place"

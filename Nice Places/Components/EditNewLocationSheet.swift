@@ -156,7 +156,8 @@ struct EditNewLocationSheet: View {
                             }
                             .buttonStyle(.borderedProminent)
                             .tint(selectedColor.color)
-        
+                            .disabled(placeName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+
                         }
                     }
                     .formStyle(.columns)
