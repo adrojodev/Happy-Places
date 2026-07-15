@@ -64,7 +64,26 @@ let icons = [
     Icon(icon: "movieclapper.fill"),
     Icon(icon: "sunglasses"),
     Icon(icon: "heart.fill"),
-    Icon(icon: "paperplane.fill")
+    Icon(icon: "paperplane.fill"),
+    Icon(icon: "beach.umbrella"),
+    Icon(icon: "figure.pool.swim"),
+    Icon(icon: "mountain.2.fill"),
+    Icon(icon: "wineglass.fill"),
+    Icon(icon: "bed.double.fill"),
+    Icon(icon: "building.columns.fill"),
+    Icon(icon: "popcorn.fill"),
+    Icon(icon: "music.note"),
+    Icon(icon: "cart.fill"),
+    Icon(icon: "sportscourt.fill"),
+    Icon(icon: "dumbbell.fill"),
+    Icon(icon: "graduationcap.fill"),
+    Icon(icon: "sailboat.fill"),
+    Icon(icon: "tram.fill"),
+    Icon(icon: "car.fill"),
+    Icon(icon: "cross.fill"),
+    Icon(icon: "cross.case.fill"),
+    Icon(icon: "building.2.fill"),
+    Icon(icon: "star.fill")
 ]
 
 enum PlaceColor: String, CaseIterable {

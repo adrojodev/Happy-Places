@@ -119,6 +119,24 @@ struct PlaceView: View {
                             }
                         Spacer()
                         HStack (alignment: .center , spacing: 0.2) {
+                            if isEditing,
+                               let suggestion = PlaceClassifier.suggest(for: place.name),
+                               suggestion.icon != place.icon || suggestion.color != selectedColor {
+                                Button {
+                                    withAnimation(.bouncy) {
+                                        place.icon = suggestion.icon
+                                        selectedColor = suggestion.color
+                                    }
+                                } label: {
+                                    Image(systemName: "sparkles")
+                                        .font(.body)
+                                        .foregroundStyle(suggestion.color.color)
+                                        .frame(width: 32, height: 32)
+                                        .background(.ultraThinMaterial)
+                                        .clipShape(Circle())
+                                }
+                                .transition(.scale.combined(with: .opacity))
+                            }
                             SelectIconButton(selectedIcon: $place.icon, selectedColor: $selectedColor)
                                 .opacity(isEditing ? 1.0 : 0.0)
                                 .scaleEffect(isEditing ? CGSize(width: 0.8, height: 0.8) : CGSize(width: 0.0, height: 0.0))

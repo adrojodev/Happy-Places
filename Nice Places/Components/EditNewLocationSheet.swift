@@ -25,6 +25,8 @@ struct EditNewLocationSheet: View {
     @State private var placeStory: String = ""
     @State private var selectedIcon: String = "mappin"
     @State private var selectedPhotos: [PlacePhoto] = []
+    @State private var userCustomizedIcon = false
+    @State private var lastSuggestion: PlaceClassifier.Suggestion?
 
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) private var dismiss
@@ -60,6 +62,15 @@ struct EditNewLocationSheet: View {
                             .fontWeight(.bold)
                         Spacer()
                         SelectIconButton(selectedIcon: $selectedIcon, selectedColor: $selectedColor)
+                            .overlay(alignment: .topLeading) {
+                                if lastSuggestion != nil && !userCustomizedIcon {
+                                    Image(systemName: "sparkles")
+                                        .font(.caption2)
+                                        .foregroundStyle(selectedColor.color)
+                                        .offset(x: -6, y: -4)
+                                        .transition(.scale.combined(with: .opacity))
+                                }
+                            }
                     }
                     Form {
                         VStack (spacing: 16) {
@@ -179,6 +190,32 @@ struct EditNewLocationSheet: View {
         .animation(.bouncy, value: isShowing)
         .animation(.easeInOut, value: isNameFocused)
         .animation(.easeInOut, value: isStoryFocused)
+        .onChange(of: placeName) {
+            applySuggestionIfWanted()
+        }
+        .onChange(of: selectedIcon) {
+            // Any change that didn't come from a suggestion is a manual pick;
+            // stop suggesting from then on.
+            if selectedIcon != (lastSuggestion?.icon ?? "mappin") {
+                userCustomizedIcon = true
+            }
+        }
+        .onChange(of: selectedColor) {
+            if selectedColor != (lastSuggestion?.color ?? .green) {
+                userCustomizedIcon = true
+            }
+        }
+    }
+
+    private func applySuggestionIfWanted() {
+        guard !userCustomizedIcon else { return }
+        guard let suggestion = PlaceClassifier.suggest(for: placeName),
+              suggestion != lastSuggestion else { return }
+        lastSuggestion = suggestion
+        withAnimation(.bouncy) {
+            selectedIcon = suggestion.icon
+            selectedColor = suggestion.color
+        }
     }
 }
 

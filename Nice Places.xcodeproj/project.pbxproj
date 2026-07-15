@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E5AA000000000000000000B8 /* PlaceClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A8 /* PlaceClassifier.swift */; };
+		E5AA000000000000000000B9 /* PlaceClassifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A9 /* PlaceClassifierTests.swift */; };
+		E5AA000000000000000000BA /* IconsValidityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000AA /* IconsValidityTests.swift */; };
 		E5AA000000000000000000B7 /* LocationDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A7 /* LocationDataManager.swift */; };
 		E5AA000000000000000000B4 /* PlaceIconBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A4 /* PlaceIconBadge.swift */; };
 		E5AA000000000000000000B5 /* Place+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A5 /* Place+UI.swift */; };
@@ -53,6 +56,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E5AA000000000000000000A8 /* PlaceClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceClassifier.swift; sourceTree = "<group>"; };
+		E5AA000000000000000000A9 /* PlaceClassifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceClassifierTests.swift; sourceTree = "<group>"; };
+		E5AA000000000000000000AA /* IconsValidityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconsValidityTests.swift; sourceTree = "<group>"; };
 		E5AA000000000000000000A7 /* LocationDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataManager.swift; sourceTree = "<group>"; };
 		E5AA000000000000000000A4 /* PlaceIconBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceIconBadge.swift"; sourceTree = "<group>"; };
 		E5AA000000000000000000A5 /* Place+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Place+UI.swift"; sourceTree = "<group>"; };
@@ -165,6 +171,8 @@
 			isa = PBXGroup;
 			children = (
 				E50117082B76E7BD00E00E5D /* Nice_PlacesTests.swift */,
+				E5AA000000000000000000A9 /* PlaceClassifierTests.swift */,
+				E5AA000000000000000000AA /* IconsValidityTests.swift */,
 			);
 			path = "Nice PlacesTests";
 			sourceTree = "<group>";
@@ -216,6 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				E564668C2B77D1A4004E055F /* Icons.swift */,
+				E5AA000000000000000000A8 /* PlaceClassifier.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -397,6 +406,7 @@
 				E5AA000000000000000000B5 /* Place+UI.swift in Sources */,
 				E5AA000000000000000000B6 /* AppleMaps.swift in Sources */,
 				E5AA000000000000000000B7 /* LocationDataManager.swift in Sources */,
+				E5AA000000000000000000B8 /* PlaceClassifier.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +415,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E50117092B76E7BD00E00E5D /* Nice_PlacesTests.swift in Sources */,
+				E5AA000000000000000000B9 /* PlaceClassifierTests.swift in Sources */,
+				E5AA000000000000000000BA /* IconsValidityTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
