@@ -154,6 +154,8 @@ final class PhotoPlacesScanner {
     }
 
     private(set) var phase: Phase = .idle
+    /// 0...1 while scanning the library.
+    private(set) var scanProgress: Double = 0
     var candidates: [PlaceSuggestionCandidate] = []
 
     private let geocoder = CLGeocoder()
@@ -164,6 +166,7 @@ final class PhotoPlacesScanner {
     func start(existingPlaces: [CLLocationCoordinate2D]) async {
         guard phase == .idle else { return }
         phase = .scanning
+        scanProgress = 0
 
         let status = await PHPhotoLibrary.requestAuthorization(for: .readWrite)
         guard status == .authorized || status == .limited else {
@@ -171,11 +174,25 @@ final class PhotoPlacesScanner {
             return
         }
 
+        let started = Date()
+        let onProgress: @Sendable (Int, Int) -> Void = { [weak self] processed, total in
+            Task { @MainActor in
+                self?.scanProgress = total > 0 ? Double(processed) / Double(total) : 1
+            }
+        }
         let clusters = await Task.detached(priority: .userInitiated) {
-            let samples = Self.fetchSamples()
+            let samples = Self.fetchSamples(onProgress: onProgress)
             let clustered = PhotoClustering.cluster(samples)
             return PhotoClustering.removeClusters(clustered, near: existingPlaces)
         }.value
+
+        // Keep the progress screen up long enough to register — an instant
+        // flash reads as "nothing happened".
+        let elapsed = Date().timeIntervalSince(started)
+        if elapsed < 1.2 {
+            try? await Task.sleep(nanoseconds: UInt64((1.2 - elapsed) * 1_000_000_000))
+        }
+        scanProgress = 1
 
         candidates = clusters
             .sorted {
@@ -193,14 +210,20 @@ final class PhotoPlacesScanner {
         phase = candidates.isEmpty ? .empty : .ready
     }
 
-    private nonisolated static func fetchSamples() -> [PhotoClustering.Sample] {
+    private nonisolated static func fetchSamples(onProgress: @escaping @Sendable (Int, Int) -> Void) -> [PhotoClustering.Sample] {
         let options = PHFetchOptions()
         options.includeHiddenAssets = false
         let assets = PHAsset.fetchAssets(with: .image, options: options)
+        let total = assets.count
 
         var samples: [PhotoClustering.Sample] = []
-        samples.reserveCapacity(assets.count)
+        samples.reserveCapacity(total)
+        var processed = 0
         assets.enumerateObjects { asset, _, _ in
+            processed += 1
+            if processed % 200 == 0 || processed == total {
+                onProgress(processed, total)
+            }
             guard let location = asset.location else { return }
             samples.append(PhotoClustering.Sample(coordinate: location.coordinate,
                                                   date: asset.creationDate,

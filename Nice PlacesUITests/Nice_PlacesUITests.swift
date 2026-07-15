@@ -53,6 +53,11 @@ final class Nice_PlacesUITests: XCTestCase {
         XCTAssertTrue(scanButton.waitForExistence(timeout: 5))
         scanButton.tap()
 
+        // Intro screen: the scan only starts after an explicit confirmation.
+        let startButton = app.buttons["startScanButton"]
+        XCTAssertTrue(startButton.waitForExistence(timeout: 5), "Intro screen never appeared")
+        startButton.tap()
+
         // The photo-permission alert appears on first run (reinstall resets TCC).
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         for label in ["Allow Full Access", "Allow Access to All Photos", "Full Access", "Allow"] {
@@ -85,4 +90,5 @@ final class Nice_PlacesUITests: XCTestCase {
         XCTAssertTrue(app.cells.firstMatch.waitForExistence(timeout: 10),
                       "Added places must persist across relaunch")
     }
+
 }

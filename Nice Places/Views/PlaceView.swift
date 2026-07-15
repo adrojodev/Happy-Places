@@ -166,9 +166,12 @@ struct PlaceView: View {
                                 })
                             .background()
                             .backgroundStyle(selectedColor.color.opacity(isEditing ? 0.2 : 1.0))
+                            // Not .foregroundStyle(.background): that resolves to the
+                            // custom backgroundStyle above (the pill color itself),
+                            // which makes the label invisible.
                             .foregroundStyle(isEditing
-                                             ? AnyShapeStyle(selectedColor == .yellow ? Color.orange : selectedColor.color)
-                                             : AnyShapeStyle(.background))
+                                             ? (selectedColor == .yellow ? Color.orange : selectedColor.color)
+                                             : Color(uiColor: .systemBackground))
                             .cornerRadius(.infinity)
                             .tint(selectedColor.color)
                         }
