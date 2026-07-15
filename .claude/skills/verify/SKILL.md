@@ -9,6 +9,8 @@ description: Verify a Happy Places change end-to-end in the iOS simulator — bu
 
 Follow the `build` skill. Both must be green before driving the UI.
 
+**Gotcha:** several simulators share the name "iPhone 17 Pro" (one per runtime). Seed/grant/install commands target the *booted* device, but `xcodebuild -destination name=...` may pick a different one. Always pin UI-test runs with `-destination 'id=<UDID>'` (find it via `xcrun simctl list devices | grep Booted`) and pass `-parallel-testing-enabled NO` so tests run on the seeded device instead of a fresh clone.
+
 ## 2. Install & launch in the simulator
 
 ```sh

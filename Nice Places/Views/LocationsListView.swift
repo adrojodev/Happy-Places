@@ -82,6 +82,7 @@ struct LocationsListView: View {
                             .foregroundStyle(.secondary)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("photoMenuButton")
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -91,6 +92,7 @@ struct LocationsListView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .buttonBorderShape(.circle)
+                    .accessibilityIdentifier("addPlaceButton")
                 }
             }
             .sheet(isPresented: $showingPhotoImport) {

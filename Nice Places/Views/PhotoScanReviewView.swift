@@ -58,6 +58,7 @@ struct PhotoScanReviewView: View {
                                 scanner.candidates[index].isSelected = select
                             }
                         }
+                        .accessibilityIdentifier("selectAllButton")
                     }
                 }
             }
@@ -73,6 +74,7 @@ struct PhotoScanReviewView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(selectedCount == 0)
+                    .accessibilityIdentifier("addSelectedPlacesButton")
                     .padding(.horizontal, 16)
                     .padding(.bottom, 8)
                     .background(.thinMaterial)
@@ -107,6 +109,8 @@ struct PhotoScanReviewView: View {
                               text: "")
             context.insert(place)
         }
+        // Persist immediately — autosave may not fire before the app goes away.
+        try? context.save()
         dismiss()
     }
 }

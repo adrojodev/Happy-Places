@@ -82,6 +82,7 @@ struct EditNewLocationSheet: View {
                                     .background(.foreground.opacity(0.15))
                                     .cornerRadius(16.0)
                                     .focused($isNameFocused)
+                                    .accessibilityIdentifier("placeNameField")
 
                                 TextField("Tell your story here", text: $placeStory, axis: .vertical)
                                     .lineLimit(3...5)
@@ -155,6 +156,7 @@ struct EditNewLocationSheet: View {
                                                   photos: selectedPhotos)
 
                                 context.insert(place)
+                                try? context.save()
                                 dismiss()
                             } label: {
                                 Text("Save Place")
@@ -168,6 +170,7 @@ struct EditNewLocationSheet: View {
                             .buttonStyle(.borderedProminent)
                             .tint(selectedColor.color)
                             .disabled(placeName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                            .accessibilityIdentifier("savePlaceButton")
 
                         }
                     }
