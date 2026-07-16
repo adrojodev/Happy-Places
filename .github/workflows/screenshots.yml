@@ -8,6 +8,8 @@ name: Upload App Store screenshots
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ci/asc-screenshots]
 
 jobs:
   screenshots:
