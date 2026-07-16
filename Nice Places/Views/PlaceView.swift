@@ -18,8 +18,15 @@ struct PlaceView: View {
     
     @State private var region: MapCameraPosition = .automatic
     @State private var isEditing: Bool = false
+
+    init(place: Place, isTabbarShowing: Binding<Bool>, startsEditing: Bool = false) {
+        self.place = place
+        self._isTabbarShowing = isTabbarShowing
+        self._isEditing = State(initialValue: startsEditing)
+    }
     @State private var selectedColor: PlaceColor = PlaceColor.green
     @State private var isGonnaDelete: Bool = false
+    @State private var pendingImports: Int = 0
     
     @FocusState private var focusName: Bool
     @FocusState private var focusDescription: Bool
@@ -45,7 +52,7 @@ struct PlaceView: View {
                 // Photos section
                 if isEditing || (place.photos != nil && !place.photos!.isEmpty) {
                     VStack(alignment: .leading, spacing: 8) {
-                        if let photos = place.photos, !photos.isEmpty {
+                        if let photos = place.photos, !photos.isEmpty || pendingImports > 0 {
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 12) {
                                     ForEach(photos) { photo in
@@ -73,6 +80,14 @@ struct PlaceView: View {
                                         }
                                     }
 
+                                    // Loading previews for photos still importing
+                                    ForEach(0..<pendingImports, id: \.self) { _ in
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(.quaternary)
+                                            .frame(width: 120, height: 120)
+                                            .overlay { ProgressView() }
+                                    }
+
                                     // Add button (square) when editing
                                     if isEditing {
                                         PhotoPickerButton(selectedPhotos: .init(
@@ -82,7 +97,8 @@ struct PlaceView: View {
                                         placeLatitude: place.latitude,
                                         placeLongitude: place.longitude,
                                         isEmpty: false,
-                                        selectedColor: selectedColor)
+                                        selectedColor: selectedColor,
+                                        pendingImports: $pendingImports)
                                     }
                                 }
                             }
@@ -95,7 +111,8 @@ struct PlaceView: View {
                             placeLatitude: place.latitude,
                             placeLongitude: place.longitude,
                             isEmpty: true,
-                            selectedColor: selectedColor)
+                            selectedColor: selectedColor,
+                            pendingImports: $pendingImports)
                         }
                     }
                 }
@@ -148,11 +165,17 @@ struct PlaceView: View {
                                     VStack {
                                         if (isEditing) {
                                             HStack {
-                                                Image(systemName: "checkmark.circle.fill")
-                                                Text("Done")
+                                                if pendingImports > 0 {
+                                                    ProgressView()
+                                                        .controlSize(.small)
+                                                    Text("Adding…")
+                                                } else {
+                                                    Image(systemName: "checkmark.circle.fill")
+                                                    Text("Done")
+                                                }
                                             }
                                             .transition(.asymmetric(insertion: .push(from: .top), removal: .push(from: .bottom)))
-                                            
+
                                         } else {
                                             HStack {
                                                 Image(systemName: "pencil")
@@ -164,6 +187,7 @@ struct PlaceView: View {
                                     .padding(.horizontal, 12.0)
                                     .padding(.vertical, 8.0)
                                 })
+                            .disabled(isEditing && pendingImports > 0)
                             .background()
                             .backgroundStyle(selectedColor.color.opacity(isEditing ? 0.2 : 1.0))
                             // Not .foregroundStyle(.background): that resolves to the
@@ -207,7 +231,7 @@ struct PlaceView: View {
                             Label("Delete", systemImage: "trash")
                                 .frame(maxWidth: .infinity)
                         }
-                        .buttonStyle(.borderedProminent)
+                        .prominentActionStyle()
                         .alert("Sure you wanna delete this one?", isPresented: $isGonnaDelete) {
                             Button("Delete", role: .destructive, action: deletePlace)
                         }

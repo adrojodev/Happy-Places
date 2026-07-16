@@ -8,14 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		E5AA000000000000000000BB /* PhotoPlacesScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000AB /* PhotoPlacesScanner.swift */; };
+		E5AA0000000000000000E003 /* PhotoCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000E004 /* PhotoCarouselView.swift */; };
+		E5AA0000000000000000E001 /* PlaceNamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000E002 /* PlaceNamer.swift */; };
 		E5AA000000000000000000BC /* PhotoScanReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000AC /* PhotoScanReviewView.swift */; };
 		E5AA000000000000000000BD /* ClusteringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000AD /* ClusteringTests.swift */; };
+		E5AA0000000000000000D001 /* DuplicatePlaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000D002 /* DuplicatePlaceTests.swift */; };
+		E5AA0000000000000000E005 /* PlaceNamerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000E006 /* PlaceNamerTests.swift */; };
 		E5AA000000000000000000B8 /* PlaceClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A8 /* PlaceClassifier.swift */; };
 		E5AA000000000000000000B9 /* PlaceClassifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A9 /* PlaceClassifierTests.swift */; };
 		E5AA000000000000000000BA /* IconsValidityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000AA /* IconsValidityTests.swift */; };
 		E5AA000000000000000000B7 /* LocationDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A7 /* LocationDataManager.swift */; };
 		E5AA000000000000000000B4 /* PlaceIconBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A4 /* PlaceIconBadge.swift */; };
 		E5AA000000000000000000B5 /* Place+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A5 /* Place+UI.swift */; };
+		E5AA0000000000000000E007 /* ActionButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000E008 /* ActionButtonStyle.swift */; };
 		E5AA000000000000000000B6 /* AppleMaps.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A6 /* AppleMaps.swift */; };
 		E5AA000000000000000000B1 /* SyncStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A1 /* SyncStatusView.swift */; };
 		E5AA000000000000000000B2 /* CloudKitSyncMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA000000000000000000A2 /* CloudKitSyncMonitor.swift */; };
@@ -60,14 +65,19 @@
 
 /* Begin PBXFileReference section */
 		E5AA000000000000000000AB /* PhotoPlacesScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPlacesScanner.swift; sourceTree = "<group>"; };
+		E5AA0000000000000000E004 /* PhotoCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCarouselView.swift; sourceTree = "<group>"; };
+		E5AA0000000000000000E002 /* PlaceNamer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceNamer.swift; sourceTree = "<group>"; };
 		E5AA000000000000000000AC /* PhotoScanReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoScanReviewView.swift; sourceTree = "<group>"; };
 		E5AA000000000000000000AD /* ClusteringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusteringTests.swift; sourceTree = "<group>"; };
+		E5AA0000000000000000D002 /* DuplicatePlaceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicatePlaceTests.swift; sourceTree = "<group>"; };
+		E5AA0000000000000000E006 /* PlaceNamerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceNamerTests.swift; sourceTree = "<group>"; };
 		E5AA000000000000000000A8 /* PlaceClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceClassifier.swift; sourceTree = "<group>"; };
 		E5AA000000000000000000A9 /* PlaceClassifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceClassifierTests.swift; sourceTree = "<group>"; };
 		E5AA000000000000000000AA /* IconsValidityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconsValidityTests.swift; sourceTree = "<group>"; };
 		E5AA000000000000000000A7 /* LocationDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataManager.swift; sourceTree = "<group>"; };
 		E5AA000000000000000000A4 /* PlaceIconBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaceIconBadge.swift"; sourceTree = "<group>"; };
 		E5AA000000000000000000A5 /* Place+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Place+UI.swift"; sourceTree = "<group>"; };
+		E5AA0000000000000000E008 /* ActionButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonStyle.swift; sourceTree = "<group>"; };
 		E5AA000000000000000000A6 /* AppleMaps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppleMaps.swift"; sourceTree = "<group>"; };
 		E5AA000000000000000000A1 /* SyncStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatusView.swift; sourceTree = "<group>"; };
 		E5AA000000000000000000A2 /* CloudKitSyncMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitSyncMonitor.swift; sourceTree = "<group>"; };
@@ -181,6 +191,8 @@
 				E5AA000000000000000000A9 /* PlaceClassifierTests.swift */,
 				E5AA000000000000000000AA /* IconsValidityTests.swift */,
 				E5AA000000000000000000AD /* ClusteringTests.swift */,
+				E5AA0000000000000000D002 /* DuplicatePlaceTests.swift */,
+				E5AA0000000000000000E006 /* PlaceNamerTests.swift */,
 			);
 			path = "Nice PlacesTests";
 			sourceTree = "<group>";
@@ -214,6 +226,7 @@
 				E50117292B7730C400E00E5D /* EditNewLocationSheet.swift */,
 				E56466942B77F7E8004E055F /* PlaceItemView.swift */,
 				E56528D62B890F4800292C26 /* IconSelector.swift */,
+				E5AA0000000000000000E004 /* PhotoCarouselView.swift */,
 				E56528D82B8910C400292C26 /* SelectIconButton.swift */,
 				E5AA000000000000000000A1 /* SyncStatusView.swift */,
 				E5AA000000000000000000A4 /* PlaceIconBadge.swift */,
@@ -252,6 +265,7 @@
 			isa = PBXGroup;
 			children = (
 				E5AA000000000000000000A5 /* Place+UI.swift */,
+				E5AA0000000000000000E008 /* ActionButtonStyle.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -268,6 +282,7 @@
 			isa = PBXGroup;
 			children = (
 				E5AA000000000000000000AB /* PhotoPlacesScanner.swift */,
+				E5AA0000000000000000E002 /* PlaceNamer.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -421,10 +436,13 @@
 				E5AA000000000000000000B3 /* PhotoProcessing.swift in Sources */,
 				E5AA000000000000000000B4 /* PlaceIconBadge.swift in Sources */,
 				E5AA000000000000000000B5 /* Place+UI.swift in Sources */,
+				E5AA0000000000000000E007 /* ActionButtonStyle.swift in Sources */,
 				E5AA000000000000000000B6 /* AppleMaps.swift in Sources */,
 				E5AA000000000000000000B7 /* LocationDataManager.swift in Sources */,
 				E5AA000000000000000000B8 /* PlaceClassifier.swift in Sources */,
 				E5AA000000000000000000BB /* PhotoPlacesScanner.swift in Sources */,
+				E5AA0000000000000000E003 /* PhotoCarouselView.swift in Sources */,
+				E5AA0000000000000000E001 /* PlaceNamer.swift in Sources */,
 				E5AA000000000000000000BC /* PhotoScanReviewView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,6 +455,8 @@
 				E5AA000000000000000000B9 /* PlaceClassifierTests.swift in Sources */,
 				E5AA000000000000000000BA /* IconsValidityTests.swift in Sources */,
 				E5AA000000000000000000BD /* ClusteringTests.swift in Sources */,
+				E5AA0000000000000000D001 /* DuplicatePlaceTests.swift in Sources */,
+				E5AA0000000000000000E005 /* PlaceNamerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

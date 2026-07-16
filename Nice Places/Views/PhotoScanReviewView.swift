@@ -19,6 +19,7 @@ struct PhotoScanReviewView: View {
 
     @State private var scanner = PhotoPlacesScanner()
     @State private var addedCount: Int?
+    @State private var previewCandidate: PlaceSuggestionCandidate?
 
     private var selectedCount: Int {
         scanner.candidates.filter(\.isSelected).count
@@ -76,7 +77,7 @@ struct PhotoScanReviewView: View {
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 12)
                     }
-                    .buttonStyle(.borderedProminent)
+                    .prominentActionStyle()
                     .disabled(selectedCount == 0)
                     .accessibilityIdentifier("addSelectedPlacesButton")
                     .padding(.horizontal, 16)
@@ -149,7 +150,7 @@ struct PhotoScanReviewView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 12)
             }
-            .buttonStyle(.borderedProminent)
+            .prominentActionStyle()
             .accessibilityIdentifier("startScanButton")
             .padding(.horizontal, 24)
 
@@ -198,7 +199,7 @@ struct PhotoScanReviewView: View {
                     UIApplication.shared.open(url)
                 }
             }
-            .buttonStyle(.borderedProminent)
+            .prominentActionStyle()
         })
     }
 
@@ -214,12 +215,18 @@ struct PhotoScanReviewView: View {
 
     private var reviewList: some View {
         List($scanner.candidates) { $candidate in
-            PhotoSuggestionRow(candidate: $candidate)
-                .task {
-                    await scanner.geocodeIfNeeded(candidate.id)
-                }
+            PhotoSuggestionRow(candidate: $candidate) {
+                previewCandidate = candidate
+            }
+            .task {
+                await scanner.suggestNameIfNeeded(candidate.id)
+            }
         }
         .listStyle(.plain)
+        .fullScreenCover(item: $previewCandidate) { candidate in
+            PhotoCarouselView(title: candidate.name.isEmpty ? "Remember this place?" : candidate.name,
+                              assetIdentifiers: candidate.assetIdentifiers)
+        }
     }
 
     // MARK: Success
@@ -300,6 +307,7 @@ private struct IntroFeatureRow: View {
 
 private struct PhotoSuggestionRow: View {
     @Binding var candidate: PlaceSuggestionCandidate
+    let onPreview: () -> Void
 
     private var subtitle: String {
         var parts = ["\(candidate.photoCount) photo\(candidate.photoCount == 1 ? "" : "s")"]
@@ -326,14 +334,40 @@ private struct PhotoSuggestionRow: View {
             }
             .buttonStyle(.plain)
 
-            AssetThumbnail(assetIdentifier: candidate.assetIdentifiers.first)
+            Button(action: onPreview) {
+                AssetThumbnail(assetIdentifier: candidate.assetIdentifiers.first)
+                    .overlay(alignment: .bottomTrailing) {
+                        if candidate.assetIdentifiers.count > 1 {
+                            Text("\(candidate.photoCount)")
+                                .font(.caption2)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 5)
+                                .padding(.vertical, 2)
+                                .background(.black.opacity(0.55), in: Capsule())
+                                .padding(3)
+                        }
+                    }
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("suggestionPhotoButton")
 
             VStack(alignment: .leading, spacing: 4) {
-                TextField("Name this place", text: $candidate.name)
-                    .font(.headline)
-                    .onChange(of: candidate.name) { _, _ in
-                        candidate.userEditedName = true
+                HStack(spacing: 6) {
+                    TextField("Name this place", text: $candidate.name)
+                        .font(.headline)
+                        .onChange(of: candidate.name) { _, newValue in
+                            // Programmatic suggestions set suggestedName first;
+                            // anything else is the user typing.
+                            if newValue != candidate.suggestedName {
+                                candidate.userEditedName = true
+                            }
+                        }
+                    if candidate.isNaming {
+                        ProgressView()
+                            .controlSize(.small)
                     }
+                }
                 Text(subtitle)
                     .font(.caption)
                     .foregroundStyle(.secondary)

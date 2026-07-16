@@ -90,7 +90,7 @@ struct LocationsListView: View {
                         Image(systemName: "plus")
                             .font(.title3)
                     }
-                    .buttonStyle(.borderedProminent)
+                    .prominentActionStyle()
                     .buttonBorderShape(.circle)
                     .accessibilityIdentifier("addPlaceButton")
                 }
@@ -162,7 +162,7 @@ struct PhotoImportSheet: View {
                 PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
                     Label("Choose Photo", systemImage: "photo.on.rectangle")
                 }
-                .buttonStyle(.borderedProminent)
+                .prominentActionStyle()
             }
             .padding()
             .toolbar {

@@ -27,9 +27,18 @@ struct EditNewLocationSheet: View {
     @State private var selectedPhotos: [PlacePhoto] = []
     @State private var userCustomizedIcon = false
     @State private var lastSuggestion: PlaceClassifier.Suggestion?
+    @State private var nearbyPlace: Place?
+    @State private var ignoredNearbyPlaceID: PersistentIdentifier?
+    @State private var pendingImports: Int = 0
+
+    @Query private var places: [Place]
 
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) private var dismiss
+
+    /// Same radius the photo scanner uses to treat a spot as an
+    /// already-saved place.
+    static let duplicateRadiusMeters: Double = 150
 
     init(latitude: Binding<CLLocationDegrees?>, longitude: Binding<CLLocationDegrees?>, isShowing: Binding<Bool>, selectedColor: Binding<PlaceColor>, preloadedPhoto: PlacePhoto? = nil) {
         self._latitude = latitude
@@ -56,6 +65,9 @@ struct EditNewLocationSheet: View {
         ZStack (alignment: .bottom) {
             if isShowing {
                 VStack (spacing: 16) {
+                    if let nearby = nearbyPlace, nearby.persistentModelID != ignoredNearbyPlaceID {
+                        duplicateWarning(for: nearby)
+                    }
                     HStack {
                         Text(placeName == "" ? "Save this place" : placeName)
                             .font(.title2)
@@ -93,13 +105,14 @@ struct EditNewLocationSheet: View {
                                     .cornerRadius(16.0)
                                     .focused($isStoryFocused)
                                 VStack(alignment: .leading, spacing: 8) {
-                                    if selectedPhotos.isEmpty {
+                                    if selectedPhotos.isEmpty && pendingImports == 0 {
                                         // Full-width rectangle when no photos
                                         PhotoPickerButton(selectedPhotos: $selectedPhotos,
                                                         placeLatitude: currentLatitude,
                                                         placeLongitude: currentLongitude,
                                                         isEmpty: true,
-                                                        selectedColor: selectedColor)
+                                                        selectedColor: selectedColor,
+                                                        pendingImports: $pendingImports)
                                     } else {
                                         // Show "Photos" label and horizontal scroll with photos + add button
                                         ScrollView(.horizontal, showsIndicators: false) {
@@ -131,12 +144,21 @@ struct EditNewLocationSheet: View {
                                                     }
                                                 }
 
+                                                // Loading previews for photos still importing
+                                                ForEach(0..<pendingImports, id: \.self) { _ in
+                                                    RoundedRectangle(cornerRadius: 8)
+                                                        .fill(.quaternary)
+                                                        .frame(width: 80, height: 80)
+                                                        .overlay { ProgressView() }
+                                                }
+
                                                 // Add photo button (square)
                                                 PhotoPickerButton(selectedPhotos: $selectedPhotos,
                                                                 placeLatitude: currentLatitude,
                                                                 placeLongitude: currentLongitude,
                                                                 isEmpty: false,
-                                                                selectedColor: selectedColor)
+                                                                selectedColor: selectedColor,
+                                                                pendingImports: $pendingImports)
                                             }
                                         }
                                     }
@@ -167,9 +189,9 @@ struct EditNewLocationSheet: View {
                                     .cornerRadius(16)
                                 
                             }
-                            .buttonStyle(.borderedProminent)
+                            .prominentActionStyle()
                             .tint(selectedColor.color)
-                            .disabled(placeName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                            .disabled(placeName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || pendingImports > 0)
                             .accessibilityIdentifier("savePlaceButton")
 
                         }
@@ -193,6 +215,15 @@ struct EditNewLocationSheet: View {
         .animation(.bouncy, value: isShowing)
         .animation(.easeInOut, value: isNameFocused)
         .animation(.easeInOut, value: isStoryFocused)
+        .onChange(of: isShowing, initial: true) {
+            updateNearbyPlace()
+        }
+        .onChange(of: latitude) {
+            updateNearbyPlace()
+        }
+        .onChange(of: longitude) {
+            updateNearbyPlace()
+        }
         .onChange(of: placeName) {
             applySuggestionIfWanted()
         }
@@ -208,6 +239,74 @@ struct EditNewLocationSheet: View {
                 userCustomizedIcon = true
             }
         }
+    }
+
+    @ViewBuilder
+    private func duplicateWarning(for nearby: Place) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 12) {
+                PlaceIconBadge(icon: nearby.icon, color: nearby.uiColor)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Hey, is this \(nearby.name)?")
+                        .fontWeight(.semibold)
+                    Text("You saved it \(nearby.formattedDate), right around here.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer(minLength: 0)
+            }
+            HStack(spacing: 8) {
+                Button {
+                    dismiss()
+                } label: {
+                    Text("Yes, that's it")
+                        .fontWeight(.semibold)
+                        .frame(maxWidth: .infinity)
+                }
+                .prominentActionStyle()
+                .buttonBorderShape(.capsule)
+                .tint(nearby.uiColor)
+                .accessibilityIdentifier("duplicatePlaceYesButton")
+
+                Button {
+                    withAnimation(.bouncy) {
+                        ignoredNearbyPlaceID = nearby.persistentModelID
+                    }
+                } label: {
+                    Text("No, it's new")
+                        .fontWeight(.semibold)
+                        .frame(maxWidth: .infinity)
+                }
+                .secondaryActionStyle()
+                .buttonBorderShape(.capsule)
+                .accessibilityIdentifier("duplicatePlaceNoButton")
+            }
+        }
+        .padding(12)
+        .background(nearby.uiColor.opacity(0.12), in: RoundedRectangle(cornerRadius: 16))
+        .transition(.move(edge: .top).combined(with: .opacity))
+    }
+
+    private func updateNearbyPlace() {
+        guard isShowing, let lat = latitude, let lon = longitude else { return }
+        let here = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+        let closest = Self.nearestSavedPlace(to: here, in: places)
+        if closest?.persistentModelID != nearbyPlace?.persistentModelID {
+            withAnimation(.bouncy) {
+                nearbyPlace = closest
+            }
+        }
+    }
+
+    /// The closest already-saved place within `meters`, or nil if none.
+    static func nearestSavedPlace(to coordinate: CLLocationCoordinate2D,
+                                  in places: [Place],
+                                  within meters: Double = duplicateRadiusMeters) -> Place? {
+        places
+            .map { (place: $0, meters: PhotoProcessing.distanceMeters(from: coordinate, to: $0.coordinate)) }
+            .filter { $0.meters <= meters }
+            .min { $0.meters < $1.meters }?
+            .place
     }
 
     private func applySuggestionIfWanted() {
@@ -229,7 +328,18 @@ struct PhotoPickerButton: View {
     let placeLongitude: Double
     let isEmpty: Bool // true = full-width rectangle, false = square
     let selectedColor: PlaceColor
+    /// How many picked photos are still importing (drives loading previews
+    /// and lets the parent disable its Done/Save button).
+    @Binding var pendingImports: Int
     let locationTolerance: Double = 500.0 // meters
+
+    /// Already-added photos that came from the library; shown preselected in
+    /// the picker and excluded from the new-photo limit.
+    private var preselectable: [PhotosPickerItem] {
+        selectedPhotos.compactMap { photo in
+            photo.assetIdentifier.map { PhotosPickerItem(itemIdentifier: $0) }
+        }
+    }
 
     @State private var showingActionSheet = false
     @State private var selectedItems: [PhotosPickerItem] = []
@@ -277,13 +387,16 @@ struct PhotoPickerButton: View {
                 showingCamera = true
             }
             Button("Choose from Library") {
+                // Seed the picker with what's already added, so those photos
+                // show their checkmarks and don't eat into the new-photo limit.
+                selectedItems = preselectable
                 showingPhotoPicker = true
             }
             Button("Cancel", role: .cancel) { }
         }
         .photosPicker(isPresented: $showingPhotoPicker,
                      selection: $selectedItems,
-                     maxSelectionCount: 10,
+                     maxSelectionCount: preselectable.count + 10,
                      matching: .images,
                      photoLibrary: .shared())
         .onChange(of: selectedItems) {
@@ -315,9 +428,27 @@ struct PhotoPickerButton: View {
     }
 
     private func loadPhotos() async {
+        // Only import photos that aren't already on the place — the ones we
+        // preselected come back in the confirmed selection too. When nothing
+        // is new (e.g. the preselection seed itself), keep the selection so
+        // the picker still shows the checkmarks.
+        let existingIDs = Set(selectedPhotos.compactMap(\.assetIdentifier))
+        let newItems = selectedItems.filter { item in
+            guard let id = item.itemIdentifier else { return true }
+            return !existingIDs.contains(id)
+        }
+        guard !newItems.isEmpty else { return }
+
+        pendingImports = newItems.count
+        defer {
+            pendingImports = 0
+            selectedItems.removeAll()
+        }
+
         var rejectionMessages: [String] = []
 
-        for item in selectedItems {
+        for item in newItems {
+            defer { pendingImports = max(0, pendingImports - 1) }
             guard let data = try? await item.loadTransferable(type: Data.self),
                   let storableData = PhotoProcessing.storableImageData(from: data) else { continue }
 
@@ -332,7 +463,8 @@ struct PhotoPickerButton: View {
                         imageData: storableData,
                         addedDate: Date(),
                         photoLatitude: photoLocation.latitude,
-                        photoLongitude: photoLocation.longitude
+                        photoLongitude: photoLocation.longitude,
+                        assetIdentifier: item.itemIdentifier
                     )
                     selectedPhotos.append(photo)
                 } else {
@@ -342,8 +474,6 @@ struct PhotoPickerButton: View {
                 rejectionMessages.append("A photo has no location data. Please select photos taken at this place.")
             }
         }
-
-        selectedItems.removeAll()
 
         if !rejectionMessages.isEmpty {
             locationAlertMessage = rejectionMessages.joined(separator: "\n\n")

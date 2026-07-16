@@ -13,6 +13,7 @@ struct MapView: View {
     let place: Place
 
     @State private var region: MapCameraPosition = .automatic
+    @State private var showMapsChooser = false
 
     var body: some View {
         ZStack {
@@ -26,16 +27,15 @@ struct MapView: View {
 
             VStack {
                 Button("Open in Maps", systemImage: "map.fill") {
-                    AppleMaps.open(name: place.name, coordinate: place.coordinate)
+                    showMapsChooser = true
                 }
-                .buttonStyle(.borderedProminent)
+                .tint(place.uiColor)
+                .prominentActionStyle()
+                .buttonBorderShape(.capsule)
+                .controlSize(.large)
                 .font(.body)
                 .fontWeight(.semibold)
-                .padding([.horizontal], 32)
-                .padding([.vertical],16)
-                .background(place.uiColor)
-                .foregroundStyle(.background)
-                .cornerRadius(.infinity)
+                .mapsChooser(isPresented: $showMapsChooser, name: place.name, coordinate: place.coordinate)
             }
             .padding([.bottom], 32)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)

@@ -40,14 +40,19 @@ class PlacePhoto {
     var addedDate: Date?
     var photoLatitude: Double?
     var photoLongitude: Double?
+    /// Photo-library asset this photo came from (nil for camera captures).
+    /// Lets the picker preselect photos that are already added.
+    /// Optional + additive, so the CloudKit schema stays compatible.
+    var assetIdentifier: String?
 
     var place: Place?
 
-    init(imageData: Data, addedDate: Date = Date(), photoLatitude: Double? = nil, photoLongitude: Double? = nil, place: Place? = nil) {
+    init(imageData: Data, addedDate: Date = Date(), photoLatitude: Double? = nil, photoLongitude: Double? = nil, assetIdentifier: String? = nil, place: Place? = nil) {
         self.imageData = imageData
         self.addedDate = addedDate
         self.photoLatitude = photoLatitude
         self.photoLongitude = photoLongitude
+        self.assetIdentifier = assetIdentifier
         self.place = place
     }
 }

@@ -86,10 +86,10 @@ final class ClusteringTests: XCTestCase {
         XCTAssertTrue(PhotoClustering.cluster([]).isEmpty)
     }
 
-    func testRepresentativeAssetsCappedAtFour() {
-        let samples = (0..<10).map { sample(19.4326, -99.1332, id: "asset-\($0)") }
+    func testRepresentativeAssetsCappedAtTwelve() {
+        let samples = (0..<20).map { sample(19.4326, -99.1332, id: "asset-\($0)") }
         let cluster = PhotoClustering.cluster(samples)[0]
-        XCTAssertEqual(cluster.assetIdentifiers.count, 4)
-        XCTAssertEqual(cluster.photoCount, 10)
+        XCTAssertEqual(cluster.assetIdentifiers.count, 12)
+        XCTAssertEqual(cluster.photoCount, 20)
     }
 }

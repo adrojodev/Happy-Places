@@ -13,13 +13,18 @@ struct MarkersMapView: View {
     @Query(sort: \Place.createdDate) var places: [Place]
     @Environment(CloudKitSyncMonitor.self) private var syncMonitor
 
+    @State private var locationManager = LocationDataManager.shared
     @State private var cameraPosition: MapCameraPosition = .userLocation(fallback: .automatic)
     @State private var selectedItem: Place?
     @State private var showSheet: Bool = false
-    
+    @State private var sheetDetent: PresentationDetent = .fraction(0.3)
+    @State private var centerOnUserWhenAuthorized: Bool = false
+    @State private var showLocationDeniedAlert: Bool = false
+
     var body: some View {
         ZStack (alignment: .bottomTrailing) {
             Map(position: $cameraPosition, selection: $selectedItem) {
+                UserAnnotation()
                 ForEach(places, id: \.self) { place in
                     place.mapMarker
                         .tag(place)
@@ -39,7 +44,8 @@ struct MarkersMapView: View {
                 .controlSize(.extraLarge)
                 .padding(.horizontal, -6)
                 .shadow(radius: 8, x: 0, y: 4)
-                .buttonStyle(.borderedProminent)
+                .prominentActionStyle()
+                .accessibilityIdentifier("centerOnUserButton")
             }
             .padding(.all, 24.0)
             
@@ -52,13 +58,48 @@ struct MarkersMapView: View {
             animateMapToPin()
         }
         .sheet(isPresented: $showSheet, onDismiss: dismissSheet) {
-            PlaceMapPreview(place: selectedItem)
-                .presentationDetents([.fraction(0.3), .medium, .large])
+            PlaceMapPreview(place: selectedItem, detent: $sheetDetent)
+                .presentationDetents([.fraction(0.3), .medium, .large], selection: $sheetDetent)
                 .presentationDragIndicator(.visible)
         }
+        .onChange(of: locationManager.authorizationStatus) {
+            guard centerOnUserWhenAuthorized else { return }
+            switch locationManager.authorizationStatus {
+            case .authorizedWhenInUse, .authorizedAlways:
+                centerOnUserWhenAuthorized = false
+                animateToUserLocation()
+            case .denied, .restricted:
+                centerOnUserWhenAuthorized = false
+            default:
+                break
+            }
+        }
+        .alert("Location is off", isPresented: $showLocationDeniedAlert) {
+            Button("Open Settings") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Allow location access in Settings so the map can find you.")
+        }
     }
-    
+
     func getBackToUserLocation() {
+        switch locationManager.authorizationStatus {
+        case .notDetermined:
+            // Ask first; the onChange above finishes the jump once granted.
+            centerOnUserWhenAuthorized = true
+            locationManager.requestAuthorizationIfNeeded()
+        case .denied, .restricted:
+            showLocationDeniedAlert = true
+        default:
+            animateToUserLocation()
+        }
+    }
+
+    func animateToUserLocation() {
         withAnimation(.spring) {
             cameraPosition = .userLocation(fallback: .automatic)
         }
@@ -68,6 +109,7 @@ struct MarkersMapView: View {
         withAnimation(.bouncy) {
             selectedItem = nil
         }
+        sheetDetent = .fraction(0.3)
     }
     
     func animateMapToPin() {

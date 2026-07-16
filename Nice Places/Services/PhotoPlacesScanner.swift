@@ -9,6 +9,7 @@
 import Foundation
 import Photos
 import CoreLocation
+import MapKit
 import Observation
 import UIKit
 
@@ -99,7 +100,7 @@ enum PhotoClustering {
                     if earliest == nil || date < earliest! { earliest = date }
                     if latest == nil || date > latest! { latest = date }
                 }
-                if representatives.count < 4 {
+                if representatives.count < 12 {
                     representatives.append(sample.assetIdentifier)
                 }
             }
@@ -142,6 +143,12 @@ struct PlaceSuggestionCandidate: Identifiable {
     var isSelected: Bool = false
     var geocodeRequested: Bool = false
     var userEditedName: Bool = false
+    /// True while a name is being looked up (and possibly refined by the
+    /// on-device model) for this candidate.
+    var isNaming: Bool = false
+    /// Last name applied by the naming pipeline, so the row can tell a user
+    /// edit apart from a programmatic one.
+    var suggestedName: String = ""
 }
 
 // MARK: - Scanner
@@ -232,26 +239,81 @@ final class PhotoPlacesScanner {
         return samples
     }
 
-    // MARK: Reverse geocoding (lazy, per visible row, serialized)
+    // MARK: Naming (lazy, per visible row, serialized)
+
+    /// Tail of the naming chain: each new request awaits the previous one, so
+    /// CLGeocoder/MKLocalSearch (which reject concurrent requests) run one at
+    /// a time while rows fill in progressively.
+    private var namingChain: Task<Void, Never>?
 
     @MainActor
-    func geocodeIfNeeded(_ id: UUID) async {
+    func suggestNameIfNeeded(_ id: UUID) async {
         guard let index = candidates.firstIndex(where: { $0.id == id }),
               !candidates[index].geocodeRequested else { return }
         candidates[index].geocodeRequested = true
-        let coordinate = candidates[index].coordinate
+        candidates[index].isNaming = true
 
-        // CLGeocoder is rate-limited: keep requests serial and spaced out.
+        let previous = namingChain
+        let task = Task { [weak self] in
+            await previous?.value
+            await self?.performNaming(id)
+        }
+        namingChain = task
+        await task.value
+    }
+
+    @MainActor
+    private func performNaming(_ id: UUID) async {
+        defer {
+            if let index = candidates.firstIndex(where: { $0.id == id }) {
+                candidates[index].isNaming = false
+            }
+        }
+        guard let index = candidates.firstIndex(where: { $0.id == id }) else { return }
+        let candidate = candidates[index]
+        let coordinate = candidate.coordinate
+
+        // CLGeocoder is rate-limited: keep requests spaced out.
         try? await Task.sleep(nanoseconds: 350_000_000)
         let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        guard let placemark = try? await geocoder.reverseGeocodeLocation(location).first else { return }
+        let placemark = try? await geocoder.reverseGeocodeLocation(location).first
+        let pois = await PlaceNamer.nearbyPOIs(around: coordinate)
 
-        let name = placemark.areasOfInterest?.first ?? placemark.name ?? placemark.locality ?? ""
+        let baseline = PlaceNamer.baselineName(pois: pois,
+                                               areasOfInterest: placemark?.areasOfInterest ?? [],
+                                               placemarkName: placemark?.name,
+                                               locality: placemark?.locality)
+        if let baseline {
+            apply(name: baseline.name, poiCategory: baseline.poiCategory, to: id)
+        }
+
+        // On Apple Intelligence devices, let the on-device model pick the most
+        // likely spot. Slower, but it never leaves the phone; everyone else
+        // simply keeps the baseline name.
+        if let aiName = await PlaceNamer.aiRefinedName(
+            pois: pois,
+            baseline: baseline?.name,
+            locality: placemark?.locality,
+            visit: PlaceNamer.VisitContext(photoCount: candidate.photoCount,
+                                           distinctDays: candidate.distinctDays,
+                                           earliestDate: candidate.earliestDate,
+                                           latestDate: candidate.latestDate)) {
+            let category = pois.first(where: { $0.name == aiName })?.category ?? baseline?.poiCategory
+            apply(name: aiName, poiCategory: category, to: id)
+        }
+    }
+
+    /// Applies a suggested name (plus icon+color) unless the user already
+    /// typed their own.
+    @MainActor
+    private func apply(name: String, poiCategory: MKPointOfInterestCategory?, to id: UUID) {
         guard let index = candidates.firstIndex(where: { $0.id == id }),
-              !candidates[index].userEditedName else { return }
+              !candidates[index].userEditedName, !name.isEmpty else { return }
 
+        candidates[index].suggestedName = name
         candidates[index].name = name
-        if let suggestion = PlaceClassifier.suggest(for: name) {
+        if let suggestion = PlaceClassifier.suggest(for: name)
+            ?? poiCategory.flatMap({ PlaceClassifier.suggest(for: $0) }) {
             candidates[index].icon = suggestion.icon
             candidates[index].color = suggestion.color
         }
@@ -277,6 +339,32 @@ final class PhotoPlacesScanner {
             PHImageManager.default().requestImage(for: asset,
                                                   targetSize: target,
                                                   contentMode: .aspectFill,
+                                                  options: options) { image, _ in
+                continuation.resume(returning: image)
+            }
+        }
+    }
+
+    /// Screen-sized, uncropped image for the full-screen carousel.
+    nonisolated static func fullImage(for assetIdentifier: String) async -> UIImage? {
+        let fetch = PHAsset.fetchAssets(withLocalIdentifiers: [assetIdentifier], options: nil)
+        guard let asset = fetch.firstObject else { return nil }
+
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .highQualityFormat
+        options.resizeMode = .fast
+        options.isNetworkAccessAllowed = true
+
+        let target = await MainActor.run {
+            let bounds = UIScreen.main.bounds
+            let scale = UIScreen.main.scale
+            return CGSize(width: bounds.width * scale, height: bounds.height * scale)
+        }
+
+        return await withCheckedContinuation { continuation in
+            PHImageManager.default().requestImage(for: asset,
+                                                  targetSize: target,
+                                                  contentMode: .aspectFit,
                                                   options: options) { image, _ in
                 continuation.resume(returning: image)
             }
