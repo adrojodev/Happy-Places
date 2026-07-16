@@ -36,6 +36,7 @@ Nice Places/
 ├── Data/Icons.swift            # SF Symbol icon list + PlaceColor enum
 ├── Components/                 # Reusable views (sheets, pickers, badges, list rows)
 ├── Views/                      # Screens (list, maps, place detail, new place)
+├── Services/                   # PhotoPlacesScanner (library scan), PlaceNamer (POI + on-device AI naming)
 ├── Utils/                      # CloudKitSyncMonitor, PhotoProcessing (GPS/resize helpers)
 └── Location/                   # Location services
 ```

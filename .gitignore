@@ -4,7 +4,8 @@
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
 ## Build generated
-build/
+# Root-anchored: a plain "build/" also swallowed .claude/skills/build/.
+/build/
 DerivedData/
 
 ## Various settings

@@ -41,6 +41,16 @@ Grant photo access when the app prompts, or pre-approve:
 `xcrun simctl privacy "$SIM" grant photos rojo.happy-places-moments`
 (also `grant location` for location prompts).
 
+## 4b. Isolated store for UI-driven checks
+
+The app supports `-uiTestStore` (use a separate `ui-test.store` file, CloudKit off)
+and `-uiTestReset` (start that store empty) launch arguments. All UI tests pass
+them so runs don't contaminate each other or depend on leftover data — the photo
+scan especially, since it drops clusters near already-saved places. To launch the
+app manually with a clean slate:
+`xcrun simctl launch "$SIM" rojo.happy-places-moments -uiTestStore -uiTestReset`
+The real store is never touched.
+
 ## 5. Data-safety check (required for any model/store change)
 
 Install and run the PREVIOUS build first, create places, then upgrade-install the new build and confirm existing data survives. Never reset the DB.
