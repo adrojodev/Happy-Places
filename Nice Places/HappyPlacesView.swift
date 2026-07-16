@@ -9,7 +9,9 @@ import SwiftUI
 import SwiftData
 
 struct HappyPlacesView: View {
-    
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var router = QuickActionRouter.shared
+
     var body: some View {
         TabView {
             LocationsListView()
@@ -24,6 +26,26 @@ struct HappyPlacesView: View {
                 .toolbarBackground(.visible, for: .tabBar)
 
         }
+        .onOpenURL { url in
+            router.handle(url)
+        }
+        .task {
+            router.consumeChannelAction()
+        }
+        .onChange(of: scenePhase) {
+            // Control Center intents run in the widget extension and leave
+            // their action in the App Group channel before opening the app.
+            if scenePhase == .active {
+                router.consumeChannelAction()
+            }
+        }
+        .fullScreenCover(item: pendingAction) { action in
+            QuickActionFlowView(action: action)
+        }
+    }
+
+    private var pendingAction: Binding<QuickAction?> {
+        Binding(get: { router.pending }, set: { router.pending = $0 })
     }
 }
 

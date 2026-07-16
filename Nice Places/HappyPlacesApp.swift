@@ -12,6 +12,7 @@ import SwiftData
 struct HappyPlacesApp: App {
     let container: ModelContainer
     @State private var syncMonitor = CloudKitSyncMonitor()
+    @Environment(\.scenePhase) private var scenePhase
 
     init() {
         let schema = Schema([Place.self, PlacePhoto.self])
@@ -59,7 +60,15 @@ struct HappyPlacesApp: App {
         WindowGroup {
             HappyPlacesView()
                 .environment(syncMonitor)
+                .task { WidgetSync.publish(from: container.mainContext) }
         }
         .modelContainer(container)
+        .onChange(of: scenePhase) {
+            // Leaving the app is the one moment widgets are about to be
+            // seen — refresh their snapshot with whatever changed.
+            if scenePhase == .background {
+                WidgetSync.publish(from: container.mainContext)
+            }
+        }
     }
 }
