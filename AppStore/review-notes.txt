@@ -1,0 +1,20 @@
+Notes for App Review — Happy Places 3.0.0
+
+The app lets users save meaningful places on a map with an icon, color,
+story, and photos. Data is stored on device (SwiftData) and synced through
+the user's own iCloud account (CloudKit). No account or login is needed.
+
+New in 3.0:
+- WidgetKit extension: home screen map widget, lock screen quick-add,
+  a camera quick-capture widget, and two Control Center controls (iOS 18+).
+- App Intents / Siri App Shortcuts: "Save this place in Happy Places".
+
+Permissions used:
+- Location (when in use): to center the map and save the current spot.
+  The widgets read only a cached location.
+- Camera / photo library: to attach photos to saved places, and to suggest
+  places from GPS-tagged photos (on-device scan; nothing is uploaded).
+
+To test the widgets: long-press the home screen -> add widget -> search
+"Happy Places". The lock screen widget is under Customize Lock Screen.
+Control Center buttons appear in the Control Center gallery on iOS 18+.

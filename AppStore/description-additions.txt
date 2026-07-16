@@ -1,0 +1,14 @@
+Suggested additions to the existing App Store description (append or weave in
+— this file intentionally does NOT replace the current live description):
+
+YOUR PLACES, EVERYWHERE
+• Home screen widgets show a real map of your happy places near you
+• Save where you are from the lock screen with one tap
+• Control Center shortcuts (iOS 18) to save a place or snap a photo
+• Ask Siri: "Save this place in Happy Places"
+
+Keyword ideas (100-char limit, comma-separated, no spaces needed):
+places,memories,map,travel,journal,widget,photo,pin,favorites,spots,diary,location
+
+Promotional text idea (170 chars max):
+New in 3.0: widgets! Your happy places on a live map, one-tap saving from the lock screen and Control Center, and Siri support. Your places, everywhere.
