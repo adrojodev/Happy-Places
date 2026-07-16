@@ -1,0 +1,69 @@
+# Archive Happy Places and upload it to App Store Connect.
+#
+# Trigger: push a tag like v3.0.0, or run manually (workflow_dispatch).
+# Build number = the GitHub run number (always increases, applies to the
+# app AND the widget extension so their CFBundleVersions match).
+#
+# Required repository secrets (Settings -> Secrets and variables -> Actions):
+#   ASC_KEY_ID    — App Store Connect API key ID
+#   ASC_ISSUER_ID — App Store Connect issuer ID
+#   ASC_KEY_P8    — contents of the AuthKey_<ID>.p8 file
+# The key needs the App Manager role so cloud signing can manage
+# certificates, the two bundle IDs, and the App Group capability.
+
+name: Release to App Store
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+concurrency:
+  group: appstore-release
+  cancel-in-progress: false
+
+jobs:
+  upload:
+    name: Archive and upload to App Store Connect
+    runs-on: macos-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select newest Xcode on the runner
+        run: |
+          XCODE="$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+          sudo xcode-select -s "$XCODE/Contents/Developer"
+          xcodebuild -version
+
+      - name: Write App Store Connect API key
+        env:
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          mkdir -p "$HOME/private_keys"
+          printf '%s' "$ASC_KEY_P8" > "$HOME/private_keys/AuthKey_${{ secrets.ASC_KEY_ID }}.p8"
+
+      - name: Archive (build ${{ github.run_number }})
+        run: |
+          xcodebuild archive \
+            -project "Nice Places.xcodeproj" \
+            -scheme "Happy Places" \
+            -destination "generic/platform=iOS" \
+            -archivePath "build/HappyPlaces.xcarchive" \
+            CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
+            -allowProvisioningUpdates \
+            -allowProvisioningDeviceRegistration \
+            -authenticationKeyPath "$HOME/private_keys/AuthKey_${{ secrets.ASC_KEY_ID }}.p8" \
+            -authenticationKeyID "${{ secrets.ASC_KEY_ID }}" \
+            -authenticationKeyIssuerID "${{ secrets.ASC_ISSUER_ID }}"
+
+      - name: Upload to App Store Connect
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath "build/HappyPlaces.xcarchive" \
+            -exportOptionsPlist ".github/ExportOptions.plist" \
+            -exportPath "build/export" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$HOME/private_keys/AuthKey_${{ secrets.ASC_KEY_ID }}.p8" \
+            -authenticationKeyID "${{ secrets.ASC_KEY_ID }}" \
+            -authenticationKeyIssuerID "${{ secrets.ASC_ISSUER_ID }}"

@@ -1,0 +1,8 @@
+Happy Places 3.0 — your places, everywhere ✨
+
+• Widgets! A live map of your happy places around you, right on your home screen (three sizes).
+• Lock screen widget: save where you are with one tap.
+• Control Center buttons (iOS 18): save this place or snap a photo without opening the app.
+• "Snap a Place" widget: jumps straight into the camera — your photo's location becomes the new place.
+• Siri: just say "Save this place in Happy Places".
+• Lots of polish: smarter photo scanning, duplicate detection when saving nearby spots, and a smoother add-place flow.
