@@ -44,6 +44,22 @@
 		E5A5E3E22B8421B100DA4249 /* LocationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A5E3E12B8421B100DA4249 /* LocationsListView.swift */; };
 		E5EA9E722C5AA1C900247D55 /* PlaceMapPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EA9E712C5AA1C900247D55 /* PlaceMapPreview.swift */; };
 		E5FF6EAC2B83F6E400555080 /* PlacesDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FF6EAB2B83F6E400555080 /* PlacesDataModel.swift */; };
+		E5AA0000000000000000F011 /* HappyPlacesWidgetsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000F002 /* HappyPlacesWidgetsBundle.swift */; };
+		E5AA0000000000000000F012 /* NearbyPlacesWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000F003 /* NearbyPlacesWidget.swift */; };
+		E5AA0000000000000000F013 /* QuickAddWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000F004 /* QuickAddWidgets.swift */; };
+		E5AA0000000000000000F014 /* PlaceControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000F005 /* PlaceControls.swift */; };
+		E5AA0000000000000000F015 /* QuickActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000F008 /* QuickActions.swift */; };
+		E5AA0000000000000000F016 /* QuickActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000F008 /* QuickActions.swift */; };
+		E5AA0000000000000000F017 /* WidgetPlacesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000F009 /* WidgetPlacesStore.swift */; };
+		E5AA0000000000000000F018 /* WidgetPlacesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000F009 /* WidgetPlacesStore.swift */; };
+		E5AA0000000000000000F019 /* HappyPlacesAppIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000F00A /* HappyPlacesAppIntents.swift */; };
+		E5AA0000000000000000F01A /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = E564668C2B77D1A4004E055F /* Icons.swift */; };
+		E5AA0000000000000000F01B /* HappyPlacesWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000F001 /* HappyPlacesWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E5AA0000000000000000F01C /* WidgetSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000F00B /* WidgetSync.swift */; };
+		E5AA0000000000000000F01D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E50116FB2B76E7BC00E00E5D /* Assets.xcassets */; };
+		E5AA0000000000000000F01E /* QuickActionFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000F00C /* QuickActionFlowView.swift */; };
+		E5AA0000000000000000F01F /* PlacesWidgetSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000F00D /* PlacesWidgetSnapshotTests.swift */; };
+		E5AA0000000000000000F041 /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA0000000000000000F042 /* ScreenshotTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,7 +77,28 @@
 			remoteGlobalIDString = E50116F32B76E7BC00E00E5D;
 			remoteInfo = "Nice Places";
 		};
+		E5AA0000000000000000F037 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E50116EC2B76E7BC00E00E5D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E5AA0000000000000000F030;
+			remoteInfo = HappyPlacesWidgets;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E5AA0000000000000000F039 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				E5AA0000000000000000F01B /* HappyPlacesWidgets.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		E5AA000000000000000000AB /* PhotoPlacesScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPlacesScanner.swift; sourceTree = "<group>"; };
@@ -107,6 +144,20 @@
 		E5A5E3E12B8421B100DA4249 /* LocationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListView.swift; sourceTree = "<group>"; };
 		E5EA9E712C5AA1C900247D55 /* PlaceMapPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceMapPreview.swift; sourceTree = "<group>"; };
 		E5FF6EAB2B83F6E400555080 /* PlacesDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesDataModel.swift; sourceTree = "<group>"; };
+		E5AA0000000000000000F001 /* HappyPlacesWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HappyPlacesWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5AA0000000000000000F002 /* HappyPlacesWidgetsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HappyPlacesWidgetsBundle.swift; sourceTree = "<group>"; };
+		E5AA0000000000000000F003 /* NearbyPlacesWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyPlacesWidget.swift; sourceTree = "<group>"; };
+		E5AA0000000000000000F004 /* QuickAddWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAddWidgets.swift; sourceTree = "<group>"; };
+		E5AA0000000000000000F005 /* PlaceControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceControls.swift; sourceTree = "<group>"; };
+		E5AA0000000000000000F006 /* HappyPlacesWidgets-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HappyPlacesWidgets-Info.plist"; sourceTree = "<group>"; };
+		E5AA0000000000000000F007 /* HappyPlacesWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HappyPlacesWidgets.entitlements; sourceTree = "<group>"; };
+		E5AA0000000000000000F008 /* QuickActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActions.swift; sourceTree = "<group>"; };
+		E5AA0000000000000000F009 /* WidgetPlacesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetPlacesStore.swift; sourceTree = "<group>"; };
+		E5AA0000000000000000F00A /* HappyPlacesAppIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HappyPlacesAppIntents.swift; sourceTree = "<group>"; };
+		E5AA0000000000000000F00B /* WidgetSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSync.swift; sourceTree = "<group>"; };
+		E5AA0000000000000000F00C /* QuickActionFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionFlowView.swift; sourceTree = "<group>"; };
+		E5AA0000000000000000F00D /* PlacesWidgetSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesWidgetSnapshotTests.swift; sourceTree = "<group>"; };
+		E5AA0000000000000000F042 /* ScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +182,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E5AA0000000000000000F032 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -141,6 +199,7 @@
 				E5875FD92C5841F9005CF4D1 /* .gitignore */,
 				E56528DC2B8918F800292C26 /* Nice-Places-Info.plist */,
 				E50116F62B76E7BC00E00E5D /* Nice Places */,
+				E5AA0000000000000000F021 /* HappyPlacesWidgets */,
 				E50117072B76E7BD00E00E5D /* Nice PlacesTests */,
 				E50117112B76E7BD00E00E5D /* Nice PlacesUITests */,
 				E50116F52B76E7BC00E00E5D /* Products */,
@@ -153,6 +212,7 @@
 				E50116F42B76E7BC00E00E5D /* Happy Places.app */,
 				E50117042B76E7BD00E00E5D /* Nice PlacesTests.xctest */,
 				E501170E2B76E7BD00E00E5D /* Nice PlacesUITests.xctest */,
+				E5AA0000000000000000F001 /* HappyPlacesWidgets.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -161,6 +221,8 @@
 			isa = PBXGroup;
 			children = (
 				E564668B2B77D197004E055F /* Data */,
+				E5AA0000000000000000F022 /* Shared */,
+				E5AA0000000000000000F023 /* Intents */,
 				E5AA000000000000000000C1 /* Utils */,
 				E5AA000000000000000000C2 /* Extensions */,
 				E5AA000000000000000000C3 /* Location */,
@@ -193,6 +255,7 @@
 				E5AA000000000000000000AD /* ClusteringTests.swift */,
 				E5AA0000000000000000D002 /* DuplicatePlaceTests.swift */,
 				E5AA0000000000000000E006 /* PlaceNamerTests.swift */,
+				E5AA0000000000000000F00D /* PlacesWidgetSnapshotTests.swift */,
 			);
 			path = "Nice PlacesTests";
 			sourceTree = "<group>";
@@ -202,6 +265,7 @@
 			children = (
 				E50117122B76E7BD00E00E5D /* Nice_PlacesUITests.swift */,
 				E50117142B76E7BD00E00E5D /* Nice_PlacesUITestsLaunchTests.swift */,
+				E5AA0000000000000000F042 /* ScreenshotTests.swift */,
 			);
 			path = "Nice PlacesUITests";
 			sourceTree = "<group>";
@@ -216,6 +280,7 @@
 				E5A5E3E12B8421B100DA4249 /* LocationsListView.swift */,
 				E5EA9E712C5AA1C900247D55 /* PlaceMapPreview.swift */,
 				E5AA000000000000000000AC /* PhotoScanReviewView.swift */,
+				E5AA0000000000000000F00C /* QuickActionFlowView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -257,6 +322,7 @@
 				E5AA000000000000000000A2 /* CloudKitSyncMonitor.swift */,
 				E5AA000000000000000000A3 /* PhotoProcessing.swift */,
 				E5AA000000000000000000A6 /* AppleMaps.swift */,
+				E5AA0000000000000000F00B /* WidgetSync.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -287,6 +353,36 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		E5AA0000000000000000F021 /* HappyPlacesWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				E5AA0000000000000000F002 /* HappyPlacesWidgetsBundle.swift */,
+				E5AA0000000000000000F003 /* NearbyPlacesWidget.swift */,
+				E5AA0000000000000000F004 /* QuickAddWidgets.swift */,
+				E5AA0000000000000000F005 /* PlaceControls.swift */,
+				E5AA0000000000000000F006 /* HappyPlacesWidgets-Info.plist */,
+				E5AA0000000000000000F007 /* HappyPlacesWidgets.entitlements */,
+			);
+			path = HappyPlacesWidgets;
+			sourceTree = "<group>";
+		};
+		E5AA0000000000000000F022 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				E5AA0000000000000000F008 /* QuickActions.swift */,
+				E5AA0000000000000000F009 /* WidgetPlacesStore.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		E5AA0000000000000000F023 /* Intents */ = {
+			isa = PBXGroup;
+			children = (
+				E5AA0000000000000000F00A /* HappyPlacesAppIntents.swift */,
+			);
+			path = Intents;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -297,10 +393,12 @@
 				E50116F02B76E7BC00E00E5D /* Sources */,
 				E50116F12B76E7BC00E00E5D /* Frameworks */,
 				E50116F22B76E7BC00E00E5D /* Resources */,
+				E5AA0000000000000000F039 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				E5AA0000000000000000F038 /* PBXTargetDependency */,
 			);
 			name = "Happy Places";
 			productName = "Nice Places";
@@ -343,6 +441,23 @@
 			productReference = E501170E2B76E7BD00E00E5D /* Nice PlacesUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		E5AA0000000000000000F030 /* HappyPlacesWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E5AA0000000000000000F034 /* Build configuration list for PBXNativeTarget "HappyPlacesWidgets" */;
+			buildPhases = (
+				E5AA0000000000000000F031 /* Sources */,
+				E5AA0000000000000000F032 /* Frameworks */,
+				E5AA0000000000000000F033 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HappyPlacesWidgets;
+			productName = HappyPlacesWidgets;
+			productReference = E5AA0000000000000000F001 /* HappyPlacesWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -354,6 +469,9 @@
 				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					E50116F32B76E7BC00E00E5D = {
+						CreatedOnToolsVersion = 15.2;
+					};
+					E5AA0000000000000000F030 = {
 						CreatedOnToolsVersion = 15.2;
 					};
 					E50117032B76E7BD00E00E5D = {
@@ -382,6 +500,7 @@
 				E50116F32B76E7BC00E00E5D /* Happy Places */,
 				E50117032B76E7BD00E00E5D /* Nice PlacesTests */,
 				E501170D2B76E7BD00E00E5D /* Nice PlacesUITests */,
+				E5AA0000000000000000F030 /* HappyPlacesWidgets */,
 			);
 		};
 /* End PBXProject section */
@@ -407,6 +526,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5AA0000000000000000F033 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5AA0000000000000000F01D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -444,6 +571,11 @@
 				E5AA0000000000000000E003 /* PhotoCarouselView.swift in Sources */,
 				E5AA0000000000000000E001 /* PlaceNamer.swift in Sources */,
 				E5AA000000000000000000BC /* PhotoScanReviewView.swift in Sources */,
+				E5AA0000000000000000F015 /* QuickActions.swift in Sources */,
+				E5AA0000000000000000F017 /* WidgetPlacesStore.swift in Sources */,
+				E5AA0000000000000000F019 /* HappyPlacesAppIntents.swift in Sources */,
+				E5AA0000000000000000F01C /* WidgetSync.swift in Sources */,
+				E5AA0000000000000000F01E /* QuickActionFlowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -457,6 +589,7 @@
 				E5AA000000000000000000BD /* ClusteringTests.swift in Sources */,
 				E5AA0000000000000000D001 /* DuplicatePlaceTests.swift in Sources */,
 				E5AA0000000000000000E005 /* PlaceNamerTests.swift in Sources */,
+				E5AA0000000000000000F01F /* PlacesWidgetSnapshotTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,6 +599,21 @@
 			files = (
 				E50117132B76E7BD00E00E5D /* Nice_PlacesUITests.swift in Sources */,
 				E50117152B76E7BD00E00E5D /* Nice_PlacesUITestsLaunchTests.swift in Sources */,
+				E5AA0000000000000000F041 /* ScreenshotTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5AA0000000000000000F031 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5AA0000000000000000F011 /* HappyPlacesWidgetsBundle.swift in Sources */,
+				E5AA0000000000000000F012 /* NearbyPlacesWidget.swift in Sources */,
+				E5AA0000000000000000F013 /* QuickAddWidgets.swift in Sources */,
+				E5AA0000000000000000F014 /* PlaceControls.swift in Sources */,
+				E5AA0000000000000000F016 /* QuickActions.swift in Sources */,
+				E5AA0000000000000000F018 /* WidgetPlacesStore.swift in Sources */,
+				E5AA0000000000000000F01A /* Icons.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,6 +629,11 @@
 			isa = PBXTargetDependency;
 			target = E50116F32B76E7BC00E00E5D /* Happy Places */;
 			targetProxy = E501170F2B76E7BD00E00E5D /* PBXContainerItemProxy */;
+		};
+		E5AA0000000000000000F038 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E5AA0000000000000000F030 /* HappyPlacesWidgets */;
+			targetProxy = E5AA0000000000000000F037 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -630,7 +783,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.4;
+				MARKETING_VERSION = 3.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "rojo.happy-places-moments";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -669,7 +822,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.4;
+				MARKETING_VERSION = 3.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "rojo.happy-places-moments";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -766,6 +919,66 @@
 			};
 			name = Release;
 		};
+		E5AA0000000000000000F035 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "HappyPlacesWidgets/HappyPlacesWidgets.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TSP733L3T9;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "HappyPlacesWidgets/HappyPlacesWidgets-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Happy Places";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Shows your happy places near you right on the widget.";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 3.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "rojo.happy-places-moments.HappyPlacesWidgets";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		E5AA0000000000000000F036 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "HappyPlacesWidgets/HappyPlacesWidgets.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TSP733L3T9;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "HappyPlacesWidgets/HappyPlacesWidgets-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Happy Places";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Shows your happy places near you right on the widget.";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 3.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "rojo.happy-places-moments.HappyPlacesWidgets";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -801,6 +1014,15 @@
 			buildConfigurations = (
 				E501171F2B76E7BD00E00E5D /* Debug */,
 				E50117202B76E7BD00E00E5D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E5AA0000000000000000F034 /* Build configuration list for PBXNativeTarget "HappyPlacesWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E5AA0000000000000000F035 /* Debug */,
+				E5AA0000000000000000F036 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

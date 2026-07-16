@@ -15,8 +15,8 @@ Pick two fresh 24-hex-char IDs per file (one PBXBuildFile, one PBXFileReference)
    `<BUILD_ID> /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = <REF_ID> /* File.swift */; };`
 2. **PBXFileReference** section:
    `<REF_ID> /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };`
-3. **PBXGroup**: add `<REF_ID> /* File.swift */,` to the children of the group matching the file's directory (Views = `E50117242B76E81C00E00E5D`, Components = `E50117282B7730AF00E00E5D`, Models = `E56466822B77B7DF004E055F`, Data = `E564668B2B77D197004E055F`, Utils = `E5AA000000000000000000C1`, app root "Nice Places" = `E50116F62B76E7BC00E00E5D`). New directory → create a new PBXGroup with `path = <DirName>;` and add it to the "Nice Places" group children.
-4. **PBXSourcesBuildPhase**: add `<BUILD_ID> /* File.swift in Sources */,` to the app target phase `E50116F02B76E7BC00E00E5D` (tests target phase: `E50117002B76E7BD00E00E5D`, UI tests: `E501170A2B76E7BD00E00E5D`).
+3. **PBXGroup**: add `<REF_ID> /* File.swift */,` to the children of the group matching the file's directory (Views = `E50117242B76E81C00E00E5D`, Components = `E50117282B7730AF00E00E5D`, Models = `E56466822B77B7DF004E055F`, Data = `E564668B2B77D197004E055F`, Utils = `E5AA000000000000000000C1`, Shared = `E5AA0000000000000000F022`, Intents = `E5AA0000000000000000F023`, HappyPlacesWidgets = `E5AA0000000000000000F021`, app root "Nice Places" = `E50116F62B76E7BC00E00E5D`). New directory → create a new PBXGroup with `path = <DirName>;` and add it to the "Nice Places" group children.
+4. **PBXSourcesBuildPhase**: add `<BUILD_ID> /* File.swift in Sources */,` to the app target phase `E50116F02B76E7BC00E00E5D` (tests target phase: `E50117002B76E7BD00E00E5D`, UI tests: `E501170A2B76E7BD00E00E5D`, widget extension: `E5AA0000000000000000F031`). Files in `Nice Places/Shared/` must be added to BOTH the app and widget Sources phases (one PBXBuildFile entry per target, same fileRef).
 
 Do this with a small python3 heredoc using anchored `str.replace` (see git history of project.pbxproj for a worked example).
 
