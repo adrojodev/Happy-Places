@@ -1,0 +1,10 @@
+# deliver configuration — used by .github/workflows/screenshots.yml.
+# Screenshots only: never touches the binary, metadata, or version state.
+app_identifier "rojo.happy-places-moments"
+screenshots_path "AppStore/screenshots"
+skip_binary_upload true
+skip_metadata true
+skip_app_version_update true
+overwrite_screenshots true
+run_precheck_before_submit false
+force true
