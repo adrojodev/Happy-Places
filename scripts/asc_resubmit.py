@@ -113,23 +113,41 @@ def main() -> None:
     print(f"Review submission: id={sub_id} "
           f"state={sub['attributes']['state']}")
 
-    # A REJECTED item blocks resubmission: replace it with a fresh item
-    # pointing at the same (now updated) version.
+    # The public API can neither resubmit a submission whose item is
+    # REJECTED nor delete that item ("Item was already submitted").
+    # Cancel the dead submission and start a clean one for the same
+    # version — a rejected submission holds no queue position.
     items = call("GET", f"/v1/reviewSubmissions/{sub_id}/items")["data"]
-    for item in items:
-        print(f"Submission item {item['id']}: "
-              f"state={item['attributes']['state']}")
-        if item["attributes"]["state"] == "REJECTED":
-            call("DELETE", f"/v1/reviewSubmissionItems/{item['id']}")
-            print("Removed rejected item")
-            call("POST", "/v1/reviewSubmissionItems",
-                 {"data": {"type": "reviewSubmissionItems", "relationships": {
-                     "reviewSubmission": {"data": {
-                         "type": "reviewSubmissions", "id": sub_id}},
-                     "appStoreVersion": {"data": {
-                         "type": "appStoreVersions", "id": version_id}},
-                 }}})
-            print("Added fresh item for the updated version")
+    if any(i["attributes"]["state"] == "REJECTED" for i in items):
+        call("PATCH", f"/v1/reviewSubmissions/{sub_id}",
+             {"data": {"type": "reviewSubmissions", "id": sub_id,
+                       "attributes": {"canceled": True}}})
+        print(f"Canceled rejected submission {sub_id}")
+        new_sub = None
+        for attempt in range(6):  # the cancel may take a moment to finish
+            try:
+                new_sub = call("POST", "/v1/reviewSubmissions",
+                               {"data": {"type": "reviewSubmissions",
+                                         "attributes": {"platform": "IOS"},
+                                         "relationships": {"app": {"data": {
+                                             "type": "apps", "id": APP_ID}}}}})
+                break
+            except urllib.error.HTTPError as e:
+                if e.code == 409 and attempt < 5:
+                    print("Old submission still canceling, retrying in 20s...")
+                    time.sleep(20)
+                else:
+                    raise
+        sub_id = new_sub["data"]["id"]
+        print(f"Created new submission {sub_id}")
+        call("POST", "/v1/reviewSubmissionItems",
+             {"data": {"type": "reviewSubmissionItems", "relationships": {
+                 "reviewSubmission": {"data": {
+                     "type": "reviewSubmissions", "id": sub_id}},
+                 "appStoreVersion": {"data": {
+                     "type": "appStoreVersions", "id": version_id}},
+             }}})
+        print("Added version 3.0.0 item to the new submission")
 
     # Right after a build swap ASC briefly reports the version as not ready
     # to submit; retry until it settles.
