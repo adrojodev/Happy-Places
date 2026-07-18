@@ -145,7 +145,7 @@ struct PhotoScanReviewView: View {
                     await scanner.start(existingPlaces: places.map(\.coordinate))
                 }
             } label: {
-                Label("Scan My Photos", systemImage: "sparkles")
+                Label("Continue", systemImage: "sparkles")
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 12)
