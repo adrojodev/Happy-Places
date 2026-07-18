@@ -57,10 +57,6 @@ def diagnose(sub_id: str, version_id: str) -> None:
     """Print read-only state that may explain a submit refusal."""
     for label, path in [
         ("submission items", f"/v1/reviewSubmissions/{sub_id}/items"),
-        ("age rating declaration",
-         f"/v1/appStoreVersions/{version_id}/ageRatingDeclaration"),
-        ("review detail",
-         f"/v1/appStoreVersions/{version_id}/appStoreReviewDetail"),
         ("version attributes", f"/v1/appStoreVersions/{version_id}"),
     ]:
         try:
@@ -116,6 +112,25 @@ def main() -> None:
     sub_id = sub["id"]
     print(f"Review submission: id={sub_id} "
           f"state={sub['attributes']['state']}")
+
+    # A REJECTED item blocks resubmission: replace it with a fresh item
+    # pointing at the same (now updated) version.
+    items = call("GET", f"/v1/reviewSubmissions/{sub_id}/items")["data"]
+    for item in items:
+        print(f"Submission item {item['id']}: "
+              f"state={item['attributes']['state']}")
+        if item["attributes"]["state"] == "REJECTED":
+            call("DELETE", f"/v1/reviewSubmissionItems/{item['id']}")
+            print("Removed rejected item")
+            call("POST", "/v1/reviewSubmissionItems",
+                 {"data": {"type": "reviewSubmissionItems", "relationships": {
+                     "reviewSubmission": {"data": {
+                         "type": "reviewSubmissions", "id": sub_id}},
+                     "appStoreVersion": {"data": {
+                         "type": "appStoreVersions", "id": version_id}},
+                 }}})
+            print("Added fresh item for the updated version")
+
     # Right after a build swap ASC briefly reports the version as not ready
     # to submit; retry until it settles.
     for attempt in range(10):
