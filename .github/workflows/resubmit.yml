@@ -19,7 +19,7 @@ on:
 jobs:
   resubmit:
     runs-on: macos-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 

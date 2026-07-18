@@ -99,9 +99,21 @@ def main() -> None:
     sub_id = sub["id"]
     print(f"Review submission: id={sub_id} "
           f"state={sub['attributes']['state']}")
-    call("PATCH", f"/v1/reviewSubmissions/{sub_id}",
-         {"data": {"type": "reviewSubmissions", "id": sub_id,
-                   "attributes": {"submitted": True}}})
+    # Right after a build swap ASC briefly reports the version as not ready
+    # to submit; retry until it settles.
+    for attempt in range(10):
+        try:
+            call("PATCH", f"/v1/reviewSubmissions/{sub_id}",
+                 {"data": {"type": "reviewSubmissions", "id": sub_id,
+                           "attributes": {"submitted": True}}})
+            break
+        except urllib.error.HTTPError as e:
+            if e.code == 409 and attempt < 9:
+                print(f"Not ready yet (attempt {attempt + 1}/10), "
+                      f"retrying in 60s...")
+                time.sleep(60)
+            else:
+                raise
     final = call("GET", f"/v1/reviewSubmissions/{sub_id}")
     print(f"Submission state after resubmit: "
           f"{final['data']['attributes']['state']}")
