@@ -108,7 +108,14 @@ def main() -> None:
                        f"&filter[platform]=IOS")
     if not subs["data"]:
         sys.exit("No open review submission found — nothing to resubmit")
-    sub = subs["data"][0]
+    # Prefer a submission without rejected items (e.g. one a previous run
+    # already recreated) over the dead one.
+    def rejected_items(s):
+        return [i for i in
+                call("GET", f"/v1/reviewSubmissions/{s['id']}/items")["data"]
+                if i["attributes"]["state"] == "REJECTED"]
+
+    sub = min(subs["data"], key=lambda s: len(rejected_items(s)))
     sub_id = sub["id"]
     print(f"Review submission: id={sub_id} "
           f"state={sub['attributes']['state']}")
@@ -140,14 +147,31 @@ def main() -> None:
                     raise
         sub_id = new_sub["data"]["id"]
         print(f"Created new submission {sub_id}")
-        call("POST", "/v1/reviewSubmissionItems",
-             {"data": {"type": "reviewSubmissionItems", "relationships": {
-                 "reviewSubmission": {"data": {
-                     "type": "reviewSubmissions", "id": sub_id}},
-                 "appStoreVersion": {"data": {
-                     "type": "appStoreVersions", "id": version_id}},
-             }}})
-        print("Added version 3.0.0 item to the new submission")
+        items = []
+
+    # Make sure the submission carries the version item. The canceled
+    # submission can hold a claim on the version for a while ("already
+    # added to another reviewSubmission") — retry until it lets go.
+    if not items:
+        for attempt in range(10):
+            try:
+                call("POST", "/v1/reviewSubmissionItems",
+                     {"data": {"type": "reviewSubmissionItems",
+                               "relationships": {
+                         "reviewSubmission": {"data": {
+                             "type": "reviewSubmissions", "id": sub_id}},
+                         "appStoreVersion": {"data": {
+                             "type": "appStoreVersions", "id": version_id}},
+                     }}})
+                print(f"Added version {APP_VERSION} item to the submission")
+                break
+            except urllib.error.HTTPError as e:
+                if e.code == 409 and attempt < 9:
+                    print("Version still claimed by the old submission, "
+                          "retrying in 30s...")
+                    time.sleep(30)
+                else:
+                    raise
 
     # Right after a build swap ASC briefly reports the version as not ready
     # to submit; retry until it settles.
