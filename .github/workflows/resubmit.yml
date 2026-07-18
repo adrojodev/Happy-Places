@@ -1,0 +1,37 @@
+# Resubmit a rejected App Store version with a new build, via the ASC API.
+# Used when the resubmission can't be done from a local browser/Xcode.
+# Uses the same ASC_* secrets as release.yml (Admin key required for
+# review submissions).
+
+name: Resubmit for App Review
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Marketing version to resubmit"
+        default: "3.0.0"
+        required: true
+      build_number:
+        description: "Processed build number to attach"
+        required: true
+
+jobs:
+  resubmit:
+    runs-on: macos-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install PyJWT
+        run: pip3 install --quiet PyJWT cryptography
+
+      - name: Attach build and resubmit
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+          APP_ID: "6478132857"
+          APP_VERSION: ${{ inputs.version }}
+          BUILD_NUMBER: ${{ inputs.build_number }}
+        run: python3 scripts/asc_resubmit.py
