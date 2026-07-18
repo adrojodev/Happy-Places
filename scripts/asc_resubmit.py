@@ -53,6 +53,23 @@ def call(method: str, path: str, body: dict | None = None) -> dict:
         raise
 
 
+def diagnose(sub_id: str, version_id: str) -> None:
+    """Print read-only state that may explain a submit refusal."""
+    for label, path in [
+        ("submission items", f"/v1/reviewSubmissions/{sub_id}/items"),
+        ("age rating declaration",
+         f"/v1/appStoreVersions/{version_id}/ageRatingDeclaration"),
+        ("review detail",
+         f"/v1/appStoreVersions/{version_id}/appStoreReviewDetail"),
+        ("version attributes", f"/v1/appStoreVersions/{version_id}"),
+    ]:
+        try:
+            data = call("GET", path)
+            print(f"--- {label}: {json.dumps(data.get('data'), indent=1)}")
+        except urllib.error.HTTPError:
+            print(f"--- {label}: <request failed>")
+
+
 def main() -> None:
     # 1. The build, plus export compliance.
     builds = call("GET", f"/v1/builds?filter[app]={APP_ID}"
@@ -113,6 +130,7 @@ def main() -> None:
                       f"retrying in 60s...")
                 time.sleep(60)
             else:
+                diagnose(sub_id, version_id)
                 raise
     final = call("GET", f"/v1/reviewSubmissions/{sub_id}")
     print(f"Submission state after resubmit: "
